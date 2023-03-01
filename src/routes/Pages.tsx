@@ -1,6 +1,6 @@
 import React from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {PATH} from '../src/common/path';
+import {PATH} from '../common/path';
 
 export const Pages = () => {
         return (
