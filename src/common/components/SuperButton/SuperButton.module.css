@@ -1,0 +1,54 @@
+.button {
+    width:140px;
+    height: 30px;
+    border-radius: 3px;
+    padding: 5px 24px;
+    background: #0066CC;
+    color: white;
+    font-family: Montserrat, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    border:none;
+}
+
+.disabled {
+    color: gray;
+    background: #6f8fb2;
+}
+
+.secondary {
+    width: 170px;
+    background: #ffffff;
+    color: #0066CC;
+    border: 2px solid #0059b3;
+}
+
+.default {
+    outline: none;
+}
+
+.red {
+    background: #CC1439;
+}
+
+.default:hover {
+}
+
+.red:hover {
+}
+
+.secondary:hover {
+}
+
+
+.default:active {
+}
+
+.secondary:active {
+}
+
+.red:active {
+}
+
+.button:disabled {
+}

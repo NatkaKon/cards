@@ -1,0 +1,26 @@
+.radio {
+    width: 50px;
+    font-size: 16px;
+
+}
+
+.radio::before {
+    width: 20px;
+    color: black;
+
+}
+
+
+.radio:checked::before {
+
+}
+
+.label {
+
+}
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: black;
+}
