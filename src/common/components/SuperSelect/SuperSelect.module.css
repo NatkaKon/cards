@@ -1,16 +1,16 @@
 .select {
-    margin-right: 110px;
-    border: none;
-    width: 180px;
+  width: 180px;
+  margin-right: 110px;
 
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+
+  border: none;
 }
 
 .select:focus {
 }
-
 
 .option:hover {
 }

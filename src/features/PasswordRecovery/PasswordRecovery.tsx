@@ -1,9 +1,5 @@
-import {FC} from 'react';
+import { FC } from 'react'
 
-export const PasswordRecovery:FC = () => {
-    return (
-        <div>
-            Password Recovery
-        </div>
-    );
-};
+export const PasswordRecovery: FC = () => {
+  return <div>Password Recovery</div>
+}
