@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios'
 import { Dispatch } from 'redux'
 
 import { authAPI, LoginParamsType } from '../../app/api'
@@ -13,8 +14,9 @@ export const authReducer = (
   action: ActionsType
 ): initialStateType => {
   switch (action.type) {
-    case 'LOGIN/SET-IS-LOGGED-IN':
+    case 'LOGIN/SET-IS-LOGGED-IN': {
       return { ...state, isLoggedIn: action.value }
+    }
     default:
       return state
   }
@@ -32,11 +34,10 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
       console.log(res.data)
       dispatch(setLoggedInAC(true))
     })
-    .catch(e => {
-      const error = e.response ? e.response.data.error : e.message + ', more details in the console'
+    .catch((err: AxiosError<{ error: string }>) => {
+      const error = err.response ? err.response.data.error : err.message
 
-      console.log(error)
-      console.log('Error: ', { ...e })
+      console.log('error: ', error)
     })
 }
 

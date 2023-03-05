@@ -65,7 +65,6 @@ export const Login = () => {
     },
 
     onSubmit: values => {
-      alert(JSON.stringify(values))
       dispatch(loginTC(values))
     },
   })
@@ -79,7 +78,7 @@ export const Login = () => {
       sx={{
         display: 'flex',
         flexWrap: 'wrap',
-        width: '415px',
+        maxWidth: '415px',
         height: '550px',
         justifyContent: 'space-around',
         margin: '100px',
@@ -101,7 +100,7 @@ export const Login = () => {
           {formik.touched.email && formik.errors.email && (
             <div style={{ color: 'red' }}>{formik.errors.email}</div>
           )}
-          <FormControl sx={{ m: 1, width: '415px', display: 'flex' }} variant="standard">
+          <FormControl sx={{ m: 1, width: '415px', display: 'flex', margin: 0 }} variant="standard">
             <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
             <Input
               id="password"
