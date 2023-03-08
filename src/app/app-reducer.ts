@@ -1,18 +1,27 @@
-const initialState = {
+const initialState: initialStateType = {
   status: 'loading',
-  error: null as string | null,
+  error: null,
+  isInitialized: false,
 }
-
-type initialStateType = any
 
 export const appReducer = (
   state: initialStateType = initialState,
-  action: any
+  action: AppActionType
 ): initialStateType => {
   switch (action.type) {
-    case 'xx':
-      return state
+    case 'APP/SET-ERROR':
+      return { ...state, error: action.error }
     default:
       return state
   }
+}
+
+export const setAppError = (error: AppErrorType) => ({ type: 'APP/SET-ERROR', error } as const)
+
+type AppActionType = ReturnType<typeof setAppError>
+type AppErrorType = string | null
+type initialStateType = {
+  status: 'loading'
+  error: AppErrorType
+  isInitialized: boolean
 }
