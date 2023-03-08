@@ -7,8 +7,16 @@ import editeIcon from '../../assets/Edit.svg'
 
 import s from './Profile.module.css'
 
-export const EditableSpan = () => {
-  const [isEditing, setIsEditing] = useState(true)
+type EditableSpanPropsType = {
+  name: string
+}
+
+export const EditableSpan = ({ name }: EditableSpanPropsType) => {
+  const [isEditing, setIsEditing] = useState(false)
+
+  const handleIsEditing = () => {
+    setIsEditing(true)
+  }
 
   return (
     <div>
@@ -17,16 +25,16 @@ export const EditableSpan = () => {
           <TextField
             id="standard-helperText"
             label="Nickname"
-            defaultValue="Cat-hacker"
+            defaultValue={name}
             variant="standard"
             className={s.input}
           />
           <button className={s.saveBtn}>SAVE</button>
         </div>
       ) : (
-        <div className={s.userName}>
-          Cat-hacker
-          <img className={s.editeIcon} src={editeIcon} alt="pencil" />
+        <div onDoubleClick={handleIsEditing} className={s.userName}>
+          {name}
+          <img onClick={handleIsEditing} className={s.editeIcon} src={editeIcon} alt="pencil" />
         </div>
       )}
     </div>

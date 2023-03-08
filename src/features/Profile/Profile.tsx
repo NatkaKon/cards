@@ -9,11 +9,16 @@ import Paper from '@mui/material/Paper'
 import cameraIcon from '../../assets/cameraIcon.svg'
 import logOutIcon from '../../assets/logout.svg'
 import userPhoto from '../../assets/user.jpg'
+import { useAppDispatch, useAppSelector } from '../../common/hooks/hooks'
 
 import { EditableSpan } from './EditableSpan'
 import s from './Profile.module.css'
 
 export function Profile(): JSX.Element {
+  const name = useAppSelector(state => state.profileReducer.name)
+  const email = useAppSelector(state => state.profileReducer.email)
+  const dispatch = useAppDispatch()
+
   return (
     <Container sx={{ display: 'flex', width: '70%', flexWrap: 'wrap', justifyContent: 'center' }}>
       <Box sx={{ width: '100%', height: '100px', display: 'flex', alignItems: 'center' }}>
@@ -46,8 +51,8 @@ export function Profile(): JSX.Element {
             }}
           />
         </div>
-        <EditableSpan />
-        <div className={s.userEmail}>cat-hacker@gmail.com</div>
+        <EditableSpan name={name} />
+        <div className={s.userEmail}>{email}</div>
         <button className={s.logOutBtn}>
           <img style={{ width: '25px' }} src={logOutIcon} alt="arrow" />
           <span style={{ paddingLeft: '10px' }}>Log out</span>
