@@ -1,29 +1,50 @@
-.formContainer {
-    position: relative;
-
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-
+.signupBlock {
     height: 100vh;
 
+    text-align: center;
+
     background-color: #F9F9FA;
+
+}
+
+.formContainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+
+    width: 70%;
+    height: 90%;
+    margin: 0 auto;
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.formHeader {
+    margin-bottom: 40px;
+
+    font-size: 20pt;
+    line-height: 32px;
 }
 
 .formFooter {
-    margin: 20px 0 30px 0;
-
-    font-size: 14pt;
+    margin-top: 20px;
 }
 
-.formFooter div {
-    margin-bottom: 11px;
+.formEndnote {
+    margin-bottom: 20px;
+
+    font-size: 11pt;
+
+    opacity: 0.5;
 }
 
 .loginLink {
+    font-size: 12pt;
     color: #366EFF;
 }
+
 .activeLink {
 }
