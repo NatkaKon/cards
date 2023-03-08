@@ -1,0 +1,29 @@
+.formContainer {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+
+    height: 100vh;
+
+    background-color: #F9F9FA;
+}
+
+.formFooter {
+    margin: 20px 0 30px 0;
+
+    font-size: 14pt;
+}
+
+.formFooter div {
+    margin-bottom: 11px;
+}
+
+.loginLink {
+    color: #366EFF;
+}
+.activeLink {
+}

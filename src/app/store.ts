@@ -4,11 +4,14 @@ import thunk, { ThunkDispatch } from 'redux-thunk'
 
 import { authReducer } from '../features/Login/authReducer'
 
+import { signupReducer } from '../features/Registration/sign-up-reducer'
+
 import { appReducer } from './app-reducer'
 
 const rootReducer = combineReducers({
   appReducer: appReducer,
   auth: authReducer,
+  signup: signupReducer,
 })
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk))
