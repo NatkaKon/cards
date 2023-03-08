@@ -8,14 +8,14 @@ import { Login } from '../features/Login/Login'
 import { NewPassword } from '../features/NewPassword/NewPassword'
 import { PasswordRecovery } from '../features/PasswordRecovery/PasswordRecovery'
 import { Profile } from '../features/Profile/Profile'
-import { Registration } from '../features/Registration/Registration'
+import { Signup } from '../features/Registration/Signup'
 import { Test } from '../features/TEST/Test'
 
 export const Pages = () => {
   return (
     <Routes>
       <Route path={PATH.LOGIN} element={<Login />} />
-      <Route path={PATH.REGISTRATION} element={<Registration />} />
+      <Route path={PATH.REGISTRATION} element={<Signup />} />
       <Route path={PATH.PROFILE} element={<Profile />} />
       <Route path={PATH.PASSWORD_RECOVERY} element={<PasswordRecovery />} />
       <Route path={PATH.NEW_PASSWORD} element={<NewPassword />} />
