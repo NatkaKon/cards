@@ -78,7 +78,6 @@ export const Login = () => {
       sx={{
         display: 'flex',
         flexWrap: 'wrap',
-        maxWidth: '415px',
         height: '550px',
         justifyContent: 'space-around',
         margin: '100px',
