@@ -10,17 +10,11 @@ import { useFormik } from 'formik'
 import { NavLink } from 'react-router-dom'
 import * as Yup from 'yup'
 
+import { buttonStyle } from '../../common/constants/form-button-style'
 import { PATH } from '../../common/constants/path'
-
-import style from './PasswordRecovery.module.css'
+import style from '../../common/styles/authForm.module.css'
 
 export const PasswordRecovery: FC = () => {
-  const buttonStyle = {
-    borderRadius: '30px',
-    mt: '20px',
-    boxShadow: 6,
-  }
-
   const formik = useFormik({
     initialValues: {
       email: '',
