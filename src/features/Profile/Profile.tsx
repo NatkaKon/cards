@@ -34,6 +34,7 @@ export function Profile(): JSX.Element {
         <KeyboardBackspaceIcon sx={{ paddingRight: '10px' }} />
         <p>Back to Pack List</p>
       </Box>
+
       <Paper
         elevation={3}
         sx={{
