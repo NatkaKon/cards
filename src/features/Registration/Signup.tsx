@@ -10,18 +10,18 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
-import { NavLink } from 'react-router-dom'
+import { Navigate, NavLink } from 'react-router-dom'
 import * as Yup from 'yup'
 
-//import { AppRootStateType } from '../../app/store'
+import { useAppDispatch, useAppSelector } from '../../app/store'
 import { PATH } from '../../common/constants/path'
 
-import { SignupFormType } from './sign-up-reducer'
+import { registerUser, SignupFormType } from './sign-up-reducer'
 import style from './Signup.module.css'
 
 export const Signup: FC = () => {
-  // const isRegistered = useAppSelector<AppRootStateType>(state => state.signup.isRegistered)
-  //const dispatch = useAppDispatch();
+  const isRegistered = useAppSelector(state => state.signup.isRegistered)
+  const dispatch = useAppDispatch()
 
   const paperFormStyle = { py: '20px', px: '30px', minWidth: '413px' }
   const buttonStyle = {
@@ -46,7 +46,7 @@ export const Signup: FC = () => {
     validationSchema: Yup.object().shape({
       email: Yup.string().email('Неверный email адрес').required('Введите почту'),
       password: Yup.string()
-        .min(7, 'Длина должна быть минимум 7 символов')
+        .min(8, 'Длина должна быть более, чем 7 символов')
         .required('Введите пароль'),
       confirmPassword: Yup.string()
         .oneOf([Yup.ref('password')], 'Пароли должны совпадать')
@@ -54,13 +54,13 @@ export const Signup: FC = () => {
     }),
 
     onSubmit: (values: SignupFormType) => {
-      // dispatch(registerUser(values))
-      // formik.resetForm()
-      // formik.setSubmitting(false)
+      dispatch(registerUser(values))
+      formik.resetForm()
+      formik.setSubmitting(false)
     },
   })
 
-  // if (isRegistered) return <Navigate to={PATH.LOGIN} />
+  if (isRegistered) return <Navigate to={PATH.LOGIN} />
 
   return (
     <div className={style.signupBlock}>

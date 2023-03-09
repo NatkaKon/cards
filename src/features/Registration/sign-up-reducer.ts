@@ -1,6 +1,8 @@
 import axios, { AxiosError } from 'axios'
+import { Dispatch } from 'redux'
 
-import { setAppError } from '../../app/app-reducer'
+import { authAPI } from '../../app/api'
+import { setAppError, SetAppErrorType } from '../../app/app-reducer'
 
 const initState: InitStateType = {
   isRegistered: false,
@@ -14,27 +16,25 @@ export const signupReducer = (state: InitStateType = initState, action: SignupAc
       return { ...state }
   }
 }
-export const registerUser =
-  (values: SignupFormType) /*AppThunkDispatch*/ => async (dispatch: any) => {
-    try {
-      // TODO
-      // const resp = await axios.post('http://localhost:7542/2.0/auth/register', {
-      //   email: values.email,
-      //   password: values.password,
-      // })
-      // dispatch(setRegistered(true))
-    } catch (e) {
-      const err = e as Error | AxiosError<{ error: string }>
+export const registerUser = (values: SignupFormType) => async (dispatch: SignupThunkType) => {
+  try {
+    const resp = await authAPI.register({ email: values.email, password: values.password })
 
-      if (axios.isAxiosError(err)) {
-        const error = err.response?.data ? err.response.data.error : err.message
+    console.log(resp)
 
-        dispatch(setAppError(error))
-      } else {
-        dispatch(setAppError(err.message ? err.message : 'Some error occurred'))
-      }
+    dispatch(setRegistered(true))
+  } catch (e) {
+    const err = e as Error | AxiosError<{ error: string }>
+
+    if (axios.isAxiosError(err)) {
+      const error = err.response?.data ? err.response.data.error : err.message
+
+      dispatch(setAppError(error))
+    } else {
+      dispatch(setAppError(err.message ? err.message : 'Some error occurred'))
     }
   }
+}
 
 export const setRegistered = (value: boolean) => ({ type: 'AUTH/REGISTER', value } as const)
 
@@ -48,3 +48,4 @@ export type SignupFormType = {
   password: string
   confirmPassword: string
 }
+type SignupThunkType = Dispatch<SignupActionType | SetAppErrorType>

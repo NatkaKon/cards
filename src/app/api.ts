@@ -13,6 +13,9 @@ export const authAPI = {
   login(data: LoginParamsType) {
     return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('auth/login', data)
   },
+  register(data: SignupParamsType) {
+    return instance.post<SignupParamsType, AxiosResponse<ResponseType>>('auth/register', data)
+  },
 }
 
 //types
@@ -34,4 +37,8 @@ export type LoginParamsType = {
   email: string
   password: string
   rememberMe: boolean
+}
+export type SignupParamsType = {
+  email: string
+  password: string
 }

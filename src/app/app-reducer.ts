@@ -18,7 +18,8 @@ export const appReducer = (
 
 export const setAppError = (error: AppErrorType) => ({ type: 'APP/SET-ERROR', error } as const)
 
-type AppActionType = ReturnType<typeof setAppError>
+export type SetAppErrorType = ReturnType<typeof setAppError>
+type AppActionType = SetAppErrorType
 type AppErrorType = string | null
 type initialStateType = {
   status: 'loading'
