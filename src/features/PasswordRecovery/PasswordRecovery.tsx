@@ -1,4 +1,4 @@
-import { FC, memo, useState, MouseEvent } from 'react'
+import { FC, memo, useState } from 'react'
 
 import { FormLabel } from '@mui/material'
 import Button from '@mui/material/Button'
@@ -7,19 +7,23 @@ import FormGroup from '@mui/material/FormGroup'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
-import { NavLink, redirect } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 
+import { useAppDispatch, useAppSelector } from '../../app/store'
+import { ErrorSnackbar } from '../../common/components/ErrorSnackbar/ErrorSnackbar'
 import { buttonStyle } from '../../common/constants/form-button-style'
 import { PATH } from '../../common/constants/path'
 import style from '../../common/styles/authForm.module.css'
 
 import { ReactComponent as EmailPicture } from './email-image.svg'
+import { sendResetPsswrdLink } from './psswrd-recovery-thunk'
 
 const paperStyle = { py: '40px', px: '30px', maxWidth: '413px' }
 
 export const PasswordRecovery: FC = memo(() => {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const dispatch = useAppDispatch()
 
   const formik = useFormik({
     initialValues: {
@@ -31,7 +35,9 @@ export const PasswordRecovery: FC = memo(() => {
     }),
 
     onSubmit: (values: PasswordRecoveryFormType) => {
+      dispatch(sendResetPsswrdLink(values.email))
       setIsSubmitted(true)
+      formik.setSubmitting(false)
     },
   })
 
@@ -94,8 +100,11 @@ export const PasswordRecovery: FC = memo(() => {
 })
 
 export const CheckEmail: FC<{ email: string }> = memo(({ email }) => {
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    redirect(PATH.LOGIN)
+  const navigate = useNavigate()
+  const error = useAppSelector(state => state.appReducer.error)
+
+  const handleClick = () => {
+    navigate(PATH.LOGIN)
   }
 
   return (
@@ -104,11 +113,12 @@ export const CheckEmail: FC<{ email: string }> = memo(({ email }) => {
         <Paper elevation={6} sx={paperStyle}>
           <div className={style.formHeader}>Check Email</div>
           <div>
-            {/*<img src="#" alt="inbox" />*/}
             <EmailPicture />
           </div>
           <FormLabel>
-            <p>{`We’ve sent an Email with instructions to ${email}`}</p>
+            <p>
+              We’ve sent an Email with instructions to <strong>{email}</strong>
+            </p>
           </FormLabel>
           <Button
             color="primary"
@@ -121,6 +131,7 @@ export const CheckEmail: FC<{ email: string }> = memo(({ email }) => {
           </Button>
         </Paper>
       </div>
+      {error && <ErrorSnackbar />}
     </div>
   )
 })
