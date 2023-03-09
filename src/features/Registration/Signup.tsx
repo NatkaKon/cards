@@ -46,13 +46,13 @@ export const Signup: FC = () => {
     },
 
     validationSchema: Yup.object().shape({
-      email: Yup.string().email('Неверный email адрес').required('Введите почту'),
+      email: Yup.string().email('Invalid email address').required('Email is required'),
       password: Yup.string()
-        .min(8, 'Длина должна быть более, чем 7 символов')
-        .required('Введите пароль'),
+        .min(8, 'Password must be more than 7 characters...')
+        .required('Password is required'),
       confirmPassword: Yup.string()
-        .oneOf([Yup.ref('password')], 'Пароли должны совпадать')
-        .required('Обязательное поле'),
+        .oneOf([Yup.ref('password')], `Passwords don't match`)
+        .required('Required'),
     }),
 
     onSubmit: (values: SignupFormType) => {
@@ -70,7 +70,7 @@ export const Signup: FC = () => {
         <form onSubmit={formik.handleSubmit}>
           <Paper elevation={6} sx={paperFormStyle}>
             <FormControl fullWidth margin="dense">
-              <div className={style.formHeader}>Регистрация</div>
+              <div className={style.formHeader}>Sign Up</div>
               <FormGroup>
                 <TextField
                   id="email"
@@ -87,7 +87,7 @@ export const Signup: FC = () => {
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   variant="standard"
-                  label="Пароль"
+                  label="Password"
                   {...formik.getFieldProps('password')}
                   error={formik.touched.password && Boolean(formik.errors.password)}
                   helperText={
@@ -107,7 +107,7 @@ export const Signup: FC = () => {
                   id="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
                   variant="standard"
-                  label="Повторите пароль"
+                  label="Confirm password"
                   {...formik.getFieldProps('confirmPassword')}
                   error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
                   helperText={
@@ -133,19 +133,19 @@ export const Signup: FC = () => {
                   disabled={formik.isSubmitting}
                   sx={buttonStyle}
                 >
-                  Зарегистрироваться
+                  Sign Up
                 </Button>
               </FormGroup>
             </FormControl>
             <div className={style.formFooter}>
-              <div className={style.formEndnote}>Уже есть аккаунт?</div>
+              <div className={style.formEndnote}>Already have an account?</div>
               <NavLink
                 to={PATH.LOGIN}
                 className={({ isActive }) =>
                   isActive ? style.activeLink + style.loginLink : style.loginLink
                 }
               >
-                Войти
+                Sign In
               </NavLink>
             </div>
           </Paper>
