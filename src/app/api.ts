@@ -11,26 +11,35 @@ export const instance = axios.create({
 
 export const authAPI = {
   login(data: LoginParamsType) {
-    return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('auth/login', data)
+    return instance.post<LoginParamsType, AxiosResponse<UserType>>('auth/login', data)
   },
   register(data: SignupParamsType) {
-    return instance.post<SignupParamsType, AxiosResponse<ResponseType>>('auth/register', data)
+    return instance.post<SignupParamsType, AxiosResponse<UserType>>('auth/register', data)
+  },
+  changeUser(data: changeUserParamsType) {
+    return instance.put<changeUserParamsType, AxiosResponse<changeUserResType>>('/auth/me', data)
+  },
+  logout() {
+    return instance.delete<AxiosResponse<logoutResType>>('/auth/me')
   },
 }
 
 //types
 
-export type ResponseType = {
+export type UserType = {
   _id: string
   email: string
-  rememberMe: boolean
-  isAdmin: boolean
   name: string
-  verified: boolean
-  publicCardPacksCount: number
-  created: string
-  updated: string
-  avatar: string
+  avatar?: string | null
+  publicCardPacksCount: number // количество колод
+
+  created: Date | null
+  updated: Date | null
+  isAdmin: boolean
+  verified: boolean // подтвердил ли почту
+  rememberMe: boolean
+
+  error?: string | null
 }
 
 export type LoginParamsType = {
@@ -41,4 +50,19 @@ export type LoginParamsType = {
 export type SignupParamsType = {
   email: string
   password: string
+}
+
+export type changeUserParamsType = {
+  name: string
+  avatar?: string
+}
+
+export type changeUserResType = {
+  updatedUser: UserType
+  error?: string
+}
+
+export type logoutResType = {
+  info: string
+  error: string
 }

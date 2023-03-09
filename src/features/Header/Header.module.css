@@ -1,7 +1,18 @@
 .header{
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    align-items: center;
 
-    padding-top: 20px;
+    height: 65px;
+
+    box-shadow: 0 0 10px rgba(0,0,0,0.5)
+}
+
+.userData{
+    display: flex;
+    align-items: center;
+}
+.name{
+    padding-right: 10px;
+
+    color: grey;
 }

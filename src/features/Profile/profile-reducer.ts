@@ -1,18 +1,6 @@
-type UserType = {
-  _id: string
-  email: string
-  name: string
-  avatar?: string | null
-  publicCardPacksCount: number // количество колод
+import { Dispatch } from 'redux'
 
-  created: Date | null
-  updated: Date | null
-  isAdmin: boolean
-  verified: boolean // подтвердил ли почту
-  rememberMe: boolean
-
-  error?: string | null
-}
+import { authAPI, changeUserParamsType, UserType } from '../../app/api'
 
 const initialState = {
   _id: 'bla-bla',
@@ -35,8 +23,6 @@ export const profileReducer = (
   action: ProfileActionsType
 ): UserType => {
   switch (action.type) {
-    case 'profile/SET-NEW-USER-NAME':
-      return { ...state, name: action.name }
     case 'profile/SET-USER-PROFILE':
       return { ...action.profile }
     default:
@@ -44,11 +30,13 @@ export const profileReducer = (
   }
 }
 
-export const setNewUserNameAC = (name: string) =>
-  ({ type: 'profile/SET-NEW-USER-NAME', name } as const)
 export const setUserProfileAC = (profile: UserType) =>
   ({ type: 'profile/SET-USER-PROFILE', profile } as const)
 
-export type ProfileActionsType =
-  | ReturnType<typeof setNewUserNameAC>
-  | ReturnType<typeof setUserProfileAC>
+export const changeUserTC = (data: changeUserParamsType) => (dispatch: Dispatch) => {
+  authAPI.changeUser(data).then(res => {
+    dispatch(setUserProfileAC(res.data.updatedUser))
+  })
+}
+
+export type ProfileActionsType = ReturnType<typeof setUserProfileAC>
