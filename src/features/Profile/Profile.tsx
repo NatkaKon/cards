@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useCallback } from 'react'
 
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import { Container } from '@mui/material'
@@ -12,12 +13,20 @@ import userPhoto from '../../assets/user.jpg'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/hooks'
 
 import { EditableSpan } from './EditableSpan'
+import { setNewUserNameAC } from './profile-reducer'
 import s from './Profile.module.css'
 
 export function Profile(): JSX.Element {
   const name = useAppSelector(state => state.profileReducer.name)
   const email = useAppSelector(state => state.profileReducer.email)
   const dispatch = useAppDispatch()
+
+  const setNewUserName = useCallback(
+    (name: string) => {
+      dispatch(setNewUserNameAC(name))
+    },
+    [dispatch]
+  )
 
   return (
     <Container sx={{ display: 'flex', width: '70%', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -51,7 +60,7 @@ export function Profile(): JSX.Element {
             }}
           />
         </div>
-        <EditableSpan name={name} />
+        <EditableSpan name={name} setNewUserName={setNewUserName} />
         <div className={s.userEmail}>{email}</div>
         <button className={s.logOutBtn}>
           <img style={{ width: '25px' }} src={logOutIcon} alt="arrow" />

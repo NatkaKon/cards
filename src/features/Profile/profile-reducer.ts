@@ -30,11 +30,19 @@ const initialState = {
   error: null,
 }
 
-export const profileReducer = (state: UserType = initialState, action: any): UserType => {
+export const profileReducer = (
+  state: UserType = initialState,
+  action: ProfileActionsType
+): UserType => {
   switch (action.type) {
-    case 'xx':
-      return state
+    case 'profile/SET-NEW-USER-NAME':
+      return { ...state, name: action.name }
     default:
       return state
   }
 }
+
+export const setNewUserNameAC = (name: string) =>
+  ({ type: 'profile/SET-NEW-USER-NAME', name } as const)
+
+export type ProfileActionsType = ReturnType<typeof setNewUserNameAC>
