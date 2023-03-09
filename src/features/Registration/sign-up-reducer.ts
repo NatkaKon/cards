@@ -20,9 +20,9 @@ export const registerUser = (values: SignupFormType) => async (dispatch: SignupT
   try {
     const resp = await authAPI.register({ email: values.email, password: values.password })
 
-    console.log(resp)
-
-    dispatch(setRegistered(true))
+    if (resp.data) {
+      dispatch(setRegistered(true))
+    }
   } catch (e) {
     const err = e as Error | AxiosError<{ error: string }>
 
