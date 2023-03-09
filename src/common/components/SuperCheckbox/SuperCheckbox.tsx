@@ -1,4 +1,4 @@
-import React, { ChangeEvent, DetailedHTMLProps, InputHTMLAttributes } from 'react'
+import { ChangeEvent, DetailedHTMLProps, InputHTMLAttributes } from 'react'
 
 import s from './SuperCheckbox.module.css'
 

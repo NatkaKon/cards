@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps, InputHTMLAttributes, ReactNode, useState } from 'react'
+import { DetailedHTMLProps, InputHTMLAttributes, ReactNode, useState } from 'react'
 
 import SuperInputText from '../SuperInputText/SuperInputText'
 
