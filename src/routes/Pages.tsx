@@ -14,13 +14,13 @@ import { Test } from '../features/TEST/Test'
 export const Pages = () => {
   return (
     <Routes>
+      <Route path={PATH.DEFAULT} element={<Navigate to={PATH.LOGIN} />} />
       <Route path={PATH.LOGIN} element={<Login />} />
       <Route path={PATH.REGISTRATION} element={<Signup />} />
       <Route path={PATH.PROFILE} element={<Profile />} />
       <Route path={PATH.PASSWORD_RECOVERY} element={<PasswordRecovery />} />
       <Route path={PATH.NEW_PASSWORD} element={<NewPassword />} />
       <Route path={PATH.NAVIGATE_ERROR} element={<Error404 />} />
-      <Route path={PATH.ERROR404} element={<Navigate to="/404" />} />
       <Route path={PATH.TEST} element={<Test />} />
     </Routes>
   )
