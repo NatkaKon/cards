@@ -6,7 +6,7 @@ import { setAppError } from '../../app/app-reducer'
 import { PATH } from '../../common/constants/path'
 
 export const sendResetPsswrdLink = (email: string) => async (dispatch: Dispatch) => {
-  const link = `http://localhost:3000/#/${PATH.NEW_PASSWORD}/$token$`
+  const link = `https://natkakon.github.io/cards/#/${PATH.NEW_PASSWORD}/$token$`
   const letterBody: ForgotRequestBodyType = {
     email,
     from: `test-front-admin <ai73a@yandex.by>`,
