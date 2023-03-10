@@ -2,6 +2,7 @@ import { AxiosError } from 'axios'
 import { Dispatch } from 'redux'
 
 import { authAPI, LoginParamsType } from '../../app/api'
+import { setUserProfileAC } from '../Profile/profile-reducer'
 
 const initialState = {
   isLoggedIn: false,
@@ -27,11 +28,12 @@ export const setLoggedInAC = (value: boolean) =>
     type: 'LOGIN/SET-IS-LOGGED-IN',
     value,
   } as const)
+
 export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
   authAPI
     .login(data)
     .then(res => {
-      console.log(res.data)
+      dispatch(setUserProfileAC(res.data))
       dispatch(setLoggedInAC(true))
     })
     .catch((err: AxiosError<{ error: string }>) => {
@@ -39,6 +41,12 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
 
       console.log('error: ', error)
     })
+}
+
+export const logoutTC = () => (dispatch: Dispatch) => {
+  authAPI.logout().then(res => {
+    dispatch(setLoggedInAC(false))
+  })
 }
 
 //types

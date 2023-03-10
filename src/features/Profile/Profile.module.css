@@ -1,0 +1,80 @@
+.avatar {
+    position: relative;
+    z-index: 2;
+    top: 95px;
+    left: 50px;
+
+    width: 50px;
+}
+
+.userName {
+    width: 300px;
+    height: 25px;
+    padding: 30px 0 15px;
+
+    font-size: large;
+    font-weight: bolder;
+}
+
+.editeMode {
+    width: 300px;
+    height: 50px;
+    padding: 30px 0 15px;
+}
+
+.editeIcon {
+    width: 15px;
+    padding-left: 10px;
+}
+
+.input {
+    width: 100%;
+}
+
+.userEmail {
+    padding: 0 0 35px;
+
+    color: grey;
+}
+
+.logOutBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 150px;
+    height: 45px;
+
+    background-color: white;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 0 10px grey;
+}
+
+.logOutBtn:hover {
+    color: white;
+
+    background-color: #366EFF;
+}
+
+.saveBtn {
+    position: relative;
+    top: -31px;
+    left: 114px;
+
+    width: 52px;
+    height: 24px;
+
+    color: white;
+
+    background-color: #366EFF;
+    border: none;
+    border-radius: 2px;
+}
+
+.saveBtn:hover {
+    color: #366EFF;
+
+    background-color: white;
+    border: solid #366EFF 1px;
+}

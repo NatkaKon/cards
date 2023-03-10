@@ -31,17 +31,21 @@ export const authAPI = {
 }
 
 //types
-export type ResponseType = {
+
+export type UserType = {
   _id: string
   email: string
-  rememberMe: boolean
-  isAdmin: boolean
   name: string
-  verified: boolean
-  publicCardPacksCount: number
-  created: string
-  updated: string
-  avatar: string
+  avatar?: string | null
+  publicCardPacksCount: number // количество колод
+
+  created: Date | null
+  updated: Date | null
+  isAdmin: boolean
+  verified: boolean // подтвердил ли почту
+  rememberMe: boolean
+
+  error?: string | null
 }
 
 export type LoginParamsType = {
@@ -63,4 +67,19 @@ export type ForgotRequestBodyType = {
 export type SetNewPsswrdBodyType = {
   password: string
   resetPasswordToken: string
+}
+
+export type changeUserParamsType = {
+  name: string
+  avatar?: string
+}
+
+export type changeUserResType = {
+  updatedUser: UserType
+  error?: string
+}
+
+export type logoutResType = {
+  info: string
+  error: string
 }
