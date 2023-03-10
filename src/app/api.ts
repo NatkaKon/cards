@@ -16,10 +16,15 @@ export const authAPI = {
   register(data: SignupParamsType) {
     return instance.post<SignupParamsType, AxiosResponse<ResponseType>>('auth/register', data)
   },
+  forgot(data: ForgotRequestBodyType) {
+    return instance.post<ForgotRequestBodyType, AxiosResponse<{ message: string }>>(
+      'auth/forgot',
+      data
+    )
+  },
 }
 
 //types
-
 export type ResponseType = {
   _id: string
   email: string
@@ -41,4 +46,10 @@ export type LoginParamsType = {
 export type SignupParamsType = {
   email: string
   password: string
+}
+
+export type ForgotRequestBodyType = {
+  email: string
+  from?: string
+  message: string
 }
