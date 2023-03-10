@@ -10,7 +10,7 @@ export const sendResetPsswrdLink = (email: string) => async (dispatch: Dispatch)
   const letterBody: ForgotRequestBodyType = {
     email,
     from: `test-front-admin <ai73a@yandex.by>`,
-    message: `<div style="background-color: darkslategray"><h1 style="padding: 10px; font-size: 20px">Reset password</h1><a href={link} target="_blank" rel=" noopener noreferrer">Click here to reset your password</a></div>`,
+    message: `<div style="background-color: #2F4F4F; padding: 10px; font-size: 20px"><a href={link} target="_blank" rel=" noopener noreferrer">Click here to reset your password</a></div>`,
   }
 
   try {
