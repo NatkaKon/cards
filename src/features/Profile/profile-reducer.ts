@@ -1,6 +1,8 @@
+import axios, { AxiosError } from 'axios'
 import { Dispatch } from 'redux'
 
 import { authAPI, changeUserParamsType, UserType } from '../../app/api'
+import { setAppError } from '../../app/app-reducer'
 
 const initialState = {
   _id: 'bla-bla',
@@ -33,10 +35,22 @@ export const profileReducer = (
 export const setUserProfileAC = (profile: UserType) =>
   ({ type: 'profile/SET-USER-PROFILE', profile } as const)
 
-export const changeUserTC = (data: changeUserParamsType) => (dispatch: Dispatch) => {
-  authAPI.changeUser(data).then(res => {
+export const changeUserTC = (data: changeUserParamsType) => async (dispatch: Dispatch) => {
+  try {
+    const res = await authAPI.changeUser(data)
+
     dispatch(setUserProfileAC(res.data.updatedUser))
-  })
+  } catch (e) {
+    const err = e as Error | AxiosError<{ error: string }>
+
+    if (axios.isAxiosError(err)) {
+      const error = err.response?.data ? err.response.data.error : err.message
+
+      dispatch(setAppError(error))
+    } else {
+      dispatch(setAppError(err.message ? err.message : 'Some error occurred'))
+    }
+  }
 }
 
 export type ProfileActionsType = ReturnType<typeof setUserProfileAC>

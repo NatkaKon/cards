@@ -11,10 +11,10 @@ export const instance = axios.create({
 
 export const authAPI = {
   login(data: LoginParamsType) {
-    return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('auth/login', data)
+    return instance.post<LoginParamsType, AxiosResponse<UserType>>('auth/login', data)
   },
   register(data: SignupParamsType) {
-    return instance.post<SignupParamsType, AxiosResponse<ResponseType>>('auth/register', data)
+    return instance.post<SignupParamsType, AxiosResponse<UserType>>('auth/register', data)
   },
   forgot(data: ForgotRequestBodyType) {
     return instance.post<ForgotRequestBodyType, AxiosResponse<{ message: string }>>(
@@ -27,6 +27,12 @@ export const authAPI = {
       '/auth/set-new-password',
       data
     )
+  },
+  logout() {
+    return instance.delete<AxiosResponse<logoutResType>>('/auth/me')
+  },
+  changeUser(data: changeUserParamsType) {
+    return instance.put<changeUserParamsType, AxiosResponse<changeUserResType>>('/auth/me', data)
   },
 }
 

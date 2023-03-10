@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../app/store'
 import cameraIcon from '../../assets/cameraIcon.svg'
 import logOutIcon from '../../assets/logout.svg'
 import userPhoto from '../../assets/user.jpg'
+import { ErrorSnackbar } from '../../common/components/ErrorSnackbar/ErrorSnackbar'
 import { PATH } from '../../common/constants/path'
 import { logoutTC } from '../Login/authReducer'
 
@@ -23,6 +24,7 @@ export function Profile(): JSX.Element {
   const name = useAppSelector(state => state.profileReducer.name)
   const email = useAppSelector(state => state.profileReducer.email)
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+  const error = useAppSelector(state => state.appReducer.error)
   const dispatch = useAppDispatch()
 
   const setNewUserName = useCallback(
@@ -78,6 +80,7 @@ export function Profile(): JSX.Element {
           <span style={{ paddingLeft: '10px' }}>Log out</span>
         </button>
       </Paper>
+      {error && <ErrorSnackbar />}
     </Container>
   )
 }

@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Container } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { useAppSelector } from '../../app/store'
 import userPhoto from '../../assets/user.jpg'
@@ -11,13 +11,14 @@ import { PATH } from '../../common/constants/path'
 
 import s from './Header.module.css'
 
-const onClickHandler = () => {
-  return <Navigate to={PATH.REGISTRATION} />
-}
-
 export const Header = () => {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const name = useAppSelector(state => state.profileReducer.name)
+
+  const navigate = useNavigate()
+  const onClickHandler = () => {
+    navigate(PATH.REGISTRATION)
+  }
 
   return (
     <header className={s.header}>
@@ -38,7 +39,7 @@ export const Header = () => {
             </div>
           ) : (
             <Button size={'small'} variant="contained" onClick={onClickHandler}>
-              Sing in
+              Sing up
             </Button>
           )}
         </div>
