@@ -22,6 +22,12 @@ export const authAPI = {
       data
     )
   },
+  setNewPassword(data: SetNewPsswrdBodyType) {
+    return instance.post<SetNewPsswrdBodyType, AxiosResponse<{ message: string }>>(
+      '/auth/set-new-password',
+      data
+    )
+  },
 }
 
 //types
@@ -52,4 +58,9 @@ export type ForgotRequestBodyType = {
   email: string
   from?: string
   message: string
+}
+
+export type SetNewPsswrdBodyType = {
+  password: string
+  resetPasswordToken: string
 }
