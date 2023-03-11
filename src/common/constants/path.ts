@@ -8,5 +8,6 @@ export const PATH = {
   NAVIGATE_ERROR: '/404',
   ERROR404: '/*',
   TEST: '/test',
+  CARDS: '/cards',
   PACS: '/packs',
 }
