@@ -3,10 +3,10 @@ import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { PATH } from '../common/constants/path'
-import { Cards } from '../features/Cards/Cards'
 import { Error404 } from '../features/Error404/Error404'
 import { Login } from '../features/Login/Login'
 import { NewPassword } from '../features/NewPassword/NewPassword'
+import { Packs } from '../features/Packs/Packs'
 import { PasswordRecovery } from '../features/PasswordRecovery/PasswordRecovery'
 import { Profile } from '../features/Profile/Profile'
 import { Signup } from '../features/Registration/Signup'
@@ -23,7 +23,7 @@ export const Pages = () => {
       <Route path={PATH.NEW_PASSWORD} element={<NewPassword />} />
       <Route path={PATH.NAVIGATE_ERROR} element={<Error404 />} />
       <Route path={PATH.TEST} element={<Test />} />
-      <Route path={PATH.CARDS} element={<Cards />} />
+      <Route path={PATH.PACKS} element={<Packs />} />
     </Routes>
   )
 }

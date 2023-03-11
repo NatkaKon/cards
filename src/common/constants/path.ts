@@ -9,5 +9,5 @@ export const PATH = {
   ERROR404: '/*',
   TEST: '/test',
   CARDS: '/cards',
-  PACS: '/packs',
+  PACKS: '/packs',
 }
