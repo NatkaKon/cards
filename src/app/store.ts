@@ -2,6 +2,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { AnyAction, applyMiddleware, combineReducers, legacy_createStore } from 'redux'
 import thunk, { ThunkDispatch } from 'redux-thunk'
 
+import { cardsReducer } from '../features/Cards/cardsReducer'
 import { authReducer } from '../features/Login/authReducer'
 import { packsReducer } from '../features/Packs/packsReducer'
 import { profileReducer } from '../features/Profile/profile-reducer'
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   signup: signupReducer,
   packs: packsReducer,
+  cards: cardsReducer,
 })
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk))

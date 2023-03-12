@@ -3,6 +3,7 @@ import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { PATH } from '../common/constants/path'
+import { Cards } from '../features/Cards/Cards'
 import { Error404 } from '../features/Error404/Error404'
 import { Login } from '../features/Login/Login'
 import { NewPassword } from '../features/NewPassword/NewPassword'
@@ -24,6 +25,7 @@ export const Pages = () => {
       <Route path={PATH.NAVIGATE_ERROR} element={<Error404 />} />
       <Route path={PATH.TEST} element={<Test />} />
       <Route path={PATH.PACKS} element={<Packs />} />
+      <Route path={PATH.CARDS} element={<Cards />} />
     </Routes>
   )
 }
