@@ -10,4 +10,4 @@ export const PATH = {
   TEST: '/test',
   CARDS: '/cards',
   PACKS: '/packs',
-}
+} as const
