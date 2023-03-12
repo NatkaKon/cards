@@ -26,6 +26,7 @@ export const Signup: FC = () => {
   const error = useAppSelector(state => state.appReducer.error)
 
   const paperFormStyle = { py: '20px', px: '30px', minWidth: '413px' }
+
   const buttonStyle = {
     borderRadius: '30px',
     mt: '20px',

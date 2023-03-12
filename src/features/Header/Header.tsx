@@ -11,6 +11,13 @@ import { PATH } from '../../common/constants/path'
 
 import s from './Header.module.css'
 
+const buttonStyle = {
+  width: '113px',
+  height: '36px',
+  borderRadius: '30px',
+  boxShadow: 6,
+}
+
 export const Header = () => {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const name = useAppSelector(state => state.profileReducer.name)
@@ -24,7 +31,7 @@ export const Header = () => {
     <header className={s.header}>
       <Container
         sx={{
-          width: '70%',
+          width: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -38,7 +45,7 @@ export const Header = () => {
               <Avatar alt="avatar" src={userPhoto} sx={{ width: '50px', height: '50px' }} />
             </div>
           ) : (
-            <Button size={'small'} variant="contained" onClick={onClickHandler}>
+            <Button size={'small'} variant="contained" onClick={onClickHandler} sx={buttonStyle}>
               Sing up
             </Button>
           )}

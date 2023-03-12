@@ -1,0 +1,12 @@
+.panelButton{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+.listTitle{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-style: normal;
+    line-height: 27px;
+}
