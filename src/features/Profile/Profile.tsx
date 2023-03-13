@@ -53,7 +53,7 @@ export function Profile(): JSX.Element {
       <NavLink to={PATH.PACKS}>
         <Box sx={{ width: '100%', height: '100px', display: 'flex', alignItems: 'center' }}>
           <KeyboardBackspaceIcon sx={{ paddingRight: '10px' }} />
-          <p>Back to Pack List</p>
+          <p>To Pack List</p>
         </Box>
       </NavLink>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
