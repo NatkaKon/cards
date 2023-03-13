@@ -6,7 +6,7 @@ import { Container } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
-import { Navigate } from 'react-router-dom'
+import { Navigate, NavLink } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import cameraIcon from '../../assets/cameraIcon.svg'
@@ -41,46 +41,57 @@ export function Profile(): JSX.Element {
   if (!isLoggedIn) return <Navigate to={PATH.LOGIN} />
 
   return (
-    <Container sx={{ display: 'flex', width: '70%', flexWrap: 'wrap', justifyContent: 'center' }}>
-      <Box sx={{ width: '100%', height: '100px', display: 'flex', alignItems: 'center' }}>
-        <KeyboardBackspaceIcon sx={{ paddingRight: '10px' }} />
-        <p>Back to Pack List</p>
-      </Box>
-
-      <Paper
-        elevation={3}
-        sx={{
-          height: '450px',
-          width: '400px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <h1>Personal Information</h1>
-        <div style={{ width: '150px', height: '150px' }}>
-          <Avatar
-            alt="avatar"
-            src={userPhoto}
-            sx={{ width: '150px', height: '150px', zIndex: '1', position: 'absolute' }}
-          />
-          <img
-            className={s.avatar}
-            src={cameraIcon}
-            alt="camera icon"
-            onClick={() => {
-              alert('Hi')
-            }}
-          />
-        </div>
-        <EditableSpan name={name} setNewUserName={setNewUserName} />
-        <div className={s.userEmail}>{email}</div>
-        <button className={s.logOutBtn} onClick={logOutHandler}>
-          <img style={{ width: '25px' }} src={logOutIcon} alt="arrow" />
-          <span style={{ paddingLeft: '10px' }}>Log out</span>
-        </button>
-      </Paper>
-      {error && <ErrorSnackbar />}
+    <Container
+      sx={{
+        display: 'flex',
+        width: '70%',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        flexDirection: 'column',
+      }}
+    >
+      <NavLink to={PATH.PACKS}>
+        <Box sx={{ width: '100%', height: '100px', display: 'flex', alignItems: 'center' }}>
+          <KeyboardBackspaceIcon sx={{ paddingRight: '10px' }} />
+          <p>Back to Pack List</p>
+        </Box>
+      </NavLink>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Paper
+          elevation={3}
+          sx={{
+            height: '450px',
+            width: '400px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <h1>Personal Information</h1>
+          <div style={{ width: '150px', height: '150px' }}>
+            <Avatar
+              alt="avatar"
+              src={userPhoto}
+              sx={{ width: '150px', height: '150px', zIndex: '1', position: 'absolute' }}
+            />
+            <img
+              className={s.avatar}
+              src={cameraIcon}
+              alt="camera icon"
+              onClick={() => {
+                alert('Hi')
+              }}
+            />
+          </div>
+          <EditableSpan name={name} setNewUserName={setNewUserName} />
+          <div className={s.userEmail}>{email}</div>
+          <button className={s.logOutBtn} onClick={logOutHandler}>
+            <img style={{ width: '25px' }} src={logOutIcon} alt="arrow" />
+            <span style={{ paddingLeft: '10px' }}>Log out</span>
+          </button>
+        </Paper>
+        {error && <ErrorSnackbar />}
+      </div>
     </Container>
   )
 }
