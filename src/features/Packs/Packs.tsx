@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useEffect } from 'react'
 
+import { Container } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
@@ -40,7 +41,7 @@ export const Packs = () => {
   }, [])
 
   return (
-    <>
+    <Container sx={{ padding: '50px' }}>
       <PanelButton />
       <TableContainer component={Paper} className={s.tableContainer}>
         <Table sx={{ minWidth: 500 }} aria-label="simple table">
@@ -48,6 +49,6 @@ export const Packs = () => {
           <TableBodyPacks />
         </Table>
       </TableContainer>
-    </>
+    </Container>
   )
 }
