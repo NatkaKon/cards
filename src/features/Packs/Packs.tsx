@@ -47,7 +47,7 @@ export const Packs = () => {
       <Box sx={{ display: 'flex' }}>
         <DebounceSearch searchQuery={PayloadType.packName} />
       </Box>
-      <PanelButton />
+      <PanelButton name={'Packs list'} button={'Add new pack'} />
       <TableContainer component={Paper} className={s.tableContainer}>
         <Table sx={{ minWidth: 500 }} aria-label="simple table">
           <TableHead />

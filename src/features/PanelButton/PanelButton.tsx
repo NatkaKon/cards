@@ -14,7 +14,11 @@ const buttonStyle = {
   boxShadow: 6,
 }
 
-export const PanelButton = () => {
+type PanelButtonType = {
+  name: string
+  button: string
+}
+export const PanelButton = (props: PanelButtonType) => {
   const dispatch = useAppDispatch()
   const addNewPackHandler = () => {
     dispatch(addNewPackTC())
@@ -22,7 +26,7 @@ export const PanelButton = () => {
 
   return (
     <div className={s.panelButton}>
-      <h3 className={s.listTitle}>Packs list</h3>
+      <h3 className={s.listTitle}>{props.name}</h3>
       <Button
         onClick={addNewPackHandler}
         type="submit"
@@ -31,7 +35,7 @@ export const PanelButton = () => {
         size="medium"
         sx={buttonStyle}
       >
-        Add new pack
+        {props.button}
       </Button>
     </div>
   )
