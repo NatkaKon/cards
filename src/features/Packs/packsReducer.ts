@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux'
 
-import { GetPacksPayloadType, packsAPI } from './packsAPI'
+import { AddNewPackType, GetPacksPayloadType, packsAPI } from './packsAPI'
 
 const initialState = {
   cardPacks: [] as CardPacksType[],
@@ -26,10 +26,23 @@ export const packsGetAC = (packs: PacksType) => ({ type: 'PACKS/GET-PACKS', pack
 //thunk
 export const getPacksTC = (data: GetPacksPayloadType) => (dispatch: Dispatch) => {
   packsAPI.getPacks(data).then(res => {
-    console.log(res.data)
     dispatch(packsGetAC(res.data))
   })
 }
+
+export const addNewPackTC =
+  (
+    data: AddNewPackType = {
+      name: 'New cats pack',
+      private: false,
+    }
+  ) =>
+  (dispatch: Dispatch) => {
+    packsAPI.addNewPack(data).then(res => {
+      getPacksTC({})
+      console.log(res)
+    })
+  }
 
 // types
 

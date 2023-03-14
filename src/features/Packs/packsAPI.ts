@@ -8,13 +8,14 @@ export const packsAPI = {
   getPacks(data: GetPacksPayloadType) {
     return instance.get<PacksType>('cards/pack', { params: data })
   },
-  addNewPack(
-    data: AddNewPackType = {
-      name: 'no Name',
-      private: false,
-    }
-  ) {
-    return instance.post<AddNewPackType, AxiosResponse>('/cards/pack', data)
+  addNewPack(cardsPack: AddNewPackType) {
+    return instance.post('/cards/pack', { cardsPack })
+  },
+  deleteNewPack(id: string) {
+    return instance.delete('/cards/pack', { params: id })
+  },
+  updatePack(params: UpdatePackType) {
+    return instance.put('/cards/pack', { cardsPack: params })
   },
 }
 
@@ -31,7 +32,12 @@ export type GetPacksPayloadType = {
 }
 
 export type AddNewPackType = {
-  name: string // если не отправить будет таким
-  deckCover?: string // не обязателен
-  private: boolean // если не отправить будет такой
+  name?: string
+  deckCover?: string
+  private?: boolean
+}
+
+export type UpdatePackType = {
+  _id: string
+  name?: string
 }
