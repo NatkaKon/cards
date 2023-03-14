@@ -10,10 +10,7 @@ export const Error404: FC = () => {
         <img src={error404} alt="error404" />
       </div>
       <div className={s.title}>Ooops, page not found!</div>
-      <div className={s.text}>
-        {' '}
-        Sorry, but the requested page is not found. You might try a search below
-      </div>
+      <div className={s.text}> Sorry, but the requested page is not found.</div>
     </div>
   )
 }

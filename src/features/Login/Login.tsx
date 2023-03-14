@@ -14,9 +14,9 @@ import InputAdornment from '@mui/material/InputAdornment'
 import InputLabel from '@mui/material/InputLabel'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-import { useAppDispatch, useAppSelector } from '../../app/store'
+import { useAppDispatch } from '../../app/store'
 import { PATH } from '../../common/constants/path'
 
 import { loginTC } from './authReducer'
@@ -38,7 +38,8 @@ export const Login = () => {
   }
 
   const dispatch = useAppDispatch()
-  const isLoginIn = useAppSelector(state => state.auth.isLoggedIn)
+
+  const navitate = useNavigate()
 
   const formik = useFormik({
     initialValues: {
@@ -64,14 +65,11 @@ export const Login = () => {
       return errors
     },
 
-    onSubmit: values => {
-      dispatch(loginTC(values))
+    onSubmit: async values => {
+      await dispatch(loginTC(values))
+      navitate(PATH.PROFILE)
     },
   })
-
-  if (isLoginIn) {
-    return <Navigate to={PATH.PROFILE} />
-  }
 
   return (
     <Box

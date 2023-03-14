@@ -24,15 +24,18 @@ export const authAPI = {
   },
   setNewPassword(data: SetNewPsswrdBodyType) {
     return instance.post<SetNewPsswrdBodyType, AxiosResponse<{ message: string }>>(
-      '/auth/set-new-password',
+      'auth/set-new-password',
       data
     )
   },
   logout() {
-    return instance.delete<AxiosResponse<logoutResType>>('/auth/me')
+    return instance.delete<AxiosResponse<logoutResType>>('auth/me')
   },
   changeUser(data: changeUserParamsType) {
-    return instance.put<changeUserParamsType, AxiosResponse<changeUserResType>>('/auth/me', data)
+    return instance.put<changeUserParamsType, AxiosResponse<changeUserResType>>('auth/me', data)
+  },
+  me() {
+    return instance.post<UserType, AxiosResponse>('auth/me')
   },
 }
 

@@ -42,7 +42,7 @@ export const setRegistered = (value: boolean) => ({ type: 'AUTH/REGISTER', value
 type InitStateType = {
   isRegistered: boolean
 }
-type SignupActionType = ReturnType<typeof setRegistered>
+export type SignupActionType = ReturnType<typeof setRegistered>
 export type SignupFormType = {
   email: string
   password: string
