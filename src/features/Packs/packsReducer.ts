@@ -11,7 +11,7 @@ const initialState = {
   pageCount: 5,
 }
 
-export const packsReducer = (state = initialState, action: PacksGetActionType) => {
+export const packsReducer = (state: InitialStateType = initialState, action: PacksActionsType) => {
   switch (action.type) {
     case 'PACKS/GET-PACKS':
       return { ...action.packs }
@@ -33,6 +33,8 @@ export const getPacksTC = (data: GetPacksPayloadType) => (dispatch: Dispatch) =>
 
 // types
 
+type InitialStateType = typeof initialState
+
 export type PacksType = {
   cardPacks: CardPacksType[]
   cardPacksTotalCount: number // количество колод
@@ -52,3 +54,5 @@ type CardPacksType = {
 }
 
 export type PacksGetActionType = ReturnType<typeof packsGetAC>
+
+export type PacksActionsType = PacksGetActionType

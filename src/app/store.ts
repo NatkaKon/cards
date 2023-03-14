@@ -1,14 +1,14 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { AnyAction, applyMiddleware, combineReducers, legacy_createStore } from 'redux'
+import { applyMiddleware, combineReducers, legacy_createStore } from 'redux'
 import thunk, { ThunkDispatch } from 'redux-thunk'
 
-import { cardsReducer } from '../features/Cards/cardsReducer'
-import { authReducer } from '../features/Login/authReducer'
-import { packsReducer } from '../features/Packs/packsReducer'
-import { profileReducer } from '../features/Profile/profile-reducer'
-import { signupReducer } from '../features/Registration/sign-up-reducer'
+import { CardsActionsType, cardsReducer } from '../features/Cards/cardsReducer'
+import { AuthActionsType, authReducer } from '../features/Login/authReducer'
+import { PacksActionsType, packsReducer } from '../features/Packs/packsReducer'
+import { ProfileActionsType, profileReducer } from '../features/Profile/profile-reducer'
+import { SignupActionType, signupReducer } from '../features/Registration/sign-up-reducer'
 
-import { appReducer } from './app-reducer'
+import { AppActionType, appReducer } from './app-reducer'
 
 const rootReducer = combineReducers({
   appReducer: appReducer,
@@ -26,7 +26,15 @@ window.store = store
 
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
-export type AppThunkDispatch = ThunkDispatch<AppRootStateType, any, AnyAction>
+export type RootActionType =
+  | AppActionType
+  | PacksActionsType
+  | CardsActionsType
+  | ProfileActionsType
+  | AuthActionsType
+  | SignupActionType
+
+export type AppThunkDispatch = ThunkDispatch<AppRootStateType, any, RootActionType>
 
 export const useAppDispatch = () => useDispatch<AppThunkDispatch>()
 

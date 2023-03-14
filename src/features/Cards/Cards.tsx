@@ -10,6 +10,7 @@ import { TableBodyCards } from '../Table/TableBodyCards'
 import { TableHeadCards } from '../Table/TableHeadCards'
 
 import s from './Cards.module.css'
+import { GetCardsPayloadType } from './cardsAPI'
 import { getCardsTC } from './cardsReducer'
 
 // function createData(name: string, cardsCount: number, updated: string, created: string) {
@@ -25,7 +26,9 @@ import { getCardsTC } from './cardsReducer'
 
 export const Cards = () => {
   const dispatch = useAppDispatch()
-  const PayloadType = {}
+  const PayloadType: GetCardsPayloadType = {
+    cardsPack_id: '63e24e52dc68ee2a44114e9a',
+  }
 
   useEffect(() => {
     dispatch(getCardsTC(PayloadType))

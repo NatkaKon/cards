@@ -4,18 +4,18 @@ import { cardsAPI, GetCardsPayloadType } from './cardsAPI'
 
 const initialState = {
   cards: [] as CardType[],
-  cardsTotalCount: 3,
-  maxGrade: 4,
-  minGrade: 2,
+  cardsTotalCount: 0,
+  maxGrade: 6,
+  minGrade: 0,
   page: 1,
-  pageCount: 4,
-  packUserId: '5eecf82a3ed8f700042f1186',
+  pageCount: 0,
+  packUserId: '',
 }
 
-export const cardsReducer = (state = initialState, action: CardsGetActionType) => {
+export const cardsReducer = (state: InitialStateType = initialState, action: CardsActionsType) => {
   switch (action.type) {
     case 'CARDS/GET-CARDS':
-      return { ...state }
+      return { ...state, ...action.cards }
     default:
       return { ...state }
   }
@@ -33,6 +33,7 @@ export const getCardsTC = (data: GetCardsPayloadType) => (dispatch: Dispatch) =>
 }
 
 // types
+type InitialStateType = typeof initialState
 
 export type CardsType = {
   cards: CardType[]
@@ -42,6 +43,7 @@ export type CardsType = {
   page: number
   pageCount: number
   packUserId: string
+  packName: string
 }
 
 type CardType = {
@@ -54,6 +56,12 @@ type CardType = {
   created: string
   updated: string
   _id: string
+  answerImg?: string
+  answerVideo?: string
+  questionImg?: string
+  questionVideo?: string
 }
 
 export type CardsGetActionType = ReturnType<typeof cardsGetAC>
+
+export type CardsActionsType = CardsGetActionType

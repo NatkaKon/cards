@@ -4,7 +4,9 @@ import { CardsType } from './cardsReducer'
 
 export const cardsAPI = {
   getCards(data: GetCardsPayloadType) {
-    return instance.get<CardsType>('cards/cars', { params: data })
+    return instance.get<CardsType>(`cards/card?cardsPack_id=${data.cardsPack_id}`, {
+      params: data,
+    })
   },
 }
 
@@ -12,7 +14,7 @@ export const cardsAPI = {
 export type GetCardsPayloadType = {
   cardAnswer?: string
   cardQuestion?: string
-  cardsPack_id?: string
+  cardsPack_id: string
   min?: number
   max?: number
   sortCards?: number
