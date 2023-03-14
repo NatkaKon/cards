@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { useEffect } from 'react'
 
-import Box from '@mui/material/Box'
 import { Container } from '@mui/material'
+import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
@@ -43,7 +43,7 @@ export const Packs = () => {
   }, [])
 
   return (
-      <Container sx={{ padding: '50px' }}>
+    <Container sx={{ padding: '50px' }}>
       <Box sx={{ display: 'flex' }}>
         <DebounceSearch searchQuery={PayloadType.packName} />
       </Box>
