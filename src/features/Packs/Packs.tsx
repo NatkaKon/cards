@@ -2,12 +2,14 @@ import * as React from 'react'
 import { useEffect } from 'react'
 
 import Box from '@mui/material/Box'
+import { Container } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
 
 import { useAppDispatch } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
+import { PanelButton } from '../PanelButton/PanelButton'
 import { TableBodyPacks } from '../Table/TableBodyPacks'
 import { TableHead } from '../Table/TableHead'
 
@@ -41,16 +43,17 @@ export const Packs = () => {
   }, [])
 
   return (
-    <>
+      <Container sx={{ padding: '50px' }}>
       <Box sx={{ display: 'flex' }}>
         <DebounceSearch searchQuery={PayloadType.packName} />
       </Box>
+      <PanelButton />
       <TableContainer component={Paper} className={s.tableContainer}>
         <Table sx={{ minWidth: 500 }} aria-label="simple table">
           <TableHead />
           <TableBodyPacks />
         </Table>
       </TableContainer>
-    </>
+    </Container>
   )
 }

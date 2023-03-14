@@ -6,7 +6,6 @@ import { Grid } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 
 import { Header } from '../features/Header/Header'
-import { PanelButton } from '../features/PanelButton/PanelButton'
 import { Pages } from '../routes/Pages'
 
 import { initializeAppTC } from './app-reducer'
@@ -38,7 +37,6 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <PanelButton />
       <Pages />
     </div>
   )

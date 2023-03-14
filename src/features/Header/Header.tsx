@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Container } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, NavLink } from 'react-router-dom'
 
 import { useAppSelector } from '../../app/store'
 import userPhoto from '../../assets/user.jpg'
@@ -31,7 +31,7 @@ export const Header = () => {
     <header className={s.header}>
       <Container
         sx={{
-          width: '100%',
+          width: '70%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -42,7 +42,9 @@ export const Header = () => {
           {isLoggedIn ? (
             <div className={s.userData}>
               <span className={s.name}>{name}</span>
-              <Avatar alt="avatar" src={userPhoto} sx={{ width: '50px', height: '50px' }} />
+              <NavLink to={PATH.PROFILE}>
+                <Avatar alt="avatar" src={userPhoto} sx={{ width: '50px', height: '50px' }} />
+              </NavLink>
             </div>
           ) : (
             <Button size={'small'} variant="contained" onClick={onClickHandler} sx={buttonStyle}>
