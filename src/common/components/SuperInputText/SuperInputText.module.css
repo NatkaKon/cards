@@ -1,5 +1,5 @@
 .input:focus {
-  border: black solid 2px;
+  border: 2px solid #9b9a9a;
   outline: none;
 }
 .input {
@@ -11,6 +11,7 @@
 }
 
 .inputWrapper {
+  margin: 25px;
 }
 
 .superInput {

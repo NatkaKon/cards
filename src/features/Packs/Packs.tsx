@@ -1,11 +1,13 @@
 import * as React from 'react'
 import { useEffect } from 'react'
 
+import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
 
 import { useAppDispatch } from '../../app/store'
+import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
 import { TableBodyPacks } from '../Table/TableBodyPacks'
 import { TableHead } from '../Table/TableHead'
 
@@ -26,11 +28,11 @@ import { getPacksTC } from './packsReducer'
 export const Packs = () => {
   const dispatch = useAppDispatch()
   const PayloadType = {
-    packName: 'we',
+    packName: '',
     min: 0,
     max: 10,
     sortPacks: '',
-    page: 5,
+    page: 1,
     pageCount: 5,
   }
 
@@ -39,11 +41,16 @@ export const Packs = () => {
   }, [])
 
   return (
-    <TableContainer component={Paper} className={s.tableContainer}>
-      <Table sx={{ minWidth: 500 }} aria-label="simple table">
-        <TableHead />
-        <TableBodyPacks />
-      </Table>
-    </TableContainer>
+    <>
+      <Box sx={{ display: 'flex' }}>
+        <DebounceSearch searchQuery={PayloadType.packName} />
+      </Box>
+      <TableContainer component={Paper} className={s.tableContainer}>
+        <Table sx={{ minWidth: 500 }} aria-label="simple table">
+          <TableHead />
+          <TableBodyPacks />
+        </Table>
+      </TableContainer>
+    </>
   )
 }
