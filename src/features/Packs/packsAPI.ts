@@ -1,27 +1,29 @@
+import { AxiosResponse } from 'axios'
+
 import { instance } from '../../app/api'
 
 import { PacksType } from './packsReducer'
 
 export const packsAPI = {
   getPacks(data: GetPacksPayloadType) {
-    return instance.get<PacksType>('cards/pack', { params: data })
+    return instance.get<PacksType>(`cards/pack`, { params: data })
   },
   addNewPack(cardsPack: AddNewPackType) {
     return instance.post('/cards/pack', { cardsPack })
   },
   deleteNewPack(id: string) {
-    return instance.delete('/cards/pack', { params: { id } })
+    return instance.delete('/cards/pack', { params: id })
   },
-  updatePack(data: UpdatePackType) {
-    return instance.put('/cards/pack', { cardsPack: data })
+  updatePack(params: UpdatePackType) {
+    return instance.put('/cards/pack', { cardsPack: params })
   },
 }
 
 //types
 export type GetPacksPayloadType = {
-  packName?: string
-  min?: number
-  max?: number
+  searchName?: string
+  minCardsCount?: number
+  maxCardsCount?: number
   sortPacks?: string
   page?: number
   pageCount?: number

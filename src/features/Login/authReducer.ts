@@ -1,8 +1,8 @@
 import { AxiosError, isAxiosError } from 'axios'
-import { Dispatch } from 'redux'
 
 import { authAPI, LoginParamsType } from '../../app/api'
 import { setAppError, setAppInitialization } from '../../app/app-reducer'
+import { AppRootThunk } from '../../app/store'
 import { setUserProfileAC } from '../Profile/profile-reducer'
 
 const initialState = {
@@ -30,28 +30,30 @@ export const setLoggedInAC = (value: boolean) =>
     value,
   } as const)
 
-export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch) => {
-  try {
-    const res = await authAPI.login(data)
+export const loginTC =
+  (data: LoginParamsType): AppRootThunk =>
+  async dispatch => {
+    try {
+      const res = await authAPI.login(data)
 
-    dispatch(setUserProfileAC(res.data))
-    dispatch(setLoggedInAC(true))
-  } catch (e) {
-    const err = e as Error | AxiosError<{ error: string }>
+      dispatch(setUserProfileAC(res.data))
+      dispatch(setLoggedInAC(true))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
 
-    if (isAxiosError(err)) {
-      const error = err.response?.data ? err.response.data.error : err.message
+      if (isAxiosError(err)) {
+        const error = err.response?.data ? err.response.data.error : err.message
 
-      dispatch(setAppError(error))
-    } else {
-      dispatch(setAppError(err.message ? err.message : 'Some error occurred'))
+        dispatch(setAppError(error))
+      } else {
+        dispatch(setAppError(err.message ? err.message : 'Some error occurred'))
+      }
+    } finally {
+      dispatch(setAppInitialization(true))
     }
-  } finally {
-    dispatch(setAppInitialization(true))
   }
-}
 
-export const logoutTC = () => (dispatch: Dispatch) => {
+export const logoutTC = (): AppRootThunk => dispatch => {
   authAPI.logout().then(res => {
     dispatch(setLoggedInAC(false))
   })

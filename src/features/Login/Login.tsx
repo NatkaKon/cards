@@ -39,7 +39,7 @@ export const Login = () => {
 
   const dispatch = useAppDispatch()
 
-  const navitate = useNavigate()
+  const navigate = useNavigate()
 
   const formik = useFormik({
     initialValues: {
@@ -67,7 +67,7 @@ export const Login = () => {
 
     onSubmit: async values => {
       await dispatch(loginTC(values))
-      navitate(PATH.PROFILE)
+      navigate(PATH.PROFILE)
     },
   })
 
