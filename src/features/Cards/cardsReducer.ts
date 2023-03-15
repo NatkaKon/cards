@@ -1,4 +1,4 @@
-import { Dispatch } from 'redux'
+import { AppRootThunk } from '../../app/store'
 
 import { cardsAPI, GetCardsPayloadType } from './cardsAPI'
 
@@ -25,12 +25,14 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
 export const cardsGetAC = (cards: CardsType) => ({ type: 'CARDS/GET-CARDS', cards } as const)
 
 //thunk
-export const getCardsTC = (data: GetCardsPayloadType) => (dispatch: Dispatch) => {
-  cardsAPI.getCards(data).then(res => {
-    console.log(res.data)
-    dispatch(cardsGetAC(res.data))
-  })
-}
+export const getCardsTC =
+  (data: GetCardsPayloadType): AppRootThunk =>
+  dispatch => {
+    cardsAPI.getCards(data).then(res => {
+      console.log(res.data)
+      dispatch(cardsGetAC(res.data))
+    })
+  }
 
 // types
 type InitialStateType = typeof initialState

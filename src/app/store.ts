@@ -1,6 +1,6 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { applyMiddleware, combineReducers, legacy_createStore } from 'redux'
-import thunk, { ThunkDispatch } from 'redux-thunk'
+import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 import { CardsActionsType, cardsReducer } from '../features/Cards/cardsReducer'
 import { AuthActionsType, authReducer } from '../features/Login/authReducer'
@@ -35,6 +35,13 @@ export type RootActionType =
   | SignupActionType
 
 export type AppThunkDispatch = ThunkDispatch<AppRootStateType, any, RootActionType>
+
+export type AppRootThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  AppRootStateType,
+  unknown,
+  RootActionType
+>
 
 export const useAppDispatch = () => useDispatch<AppThunkDispatch>()
 
