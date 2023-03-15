@@ -31,12 +31,12 @@ import { getPacksTC, searchMyPacksAC } from './packsReducer'
 export const Packs = () => {
   const dispatch = useAppDispatch()
 
-  const searchName = useAppSelector(state => state.packs.searchName)
+  const packName = useAppSelector(state => state.packs.packName)
   const isMyPack = useAppSelector(state => state.packs.isMyPack)
 
   useEffect(() => {
     dispatch(getPacksTC())
-  }, [searchName, isMyPack])
+  }, [packName, isMyPack])
 
   const handleClickMyButton = useCallback(() => {
     dispatch(searchMyPacksAC(true))
@@ -49,7 +49,7 @@ export const Packs = () => {
   return (
     <Container sx={{ padding: '50px' }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <DebounceSearch searchQuery={searchName} />
+        <DebounceSearch searchQuery={packName} />
         <SuperButton xType={isMyPack ? '' : 'secondary'} onClick={handleClickMyButton}>
           My
         </SuperButton>

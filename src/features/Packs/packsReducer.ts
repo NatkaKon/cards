@@ -12,7 +12,7 @@ const initialState = {
   page: 1,
   pageCount: 5,
   sortPacks: '',
-  searchName: '',
+  packName: '',
   isMyPack: false,
 }
 
@@ -21,7 +21,7 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
     case 'PACKS/GET-PACKS':
       return { ...state, ...action.packs }
     case 'PACKS/SEARCH-PACKS-BY-NAME':
-      return { ...state, searchName: action.searchName }
+      return { ...state, packName: action.packName }
     case 'PACKS/SEARCH-MY-PACKS':
       return { ...state, isMyPack: action.isMyPacks }
     default:
@@ -31,10 +31,10 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
 
 //actions
 export const packsGetAC = (packs: PacksType) => ({ type: 'PACKS/GET-PACKS', packs } as const)
-export const searchPacksByNameAC = (searchName: string) =>
+export const searchPacksByNameAC = (packName: string) =>
   ({
     type: 'PACKS/SEARCH-PACKS-BY-NAME',
-    searchName,
+    packName,
   } as const)
 export const searchMyPacksAC = (isMyPacks: boolean) =>
   ({
@@ -44,7 +44,7 @@ export const searchMyPacksAC = (isMyPacks: boolean) =>
 
 //thunk
 export const getPacksTC = (): AppRootThunk => async (dispatch, getState) => {
-  const { sortPacks, searchName, isMyPack, minCardsCount, maxCardsCount, page, pageCount } =
+  const { sortPacks, packName, isMyPack, minCardsCount, maxCardsCount, page, pageCount } =
     getState().packs
   let user_id = ''
 
@@ -55,7 +55,7 @@ export const getPacksTC = (): AppRootThunk => async (dispatch, getState) => {
   try {
     const resp = await packsAPI.getPacks({
       sortPacks,
-      searchName,
+      packName,
       user_id,
       minCardsCount,
       maxCardsCount,

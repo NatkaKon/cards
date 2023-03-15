@@ -8,7 +8,7 @@ import SuperInputText from '../SuperInputText/SuperInputText'
 export const DebounceSearch: FC<{ searchQuery?: string }> = props => {
   const dispatch = useAppDispatch()
   const [searchQuery, setSearchQuery] = useState(props.searchQuery || '')
-  const debouncedValue = useDebounce(searchQuery, 500)
+  const debouncedValue = useDebounce(searchQuery, 1000)
 
   useEffect(() => {
     dispatch(searchPacksByNameAC(debouncedValue))

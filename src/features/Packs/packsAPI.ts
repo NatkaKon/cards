@@ -19,7 +19,7 @@ export const packsAPI = {
 
 //types
 export type GetPacksPayloadType = {
-  searchName?: string
+  packName?: string
   minCardsCount?: number
   maxCardsCount?: number
   sortPacks?: string
