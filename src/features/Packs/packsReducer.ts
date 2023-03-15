@@ -1,6 +1,6 @@
-import { Dispatch } from 'redux'
+import { AppRootThunk } from '../../app/store'
 
-import { AddNewPackType, GetPacksPayloadType, packsAPI } from './packsAPI'
+import { AddNewPackType, packsAPI } from './packsAPI'
 
 const initialState = {
   cardPacks: [] as CardPacksType[],
@@ -9,12 +9,19 @@ const initialState = {
   minCardsCount: 0,
   page: 1,
   pageCount: 5,
+  sortPacks: '',
+  searchName: '',
+  isMyPack: false,
 }
 
-export const packsReducer = (state: InitialStateType = initialState, action: PacksActionsType) => {
+export const packsReducer = (state: PacksStateType = initialState, action: PacksActionsType) => {
   switch (action.type) {
     case 'PACKS/GET-PACKS':
-      return { ...action.packs }
+      return { ...state, ...action.packs }
+    case 'PACKS/SEARCH-PACKS-BY-NAME':
+      return { ...state, searchName: action.searchName }
+    case 'PACKS/SEARCH-MY-PACKS':
+      return { ...state, isMyPack: action.isMyPacks }
     default:
       return { ...state }
   }
@@ -22,12 +29,44 @@ export const packsReducer = (state: InitialStateType = initialState, action: Pac
 
 //actions
 export const packsGetAC = (packs: PacksType) => ({ type: 'PACKS/GET-PACKS', packs } as const)
+export const searchPacksByNameAC = (searchName: string) =>
+  ({
+    type: 'PACKS/SEARCH-PACKS-BY-NAME',
+    searchName,
+  } as const)
+export const searchMyPacksAC = (isMyPacks: boolean) =>
+  ({
+    type: 'PACKS/SEARCH-MY-PACKS',
+    isMyPacks,
+  } as const)
 
 //thunk
-export const getPacksTC = (data: GetPacksPayloadType) => (dispatch: Dispatch) => {
-  packsAPI.getPacks(data).then(res => {
-    dispatch(packsGetAC(res.data))
-  })
+export const getPacksTC = (): AppRootThunk => async (dispatch, getState) => {
+  const { sortPacks, searchName, isMyPack, minCardsCount, maxCardsCount, page, pageCount } =
+    getState().packs
+  let user_id = ''
+
+  if (isMyPack) {
+    user_id = getState().profileReducer._id
+  }
+
+  try {
+    const resp = await packsAPI.getPacks({
+      sortPacks,
+      searchName,
+      user_id,
+      minCardsCount,
+      maxCardsCount,
+      page,
+      pageCount,
+    })
+
+    console.log(resp.data)
+
+    dispatch(packsGetAC(resp.data))
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 export const addNewPackTC =
@@ -36,17 +75,17 @@ export const addNewPackTC =
       name: 'New cats pack',
       private: false,
     }
-  ) =>
-  (dispatch: Dispatch) => {
+  ): AppRootThunk =>
+  dispatch => {
     packsAPI.addNewPack(data).then(res => {
-      getPacksTC({})
+      getPacksTC()
       console.log(res)
     })
   }
 
 // types
 
-type InitialStateType = typeof initialState
+type PacksStateType = typeof initialState
 
 export type PacksType = {
   cardPacks: CardPacksType[]
@@ -67,5 +106,7 @@ type CardPacksType = {
 }
 
 export type PacksGetActionType = ReturnType<typeof packsGetAC>
-
-export type PacksActionsType = PacksGetActionType
+export type PacksActionsType =
+  | PacksGetActionType
+  | ReturnType<typeof searchPacksByNameAC>
+  | ReturnType<typeof searchMyPacksAC>

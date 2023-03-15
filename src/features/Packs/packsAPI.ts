@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios/index'
+import { AxiosResponse } from 'axios'
 
 import { instance } from '../../app/api'
 
@@ -6,7 +6,7 @@ import { PacksType } from './packsReducer'
 
 export const packsAPI = {
   getPacks(data: GetPacksPayloadType) {
-    return instance.get<PacksType>('cards/pack', { params: data })
+    return instance.get<PacksType>(`cards/pack`, { params: data })
   },
   addNewPack(cardsPack: AddNewPackType) {
     return instance.post('/cards/pack', { cardsPack })
@@ -21,9 +21,9 @@ export const packsAPI = {
 
 //types
 export type GetPacksPayloadType = {
-  packName?: string
-  min?: number
-  max?: number
+  searchName?: string
+  minCardsCount?: number
+  maxCardsCount?: number
   sortPacks?: string
   page?: number
   pageCount?: number
