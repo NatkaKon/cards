@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { useEffect } from 'react'
 
-import Box from '@mui/material/Box'
 import { Container } from '@mui/material'
+import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
@@ -26,24 +26,23 @@ import { getPacksTC } from './packsReducer'
 //   createData('Ice cream sandwich', 237, '', 'kkk'),
 //   createData('Ice cream sandwich', 237, '', 'gg'),
 // ]
-
+export const PayloadType = {
+  packName: '',
+  min: 0,
+  max: 10,
+  sortPacks: '',
+  page: 1,
+  pageCount: 5,
+}
 export const Packs = () => {
   const dispatch = useAppDispatch()
-  const PayloadType = {
-    packName: '',
-    min: 0,
-    max: 10,
-    sortPacks: '',
-    page: 1,
-    pageCount: 5,
-  }
 
   useEffect(() => {
     dispatch(getPacksTC(PayloadType))
   }, [])
 
   return (
-      <Container sx={{ padding: '50px' }}>
+    <Container sx={{ padding: '50px' }}>
       <Box sx={{ display: 'flex' }}>
         <DebounceSearch searchQuery={PayloadType.packName} />
       </Box>

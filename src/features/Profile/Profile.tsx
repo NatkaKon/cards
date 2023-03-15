@@ -6,7 +6,7 @@ import { Container } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
-import { Navigate, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import cameraIcon from '../../assets/cameraIcon.svg'
@@ -21,8 +21,8 @@ import { changeUserTC } from './profile-reducer'
 import s from './Profile.module.css'
 
 export function Profile(): JSX.Element {
-  const name = useAppSelector(state => state.profileReducer.name)
-  const email = useAppSelector(state => state.profileReducer.email)
+  const name = useAppSelector(state => state.profile.name)
+  const email = useAppSelector(state => state.profile.email)
   const error = useAppSelector(state => state.appReducer.error)
   const dispatch = useAppDispatch()
 

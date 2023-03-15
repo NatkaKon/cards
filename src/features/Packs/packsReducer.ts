@@ -1,5 +1,7 @@
 import { Dispatch } from 'redux'
+import { ThunkDispatch } from 'redux-thunk'
 
+import { PayloadType } from './Packs'
 import { AddNewPackType, GetPacksPayloadType, packsAPI } from './packsAPI'
 
 const initialState = {
@@ -37,15 +39,27 @@ export const addNewPackTC =
       private: false,
     }
   ) =>
-  (dispatch: Dispatch) => {
-    packsAPI.addNewPack(data).then(res => {
-      getPacksTC({})
-      console.log(res)
-    })
+  async (dispatch: ThunkDispatch<any, any, any>) => {
+    await packsAPI.addNewPack(data)
+
+    dispatch(getPacksTC(PayloadType))
   }
 
-// types
+export const deletePackTC = (id: string) => async (dispatch: ThunkDispatch<any, any, any>) => {
+  await packsAPI.deleteNewPack(id)
 
+  dispatch(getPacksTC(PayloadType))
+}
+
+export const editePackTC = (packId: string) => async (dispatch: ThunkDispatch<any, any, any>) => {
+  const data = { _id: packId, name: '😸 updatedCatsPack' }
+
+  await packsAPI.updatePack(data)
+
+  dispatch(getPacksTC(PayloadType))
+}
+
+// types
 type InitialStateType = typeof initialState
 
 export type PacksType = {

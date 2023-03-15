@@ -1,5 +1,3 @@
-import { AxiosResponse } from 'axios/index'
-
 import { instance } from '../../app/api'
 
 import { PacksType } from './packsReducer'
@@ -12,10 +10,10 @@ export const packsAPI = {
     return instance.post('/cards/pack', { cardsPack })
   },
   deleteNewPack(id: string) {
-    return instance.delete('/cards/pack', { params: id })
+    return instance.delete('/cards/pack', { params: { id } })
   },
-  updatePack(params: UpdatePackType) {
-    return instance.put('/cards/pack', { cardsPack: params })
+  updatePack(data: UpdatePackType) {
+    return instance.put('/cards/pack', { cardsPack: data })
   },
 }
 

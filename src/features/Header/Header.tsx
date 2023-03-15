@@ -20,7 +20,7 @@ const buttonStyle = {
 
 export const Header = () => {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-  const name = useAppSelector(state => state.profileReducer.name)
+  const name = useAppSelector(state => state.profile.name)
 
   const navigate = useNavigate()
   const onClickHandler = () => {

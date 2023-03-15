@@ -12,7 +12,7 @@ import { AppActionType, appReducer } from './app-reducer'
 
 const rootReducer = combineReducers({
   appReducer: appReducer,
-  profileReducer: profileReducer,
+  profile: profileReducer,
   auth: authReducer,
   signup: signupReducer,
   packs: packsReducer,
