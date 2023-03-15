@@ -1,3 +1,5 @@
+import { ThunkDispatch } from 'redux-thunk'
+
 import { AppRootThunk } from '../../app/store'
 
 import { AddNewPackType, packsAPI } from './packsAPI'
@@ -47,7 +49,7 @@ export const getPacksTC = (): AppRootThunk => async (dispatch, getState) => {
   let user_id = ''
 
   if (isMyPack) {
-    user_id = getState().profileReducer._id
+    user_id = getState().profile._id
   }
 
   try {
@@ -72,16 +74,29 @@ export const getPacksTC = (): AppRootThunk => async (dispatch, getState) => {
 export const addNewPackTC =
   (
     data: AddNewPackType = {
-      name: 'New cats pack',
+      name: 'NewCatsPack',
       private: false,
     }
-  ): AppRootThunk =>
-  dispatch => {
-    packsAPI.addNewPack(data).then(res => {
-      getPacksTC()
-      console.log(res)
-    })
+  ) =>
+  async (dispatch: ThunkDispatch<any, any, any>) => {
+    await packsAPI.addNewPack(data)
+
+    dispatch(getPacksTC())
   }
+
+export const deletePackTC = (id: string) => async (dispatch: ThunkDispatch<any, any, any>) => {
+  await packsAPI.deleteNewPack(id)
+
+  dispatch(getPacksTC())
+}
+
+export const editePackTC = (packId: string) => async (dispatch: ThunkDispatch<any, any, any>) => {
+  const data = { _id: packId, name: '😸 updatedCatsPack' }
+
+  await packsAPI.updatePack(data)
+
+  dispatch(getPacksTC())
+}
 
 // types
 
