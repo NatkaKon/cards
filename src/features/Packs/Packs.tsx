@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
+import { SearchSlider } from '../../common/components/SearchSlider/SearchSlider'
 import { SuperButton } from '../../common/components/SuperButton/SuperButton'
 import { PanelButton } from '../PanelButton/PanelButton'
 import { TableBodyPacks } from '../Table/TableBodyPacks'
@@ -33,10 +34,12 @@ export const Packs = () => {
 
   const packName = useAppSelector(state => state.packs.packName)
   const isMyPack = useAppSelector(state => state.packs.isMyPack)
+  const minCardsCount = useAppSelector(state => state.packs.minCardsCount)
+  const maxCardsCount = useAppSelector(state => state.packs.maxCardsCount)
 
   useEffect(() => {
     dispatch(getPacksTC())
-  }, [packName, isMyPack])
+  }, [packName, isMyPack, minCardsCount, maxCardsCount])
 
   const handleClickMyButton = useCallback(() => {
     dispatch(searchMyPacksAC(true))
@@ -56,6 +59,7 @@ export const Packs = () => {
         <SuperButton xType={!isMyPack ? '' : 'secondary'} onClick={handleClickAllButton}>
           All
         </SuperButton>
+        <SearchSlider min={minCardsCount} max={maxCardsCount} />
       </Box>
       <PanelButton name={'Packs list'} button={'Add new pack'} />
       <TableContainer component={Paper} className={s.tableContainer}>
