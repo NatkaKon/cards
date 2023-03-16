@@ -32,14 +32,19 @@ export const TableBodyPacks = () => {
           key={el._id}
           sx={{
             '&:last-child td, &:last-child th': { border: 0 },
-            '&:hover': {
-              backgroundColor: '#A0A0A0',
-              opacity: [0.9, 0.9, 0.7],
-            },
           }}
-          onClick={() => onClickHandler(el.user_id)}
         >
-          <TableCell component="th" scope="row">
+          <TableCell
+            sx={{
+              '&:hover': {
+                backgroundColor: '#A0A0A0',
+                opacity: [0.9, 0.9, 0.7],
+              },
+            }}
+            component="th"
+            scope="row"
+            onClick={() => onClickHandler(el.user_id)}
+          >
             {el.name}
           </TableCell>
           <TableCell align="right">{el.cardsCount}</TableCell>
