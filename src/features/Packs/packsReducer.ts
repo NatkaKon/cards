@@ -7,23 +7,36 @@ import { AddNewPackType, packsAPI } from './packsAPI'
 const initialState = {
   cardPacks: [] as CardPacksType[],
   cardPacksTotalCount: 0,
-  maxCardsCount: 100,
+  maxCardsCount: 0,
   minCardsCount: 0,
   page: 1,
   pageCount: 5,
   sortPacks: '',
   packName: '',
   isMyPack: false,
+  min: 0,
+  max: 0,
 }
 
 export const packsReducer = (state: PacksStateType = initialState, action: PacksActionsType) => {
   switch (action.type) {
     case 'PACKS/GET-PACKS':
-      return { ...state, ...action.packs }
+      return { ...state, ...action.packs, max: action.packs.maxCardsCount }
     case 'PACKS/SEARCH-PACKS-BY-NAME':
       return { ...state, packName: action.packName }
     case 'PACKS/SEARCH-MY-PACKS':
       return { ...state, isMyPack: action.isMyPacks }
+    case 'PACKS/SEARCH-BY-CARDS-NUMBER':
+      return { ...state, min: action.values[0], max: action.values[1] }
+    case 'PACKS/RESET-ALL-SORTING-PARAMS':
+      return {
+        ...state,
+        min: 0,
+        max: state.maxCardsCount,
+        isMyPack: false,
+        packName: '',
+        sortPacks: '',
+      }
     default:
       return { ...state }
   }
@@ -41,11 +54,19 @@ export const searchMyPacksAC = (isMyPacks: boolean) =>
     type: 'PACKS/SEARCH-MY-PACKS',
     isMyPacks,
   } as const)
+export const searchPacksByCardsNumberAC = (values: number[]) =>
+  ({
+    type: 'PACKS/SEARCH-BY-CARDS-NUMBER',
+    values,
+  } as const)
+export const resetAllSortingParamsAC = () =>
+  ({
+    type: 'PACKS/RESET-ALL-SORTING-PARAMS',
+  } as const)
 
 //thunk
 export const getPacksTC = (): AppRootThunk => async (dispatch, getState) => {
-  const { sortPacks, packName, isMyPack, minCardsCount, maxCardsCount, page, pageCount } =
-    getState().packs
+  const { sortPacks, packName, isMyPack, min, max, page, pageCount } = getState().packs
   let user_id = ''
 
   if (isMyPack) {
@@ -57,8 +78,8 @@ export const getPacksTC = (): AppRootThunk => async (dispatch, getState) => {
       sortPacks,
       packName,
       user_id,
-      minCardsCount,
-      maxCardsCount,
+      min,
+      max,
       page,
       pageCount,
     })
@@ -125,3 +146,5 @@ export type PacksActionsType =
   | PacksGetActionType
   | ReturnType<typeof searchPacksByNameAC>
   | ReturnType<typeof searchMyPacksAC>
+  | ReturnType<typeof searchPacksByCardsNumberAC>
+  | ReturnType<typeof resetAllSortingParamsAC>

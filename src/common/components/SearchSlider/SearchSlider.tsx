@@ -1,9 +1,12 @@
-import React, { ChangeEvent, FC, useState } from 'react'
+import React, { FC, memo, useEffect, useState } from 'react'
 
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import Input from '@mui/material/Input'
 import Slider from '@mui/material/Slider'
+import Typography from '@mui/material/Typography'
+
+import { AppThunkDispatch } from '../../../app/store'
+import { searchPacksByCardsNumberAC } from '../../../features/Packs/packsReducer'
 
 const SliderStyle = {
   width: 147,
@@ -20,12 +23,19 @@ const SliderStyle = {
 type SliderProps = {
   min: number
   max: number
+  dispatch: AppThunkDispatch
 }
 
 const MIN_DISTANCE = 1
 
-export const SearchSlider: FC<SliderProps> = props => {
+export const SearchSlider: FC<SliderProps> = memo(props => {
   const [values, setValues] = useState<number[]>([props.min, props.max])
+
+  useEffect(() => {
+    setValues(prevState => {
+      return [props.min, props.max]
+    })
+  }, [props.min, props.max])
 
   const handleSliderChange = (event: Event, newValue: number | number[], activeThumb: number) => {
     if (!Array.isArray(newValue)) {
@@ -47,99 +57,39 @@ export const SearchSlider: FC<SliderProps> = props => {
     }
   }
 
-  const handleMinChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const copyValues = [...values]
-
-    copyValues[0] = event.target.value === '' ? 0 : Number(event.target.value)
-
-    setValues(copyValues)
-  }
-
-  const handleMaxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const copyValues = [...values]
-
-    copyValues[1] = event.target.value === '' ? 0 : Number(event.target.value)
-
-    setValues(copyValues)
-  }
-
-  const handleMinInputBlur = () => {
-    if (values[0] < 0) {
-      const copyValues = [...values]
-
-      copyValues[0] = 0
-
-      setValues(copyValues)
-    } else if (values[0] > props.max) {
-      const copyValues = [...values]
-
-      copyValues[0] = props.max
-
-      setValues(copyValues)
+  const handleChangeCommitted = (event: React.SyntheticEvent | Event, value: number | number[]) => {
+    if (Array.isArray(value)) {
+      props.dispatch(searchPacksByCardsNumberAC(value))
     }
-  }
 
-  const handleMaxInputBlur = () => {
-    if (values[1] < 0) {
-      const copyValues = [...values]
-
-      copyValues[1] = 0
-
-      setValues(copyValues)
-    } else if (values[1] > props.max) {
-      const copyValues = [...values]
-
-      copyValues[1] = props.max
-
-      setValues(copyValues)
-    }
+    return
   }
 
   return (
-    <Box sx={{ width: 300, m: 2 }}>
+    <Box sx={{ width: 270 }}>
       <Grid container spacing={2} justifyContent="center" alignItems="center">
         <Grid item>
-          <Input
-            value={values[0]}
-            size="small"
-            onChange={handleMinChange}
-            onBlur={handleMinInputBlur}
-            inputProps={{
-              step: 1,
-              min: 0,
-              max: values[1],
-              type: 'number',
-              'aria-labelledby': 'input-slider',
-            }}
-            sx={{ width: 50 }}
-          />
+          <Typography variant="subtitle1" gutterBottom>
+            {values[0]}
+          </Typography>
         </Grid>
         <Grid item>
           <Slider
             sx={SliderStyle}
             value={values}
             onChange={handleSliderChange}
+            onChangeCommitted={handleChangeCommitted}
             aria-labelledby="input-slider"
+            valueLabelDisplay="auto"
             disableSwap
           />
         </Grid>
         <Grid item>
-          <Input
-            value={values[1]}
-            size="small"
-            onChange={handleMaxChange}
-            onBlur={handleMaxInputBlur}
-            inputProps={{
-              step: 1,
-              min: 0,
-              max: values[1],
-              type: 'number',
-              'aria-labelledby': 'input-slider',
-            }}
-            sx={{ width: 50 }}
-          />
+          <Typography variant="subtitle1" gutterBottom>
+            {values[1]}
+          </Typography>
         </Grid>
       </Grid>
     </Box>
   )
-}
+})

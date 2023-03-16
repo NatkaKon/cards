@@ -1,8 +1,10 @@
 import * as React from 'react'
 import { useCallback, useEffect } from 'react'
 
+import FilterAltOffSharpIcon from '@mui/icons-material/FilterAltOffSharp'
 import { Container } from '@mui/material'
 import Box from '@mui/material/Box'
+import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
@@ -16,7 +18,7 @@ import { TableBodyPacks } from '../Table/TableBodyPacks'
 import { TableHead } from '../Table/TableHead'
 
 import s from './Packs.module.css'
-import { getPacksTC, searchMyPacksAC } from './packsReducer'
+import { getPacksTC, resetAllSortingParamsAC, searchMyPacksAC } from './packsReducer'
 
 // function createData(name: string, cardsCount: number, updated: string, created: string) {
 //   return { name, cardsCount, updated, created }
@@ -34,12 +36,12 @@ export const Packs = () => {
 
   const packName = useAppSelector(state => state.packs.packName)
   const isMyPack = useAppSelector(state => state.packs.isMyPack)
-  const minCardsCount = useAppSelector(state => state.packs.minCardsCount)
-  const maxCardsCount = useAppSelector(state => state.packs.maxCardsCount)
+  const min = useAppSelector(state => state.packs.min)
+  const max = useAppSelector(state => state.packs.max)
 
   useEffect(() => {
     dispatch(getPacksTC())
-  }, [packName, isMyPack, minCardsCount, maxCardsCount])
+  }, [packName, isMyPack, min, max])
 
   const handleClickMyButton = useCallback(() => {
     dispatch(searchMyPacksAC(true))
@@ -47,6 +49,10 @@ export const Packs = () => {
 
   const handleClickAllButton = useCallback(() => {
     dispatch(searchMyPacksAC(false))
+  }, [])
+
+  const handleResetAllSortingParams = useCallback(() => {
+    dispatch(resetAllSortingParamsAC())
   }, [])
 
   return (
@@ -59,7 +65,10 @@ export const Packs = () => {
         <SuperButton xType={!isMyPack ? '' : 'secondary'} onClick={handleClickAllButton}>
           All
         </SuperButton>
-        <SearchSlider min={minCardsCount} max={maxCardsCount} />
+        <SearchSlider min={min} max={max} dispatch={dispatch} />
+        <IconButton color="info" onClick={handleResetAllSortingParams}>
+          <FilterAltOffSharpIcon fontSize="medium" />
+        </IconButton>
       </Box>
       <PanelButton name={'Packs list'} button={'Add new pack'} />
       <TableContainer component={Paper} className={s.tableContainer}>
