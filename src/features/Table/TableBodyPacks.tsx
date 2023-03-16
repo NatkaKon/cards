@@ -10,15 +10,19 @@ import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { PATH } from '../../common/constants/path'
+import { setPackIdAC, getCardsTC } from '../Cards/cardsReducer'
 import { deletePackTC, editePackTC } from '../Packs/packsReducer'
 
 export const TableBodyPacks = () => {
   const packs = useAppSelector(state => state.packs)
   const userId = useAppSelector(state => state.profile._id)
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
-  const onClickHandler = () => {
-    return navigate(PATH.CARDS)
+  const onClickHandler = (packUserId: string) => {
+    navigate(PATH.CARDS)
+    dispatch(setPackIdAC(packUserId))
+    dispatch(getCardsTC())
   }
 
   return (
@@ -33,7 +37,7 @@ export const TableBodyPacks = () => {
               opacity: [0.9, 0.9, 0.7],
             },
           }}
-          onClick={onClickHandler}
+          onClick={() => onClickHandler(el.user_id)}
         >
           <TableCell component="th" scope="row">
             {el.name}

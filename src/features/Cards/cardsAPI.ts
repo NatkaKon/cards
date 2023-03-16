@@ -4,7 +4,7 @@ import { CardsType } from './cardsReducer'
 
 export const cardsAPI = {
   getCards(data: GetCardsPayloadType) {
-    return instance.get<CardsType>(`cards/card?cardsPack_id=${data.cardsPack_id}`, {
+    return instance.get<CardsType>(`cards/card`, {
       params: data,
     })
   },

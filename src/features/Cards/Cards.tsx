@@ -33,7 +33,7 @@ export const Cards = () => {
   }
 
   useEffect(() => {
-    dispatch(getCardsTC(PayloadType))
+    dispatch(getCardsTC())
   }, [])
 
   return (
