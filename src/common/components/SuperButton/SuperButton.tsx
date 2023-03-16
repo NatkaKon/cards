@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react'
+import { ButtonHTMLAttributes, DetailedHTMLProps, memo } from 'react'
 
 import s from './SuperButton.module.css'
 
@@ -12,30 +12,32 @@ type SuperButtonPropsType = DefaultButtonPropsType & {
   xType?: string
 }
 
-export const SuperButton: React.FC<SuperButtonPropsType> = ({
-  xType,
-  className,
-  disabled,
-  ...restProps // все остальные пропсы попадут в объект restProps, там же будет children
-}) => {
-  const finalClassName =
-    s.button +
-    // eslint-disable-next-line no-nested-ternary
-    (disabled
-      ? ' ' + s.disabled
-      : // eslint-disable-next-line no-nested-ternary
-      xType === 'red'
-      ? ' ' + s.red
-      : xType === 'secondary'
-      ? ' ' + s.secondary
-      : ' ' + s.default) +
-    (className ? ' ' + className : '') // задачка на смешивание классов
+export const SuperButton: React.FC<SuperButtonPropsType> = memo(
+  ({
+    xType,
+    className,
+    disabled,
+    ...restProps // все остальные пропсы попадут в объект restProps, там же будет children
+  }) => {
+    const finalClassName =
+      s.button +
+      // eslint-disable-next-line no-nested-ternary
+      (disabled
+        ? ' ' + s.disabled
+        : // eslint-disable-next-line no-nested-ternary
+        xType === 'red'
+        ? ' ' + s.red
+        : xType === 'secondary'
+        ? ' ' + s.secondary
+        : ' ' + s.default) +
+      (className ? ' ' + className : '') // задачка на смешивание классов
 
-  return (
-    <button
-      disabled={disabled}
-      className={finalClassName}
-      {...restProps} // отдаём кнопке остальные пропсы если они есть (children там внутри)
-    />
-  )
-}
+    return (
+      <button
+        disabled={disabled}
+        className={finalClassName}
+        {...restProps} // отдаём кнопке остальные пропсы если они есть (children там внутри)
+      />
+    )
+  }
+)
