@@ -20,17 +20,6 @@ import { TableHead } from '../Table/TableHead'
 import s from './Packs.module.css'
 import { getPacksTC, resetAllSortingParamsAC, searchMyPacksAC } from './packsReducer'
 
-// function createData(name: string, cardsCount: number, updated: string, created: string) {
-//   return { name, cardsCount, updated, created }
-// }
-//
-// const rows = [
-//   createData('name', 159, '', 'kk'),
-//   createData('Ice cream sandwich', 237, '', 'hhh'),
-//   createData('Ice cream sandwich', 237, '', 'kkk'),
-//   createData('Ice cream sandwich', 237, '', 'gg'),
-// ]
-
 export const Packs = () => {
   const dispatch = useAppDispatch()
 

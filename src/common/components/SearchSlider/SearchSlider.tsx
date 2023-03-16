@@ -1,4 +1,4 @@
-import React, { FC, memo, useEffect, useState } from 'react'
+import React, { FC, memo, useEffect, useRef, useState } from 'react'
 
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
@@ -29,12 +29,18 @@ type SliderProps = {
 const MIN_DISTANCE = 1
 
 export const SearchSlider: FC<SliderProps> = memo(props => {
-  const [values, setValues] = useState<number[]>([props.min, props.max])
+  let isFirstRender = useRef(true)
+
+  const [values, setValues] = useState<number[]>([0, 100])
 
   useEffect(() => {
-    setValues(prevState => {
-      return [props.min, props.max]
-    })
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+
+      return
+    }
+
+    setValues([props.min, props.max])
   }, [props.min, props.max])
 
   const handleSliderChange = (event: Event, newValue: number | number[], activeThumb: number) => {
