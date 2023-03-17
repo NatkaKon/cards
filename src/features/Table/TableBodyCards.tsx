@@ -12,7 +12,16 @@ export const TableBodyCards = () => {
   return (
     <TableBody>
       {cards.cards.map(el => (
-        <TableRow key={el._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+        <TableRow
+          key={el._id}
+          sx={{
+            '&:last-child td, &:last-child th': { border: 0 },
+            '&:hover': {
+              backgroundColor: '#A0A0A0',
+              opacity: [0.9, 0.9, 0.7],
+            },
+          }}
+        >
           <TableCell component="th" scope="row">
             {el.question}
           </TableCell>

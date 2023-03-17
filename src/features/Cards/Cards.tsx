@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { FC, useEffect } from 'react'
 
+import { Container } from '@mui/material'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
@@ -25,7 +26,7 @@ export const Cards: FC = () => {
   }, [cardQuestion, packId])
 
   return (
-    <>
+    <Container sx={{ padding: '50px' }}>
       <Box sx={{ display: 'flex' }}>
         <DebounceSearch searchQuery={cardQuestion} />
       </Box>
@@ -35,6 +36,6 @@ export const Cards: FC = () => {
           <TableBodyCards />
         </Table>
       </TableContainer>
-    </>
+    </Container>
   )
 }
