@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined'
 import EditIcon from '@mui/icons-material/Edit'
@@ -6,23 +6,20 @@ import SchoolIcon from '@mui/icons-material/School'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
-import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
-import { PATH } from '../../common/constants/path'
-import { setPackIdAC, getCardsTC } from '../Cards/cardsReducer'
 import { deletePackTC, editePackTC } from '../Packs/packsReducer'
 
-export const TableBodyPacks = () => {
+type TableBodyPacksProps = {
+  handleClickOnPackName: (packId: string) => void
+}
+
+export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
   const packs = useAppSelector(state => state.packs)
   const userId = useAppSelector(state => state.profile._id)
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
 
-  const onClickHandler = (packUserId: string) => {
-    navigate(PATH.CARDS)
-    dispatch(setPackIdAC(packUserId))
-    dispatch(getCardsTC())
+  const onClickHandler = (packId: string) => {
+    props.handleClickOnPackName(packId)
   }
 
   return (
@@ -43,7 +40,7 @@ export const TableBodyPacks = () => {
             }}
             component="th"
             scope="row"
-            onClick={() => onClickHandler(el.user_id)}
+            onClick={() => onClickHandler(el._id)}
           >
             {el.name}
           </TableCell>

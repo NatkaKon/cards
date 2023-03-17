@@ -1,6 +1,6 @@
 import { AppRootThunk } from '../../app/store'
 
-import { cardsAPI, GetCardsPayloadType } from './cardsAPI'
+import { cardsAPI } from './cardsAPI'
 
 const initialState = {
   cards: [] as CardType[],
@@ -10,6 +10,7 @@ const initialState = {
   page: 1,
   pageCount: 0,
   packId: '',
+  cardQuestion: '',
 }
 
 export const cardsReducer = (state: InitialStateType = initialState, action: CardsActionsType) => {
@@ -34,7 +35,7 @@ export const getCardsTC = (): AppRootThunk => async (dispatch, getState) => {
   try {
     const resp = await cardsAPI.getCards({ cardsPack_id })
 
-    console.log(resp)
+    console.log(resp.data)
     dispatch(cardsGetAC(resp.data))
   } catch (e) {
     console.log(e)
