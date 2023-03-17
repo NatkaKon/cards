@@ -19,6 +19,7 @@ import { setPackIdAC } from '../Cards/cardsReducer'
 import { PanelButton } from '../PanelButton/PanelButton'
 import { TableBodyPacks } from '../Table/TableBodyPacks'
 import { TableHead } from '../Table/TableHead'
+import { CommonTablePagination } from '../Table/TablePagination'
 
 import s from './Packs.module.css'
 import { getPacksTC, resetAllSortingParamsAC, searchMyPacksAC } from './packsReducer'
@@ -32,10 +33,13 @@ export const Packs = () => {
   const isMyPack = useAppSelector(state => state.packs.isMyPack)
   const min = useAppSelector(state => state.packs.min)
   const max = useAppSelector(state => state.packs.max)
+  const page = useAppSelector(state => state.packs.page)
+  const pageCount = useAppSelector(state => state.packs.pageCount)
+  const cardPacksTotalCount = useAppSelector(state => state.packs.cardPacksTotalCount)
 
   useEffect(() => {
     dispatch(getPacksTC())
-  }, [packName, isMyPack, min, max])
+  }, [packName, isMyPack, min, max, page, pageCount])
 
   const handleClickMyButton = useCallback(() => {
     dispatch(searchMyPacksAC(true))
@@ -78,6 +82,11 @@ export const Packs = () => {
         <Table sx={{ minWidth: 500 }} aria-label="simple table">
           <TableHead />
           <TableBodyPacks handleClickOnPackName={handleClickOnPackName} />
+          <CommonTablePagination
+            page={page}
+            cardPacksTotalCount={cardPacksTotalCount}
+            pageCount={pageCount}
+          />
         </Table>
       </TableContainer>
     </Container>
