@@ -41,6 +41,7 @@ function App() {
       <Header />
       <Pages />
       <AddModal />
+      <DeleteModal />
     </div>
   )
 }
