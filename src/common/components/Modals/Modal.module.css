@@ -1,0 +1,33 @@
+.modalContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+.headerModal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+
+    font-weight: bold;
+}
+
+.closeButton {
+    border: none;
+}
+
+.bottomModal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.buttonBottom {
+    width: 127px;
+    height: 36px;
+}
+

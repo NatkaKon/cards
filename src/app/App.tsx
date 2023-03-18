@@ -5,6 +5,8 @@ import '../App.css'
 import { Grid } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 
+import { AddModal } from '../common/components/Modals/AddModal'
+import { DeleteModal } from '../common/components/Modals/DeleteModal'
 import { Header } from '../features/Header/Header'
 import { Pages } from '../routes/Pages'
 
@@ -38,6 +40,7 @@ function App() {
     <div className="App">
       <Header />
       <Pages />
+      <AddModal />
     </div>
   )
 }
