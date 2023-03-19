@@ -19,17 +19,19 @@ const style = {
 
 type PropsType = {
   children: ReactNode
+  open?: boolean
+  setOpen?: (open: boolean) => void
 }
-export const BasicModal: FC<PropsType> = ({ children }) => {
-  const [open, setOpen] = React.useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+export const BasicModal: FC<PropsType> = ({ open, setOpen, children }) => {
+  // const [open, setOpen] = React.useState(false)
+  // const handleOpen = () => setOpen(true)
+  const handleClose = (): void => setOpen?.(false)
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+      {/*<Button onClick={handleOpen}>Open modal</Button>*/}
       <Modal
-        open={open}
+        open={open ? open : false}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
