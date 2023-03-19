@@ -1,16 +1,15 @@
 import { AppRootThunk } from '../../app/store'
+import { setPaginationDataAC } from '../PagePagination/pagination-reducer'
 
 import { cardsAPI } from './cardsAPI'
 
 const initialState = {
   cards: [] as CardType[],
-  cardsTotalCount: 0,
   maxGrade: 6,
   minGrade: 0,
-  page: 1,
-  pageCount: 0,
-  packId: '',
+  cardsPack_id: '',
   cardQuestion: '',
+  packName: '',
 }
 
 export const cardsReducer = (state: InitialStateType = initialState, action: CardsActionsType) => {
@@ -18,25 +17,46 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
     case 'CARDS/GET-CARDS':
       return { ...state, ...action.cards }
     case 'CARDS/SET-PACK-ID':
-      return { ...state, packId: action.packId }
+      return { ...state, cardsPack_id: action.packId }
+    case 'CARDS/SEARCH-CARDS-BY-QUESTION':
+      return { ...state, cardQuestion: action.cardQuestion }
+    case 'CARDS/RESET-ALL-SORTING-PARAMS':
+      return { ...state, cardQuestion: '' }
     default:
-      return { ...state }
+      return state
   }
 }
 
 //actions
 export const cardsGetAC = (cards: CardsType) => ({ type: 'CARDS/GET-CARDS', cards } as const)
 export const setPackIdAC = (packId: string) => ({ type: 'CARDS/SET-PACK-ID', packId } as const)
+export const searchCardsByQuestionAC = (cardQuestion: string) =>
+  ({
+    type: 'CARDS/SEARCH-CARDS-BY-QUESTION',
+    cardQuestion,
+  } as const)
+export const resetCardsSortingParamsAC = () =>
+  ({
+    type: 'CARDS/RESET-ALL-SORTING-PARAMS',
+  } as const)
 
 //thunk
 export const getCardsTC = (): AppRootThunk => async (dispatch, getState) => {
-  const cardsPack_id = getState().cards.packId
+  const { cardsPack_id, cardQuestion } = getState().cards
+  const { page, pageCount } = getState().pagination
 
   try {
-    const resp = await cardsAPI.getCards({ cardsPack_id })
+    const resp = await cardsAPI.getCards({ cardsPack_id, page, pageCount, cardQuestion })
 
     console.log(resp.data)
     dispatch(cardsGetAC(resp.data))
+    dispatch(
+      setPaginationDataAC({
+        page: resp.data.page,
+        pageCount: resp.data.pageCount,
+        totalPages: resp.data.cardsTotalCount,
+      })
+    )
   } catch (e) {
     console.log(e)
   }
@@ -52,7 +72,6 @@ export type CardsType = {
   minGrade: number
   page: number
   pageCount: number
-  packId: string
   packName: string
 }
 
@@ -72,7 +91,8 @@ type CardType = {
   questionVideo?: string
 }
 
-export type CardsGetActionType = ReturnType<typeof cardsGetAC>
-export type CardsSetUserIdActionType = ReturnType<typeof setPackIdAC>
-
-export type CardsActionsType = CardsGetActionType | CardsSetUserIdActionType
+export type CardsActionsType =
+  | ReturnType<typeof cardsGetAC>
+  | ReturnType<typeof setPackIdAC>
+  | ReturnType<typeof searchCardsByQuestionAC>
+  | ReturnType<typeof resetCardsSortingParamsAC>
