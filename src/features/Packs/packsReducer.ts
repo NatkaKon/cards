@@ -1,16 +1,14 @@
 import { ThunkDispatch } from 'redux-thunk'
 
 import { AppRootThunk } from '../../app/store'
+import { setPaginationDataAC } from '../PagePagination/pagination-reducer'
 
 import { AddNewPackType, packsAPI } from './packsAPI'
 
 const initialState = {
   cardPacks: [] as CardPacksType[],
-  cardPacksTotalCount: 0,
   maxCardsCount: 0,
   minCardsCount: 0,
-  page: 1,
-  pageCount: 5,
   sortPacks: '',
   packName: '',
   isMyPack: false,
@@ -38,7 +36,7 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
         sortPacks: '',
       }
     default:
-      return { ...state }
+      return state
   }
 }
 
@@ -66,7 +64,8 @@ export const resetAllSortingParamsAC = () =>
 
 //thunk
 export const getPacksTC = (): AppRootThunk => async (dispatch, getState) => {
-  const { sortPacks, packName, isMyPack, min, max, page, pageCount } = getState().packs
+  const { sortPacks, packName, isMyPack, min, max } = getState().packs
+  const { page, pageCount } = getState().pagination
   let user_id = ''
 
   if (isMyPack) {
@@ -87,6 +86,13 @@ export const getPacksTC = (): AppRootThunk => async (dispatch, getState) => {
     console.log(resp.data)
 
     dispatch(packsGetAC(resp.data))
+    dispatch(
+      setPaginationDataAC({
+        page: resp.data.page,
+        pageCount: resp.data.pageCount,
+        totalPages: resp.data.cardPacksTotalCount,
+      })
+    )
   } catch (e) {
     console.log(e)
   }
@@ -141,10 +147,10 @@ type CardPacksType = {
   user_name: string
 }
 
-export type PacksGetActionType = ReturnType<typeof packsGetAC>
+export type SearchPacksByNameACType = ReturnType<typeof searchPacksByNameAC>
 export type PacksActionsType =
-  | PacksGetActionType
-  | ReturnType<typeof searchPacksByNameAC>
+  | ReturnType<typeof packsGetAC>
+  | SearchPacksByNameACType
   | ReturnType<typeof searchMyPacksAC>
   | ReturnType<typeof searchPacksByCardsNumberAC>
   | ReturnType<typeof resetAllSortingParamsAC>

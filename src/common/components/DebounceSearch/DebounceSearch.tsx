@@ -1,14 +1,16 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useRef, useState } from 'react'
 
-import { useAppDispatch } from '../../../app/store'
-import { searchPacksByNameAC } from '../../../features/Packs/packsReducer'
 import { useDebounce } from '../../../hooks/useDebounce'
 import SuperInputText from '../SuperInputText/SuperInputText'
 
-export const DebounceSearch: FC<{ searchQuery: string }> = memo(props => {
+type PropsType = {
+  searchQuery: string
+  searchDebouncedValue: (debouncedValue: string) => void
+}
+
+export const DebounceSearch: FC<PropsType> = memo(props => {
   let isFirstRender = useRef(true)
 
-  const dispatch = useAppDispatch()
   const [searchQuery, setSearchQuery] = useState('')
   const debouncedValue = useDebounce(searchQuery, 1000)
 
@@ -18,7 +20,8 @@ export const DebounceSearch: FC<{ searchQuery: string }> = memo(props => {
 
       return
     }
-    dispatch(searchPacksByNameAC(debouncedValue))
+
+    props.searchDebouncedValue(debouncedValue)
   }, [debouncedValue])
 
   useEffect(() => {
