@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
+import { AddNewCard } from '../../common/components/Modals/AddNewCard'
 import { TableBodyCards } from '../Table/TableBodyCards'
 import { TableHeadCards } from '../Table/TableHeadCards'
 
@@ -30,6 +31,7 @@ export const Cards: FC = () => {
       <Box sx={{ display: 'flex' }}>
         <DebounceSearch searchQuery={cardQuestion} />
       </Box>
+      <AddNewCard />
       <TableContainer component={Paper} className={s.tableContainer}>
         <Table sx={{ minWidth: 500 }} aria-label="simple table">
           <TableHeadCards />

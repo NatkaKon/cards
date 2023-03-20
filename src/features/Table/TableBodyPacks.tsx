@@ -8,6 +8,7 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
+import { DeleteModal } from '../../common/components/Modals/DeleteModal'
 import { deletePackTC, editePackTC } from '../Packs/packsReducer'
 
 type TableBodyPacksProps = {
@@ -35,17 +36,7 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
             },
           }}
         >
-          <TableCell
-            // sx={{
-            //   '&:hover': {
-            //     backgroundColor: '#A0A0A0',
-            //     opacity: [0.9, 0.9, 0.7],
-            //   },
-            // }}
-            component="th"
-            scope="row"
-            onClick={() => onClickHandler(el._id)}
-          >
+          <TableCell component="th" scope="row" onClick={() => onClickHandler(el._id)}>
             {el.name}
           </TableCell>
           <TableCell align="right">{el.cardsCount}</TableCell>
@@ -65,6 +56,7 @@ type ActionsPropsType = {
 }
 const Actions = (props: ActionsPropsType) => {
   const dispatch = useAppDispatch()
+
   const delPackHandler = () => {
     dispatch(deletePackTC(props.packId))
   }

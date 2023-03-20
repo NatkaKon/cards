@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { ReactNode } from 'react'
 
 import Button from '@mui/material/Button'
 
@@ -9,11 +8,11 @@ import { PanelButton } from '../../../features/PanelButton/PanelButton'
 import { buttonStyle } from '../../constants/form-button-style'
 
 import { BasicModal } from './BasicModal'
-import { CheckboxLabels } from './CheckboxLabels'
+import { ComboBox } from './ComboBox'
 import { FormPropsTextFields } from './FormPropsTextFields'
 import s from './Modal.module.css'
 
-export const AddModal = () => {
+export const AddNewCard = () => {
   const [open, setOpen] = React.useState(false)
   const dispatch = useAppDispatch()
 
@@ -29,7 +28,7 @@ export const AddModal = () => {
 
   return (
     <>
-      <PanelButton name={'Packs list'} button={'Add new pack'} onClick={handleOpen} />
+      <PanelButton name={'Packs name'} button={'Add new card'} onClick={handleOpen} />
       <BasicModal open={open} setOpen={setOpen}>
         <div className={s.modalContainer}>
           <div className={s.headerModal}>
@@ -38,8 +37,9 @@ export const AddModal = () => {
               ✖️
             </Button>
           </div>
+          <ComboBox />
           <FormPropsTextFields />
-          <CheckboxLabels />
+          <FormPropsTextFields />
           <div className={s.bottomModal}>
             <Button
               type="submit"

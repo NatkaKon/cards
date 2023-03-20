@@ -1,9 +1,8 @@
 import * as React from 'react'
-import { ReactNode } from 'react'
+import { useState } from 'react'
 
 import Button from '@mui/material/Button'
 
-import { useAppDispatch } from '../../../app/store'
 import { addNewPackTC } from '../../../features/Packs/packsReducer'
 import { PanelButton } from '../../../features/PanelButton/PanelButton'
 import { buttonStyle } from '../../constants/form-button-style'
@@ -13,27 +12,25 @@ import { CheckboxLabels } from './CheckboxLabels'
 import { FormPropsTextFields } from './FormPropsTextFields'
 import s from './Modal.module.css'
 
-export const AddModal = () => {
+export const EditPack = () => {
   const [open, setOpen] = React.useState(false)
-  const dispatch = useAppDispatch()
-
+  const handleOpen = () => {
+    setOpen(true)
+  }
   const onClickHandlerClose = () => {
     setOpen(false)
   }
   const onClickHandlerSave = () => {
-    dispatch(addNewPackTC())
-  }
-  const handleOpen = () => {
-    setOpen(true)
+    // dispatch(addNewPackTC())
   }
 
   return (
     <>
-      <PanelButton name={'Packs list'} button={'Add new pack'} onClick={handleOpen} />
+      <PanelButton name={'Packs list'} button={'Edit pack'} onClick={handleOpen} />
       <BasicModal open={open} setOpen={setOpen}>
         <div className={s.modalContainer}>
           <div className={s.headerModal}>
-            <div>Add new pack</div>
+            <div>Edit pack</div>
             <Button className={s.closeButton} onClick={onClickHandlerClose}>
               ✖️
             </Button>

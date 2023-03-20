@@ -12,11 +12,14 @@ import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
+import { AddModal } from '../../common/components/Modals/AddModal'
+import { DeleteModal } from '../../common/components/Modals/DeleteModal'
+import { EditPack } from '../../common/components/Modals/EditPack'
+import { FormPropsTextFields } from '../../common/components/Modals/FormPropsTextFields'
 import { SearchSlider } from '../../common/components/SearchSlider/SearchSlider'
 import { SuperButton } from '../../common/components/SuperButton/SuperButton'
 import { PATH } from '../../common/constants/path'
 import { setPackIdAC } from '../Cards/cardsReducer'
-import { PanelButton } from '../PanelButton/PanelButton'
 import { TableBodyPacks } from '../Table/TableBodyPacks'
 import { TableHead } from '../Table/TableHead'
 import { CommonTablePagination } from '../Table/TablePagination'
@@ -77,8 +80,10 @@ export const Packs = () => {
           <FilterAltOffSharpIcon fontSize="medium" />
         </IconButton>
       </Box>
-      <PanelButton name={'Packs list'} button={'Add new pack'} />
+      <EditPack />
+      <AddModal />
       <TableContainer component={Paper} className={s.tableContainer}>
+        <DeleteModal />
         <Table sx={{ minWidth: 500 }} aria-label="simple table">
           <TableHead />
           <TableBodyPacks handleClickOnPackName={handleClickOnPackName} />
