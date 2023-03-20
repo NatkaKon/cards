@@ -86,6 +86,12 @@ export const Cards: FC = () => {
           <FilterAltOffSharpIcon fontSize="medium" />
         </IconButton>
       </Box>
+      <TableContainer component={Paper} className={s.tableContainer}>
+        <Table sx={{ minWidth: 500 }} aria-label="simple table">
+          <TableHeadCards />
+          <TableBodyCards />
+        </Table>
+      </TableContainer>
       <PagePagination
         page={page}
         pageCount={pageCount}
@@ -93,12 +99,6 @@ export const Cards: FC = () => {
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <TableContainer component={Paper} className={s.tableContainer}>
-        <Table sx={{ minWidth: 500 }} aria-label="simple table">
-          <TableHeadCards />
-          <TableBodyCards />
-        </Table>
-      </TableContainer>
     </Container>
   )
 }

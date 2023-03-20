@@ -16,9 +16,9 @@ export const CardNameAndButton = () => {
   return (
     <>
       {isMyPack ? (
-        <PanelButton button={'AddNewCard'} name={packNameForTitle} callBack={addNewCardHandler} />
+        <PanelButton button={'Add new card'} name={packNameForTitle} callBack={addNewCardHandler} />
       ) : (
-        <PanelButton button={'LearnToPack'} name={packNameForTitle} callBack={() => {}} />
+        <PanelButton button={'Learn to pack'} name={packNameForTitle} callBack={() => {}} />
       )}
     </>
   )

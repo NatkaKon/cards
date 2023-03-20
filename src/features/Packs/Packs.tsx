@@ -107,6 +107,12 @@ export const Packs = () => {
           <FilterAltOffSharpIcon fontSize="medium" />
         </IconButton>
       </Box>
+      <TableContainer component={Paper} elevation={4} className={s.tableContainer}>
+        <Table sx={{ minWidth: 500 }} aria-label="simple table">
+          <TableHead />
+          <TableBodyPacks handleClickOnPackName={handleClickOnPackName} />
+        </Table>
+      </TableContainer>
       <PagePagination
         page={page}
         pageCount={pageCount}
@@ -114,12 +120,6 @@ export const Packs = () => {
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <TableContainer component={Paper} elevation={4} className={s.tableContainer}>
-        <Table sx={{ minWidth: 500 }} aria-label="simple table">
-          <TableHead />
-          <TableBodyPacks handleClickOnPackName={handleClickOnPackName} />
-        </Table>
-      </TableContainer>
     </Container>
   )
 }
