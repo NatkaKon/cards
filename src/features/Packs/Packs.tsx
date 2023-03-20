@@ -15,7 +15,7 @@ import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceS
 import { SearchSlider } from '../../common/components/SearchSlider/SearchSlider'
 import { SuperButton } from '../../common/components/SuperButton/SuperButton'
 import { PATH } from '../../common/constants/path'
-import { setPackIdAC } from '../Cards/cardsReducer'
+import { setIsMyPackAC, setPackIdAC, setPackNameForTitleAC } from '../Cards/cardsReducer'
 import { PagePagination } from '../PagePagination/PagePagination'
 import {
   resetPaginationAC,
@@ -28,6 +28,7 @@ import { TableHead } from '../Table/TableHead'
 
 import s from './Packs.module.css'
 import {
+  addNewPackTC,
   getPacksTC,
   resetAllSortingParamsAC,
   searchMyPacksAC,
@@ -77,17 +78,22 @@ export const Packs = () => {
   }, [])
 
   const handleClickOnPackName = useCallback(
-    (packId: string) => {
+    (packId: string, isMyPack: boolean, packNameForTitle: string) => {
       dispatch(setPackIdAC(packId))
+      dispatch(setIsMyPackAC(isMyPack))
+      dispatch(setPackNameForTitleAC(packNameForTitle))
 
       navigate(PATH.CARDS)
     },
     [navigate]
   )
+  const addNewPackHandler = () => {
+    dispatch(addNewPackTC())
+  }
 
   return (
     <Container sx={{ padding: '50px' }}>
-      <PanelButton name={'Packs list'} button={'Add new pack'} />
+      <PanelButton name={'Packs list'} button={'Add new pack'} callBack={addNewPackHandler} />
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <DebounceSearch searchQuery={packName} searchDebouncedValue={handleSearchPacksByName} />
         <SuperButton xType={isMyPack ? '' : 'secondary'} onClick={handleClickMyButton}>

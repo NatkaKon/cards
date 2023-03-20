@@ -2,9 +2,6 @@ import * as React from 'react'
 
 import Button from '@mui/material/Button'
 
-import { useAppDispatch } from '../../app/store'
-import { addNewPackTC } from '../Packs/packsReducer'
-
 import s from './PanelButton.module.css'
 
 const buttonStyle = {
@@ -17,18 +14,14 @@ const buttonStyle = {
 type PanelButtonType = {
   name: string
   button: string
+  callBack: () => void
 }
 export const PanelButton = (props: PanelButtonType) => {
-  const dispatch = useAppDispatch()
-  const addNewPackHandler = () => {
-    dispatch(addNewPackTC())
-  }
-
   return (
     <div className={s.panelButton}>
       <h3 className={s.listTitle}>{props.name}</h3>
       <Button
-        onClick={addNewPackHandler}
+        onClick={props.callBack}
         type="submit"
         color="primary"
         variant="contained"

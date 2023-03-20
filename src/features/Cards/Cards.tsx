@@ -2,15 +2,18 @@ import * as React from 'react'
 import { FC, useCallback, useEffect } from 'react'
 
 import FilterAltOffSharpIcon from '@mui/icons-material/FilterAltOffSharp'
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
+import { NavLink } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
+import { PATH } from '../../common/constants/path'
 import { PagePagination } from '../PagePagination/PagePagination'
 import {
   resetPaginationAC,
@@ -20,6 +23,7 @@ import {
 import { TableBodyCards } from '../Table/TableBodyCards'
 import { TableHeadCards } from '../Table/TableHeadCards'
 
+import { CardNameAndButton } from './CardnameAndButton'
 import s from './Cards.module.css'
 import { getCardsTC, resetCardsSortingParamsAC, searchCardsByQuestionAC } from './cardsReducer'
 
@@ -56,6 +60,23 @@ export const Cards: FC = () => {
 
   return (
     <Container sx={{ padding: '50px' }}>
+      <Box
+        sx={{
+          width: '100%',
+          height: '100px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <NavLink to={PATH.PACKS}>
+          <div className={s.linkToPacks}>
+            <KeyboardBackspaceIcon sx={{ paddingRight: '10px' }} />
+            <p>To Pack List</p>
+          </div>
+        </NavLink>
+      </Box>
+      <CardNameAndButton />
       <Box sx={{ display: 'flex' }}>
         <DebounceSearch
           searchQuery={cardQuestion}

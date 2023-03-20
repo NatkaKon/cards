@@ -11,15 +11,15 @@ import { useAppDispatch, useAppSelector } from '../../app/store'
 import { deletePackTC, editePackTC } from '../Packs/packsReducer'
 
 type TableBodyPacksProps = {
-  handleClickOnPackName: (packId: string) => void
+  handleClickOnPackName: (packId: string, isMyPack: boolean, packNameForTitle: string) => void
 }
 
 export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
   const packs = useAppSelector(state => state.packs)
   const userId = useAppSelector(state => state.profile._id)
 
-  const onClickHandler = (packId: string) => {
-    props.handleClickOnPackName(packId)
+  const onClickHandler = (packId: string, packUserId: string, packNameForTitle: string) => {
+    props.handleClickOnPackName(packId, userId === packUserId, packNameForTitle)
   }
 
   return (
@@ -44,7 +44,7 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
             // }}
             component="th"
             scope="row"
-            onClick={() => onClickHandler(el._id)}
+            onClick={() => onClickHandler(el._id, el.user_id, el.name)}
           >
             {el.name}
           </TableCell>

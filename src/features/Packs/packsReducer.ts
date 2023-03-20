@@ -83,8 +83,6 @@ export const getPacksTC = (): AppRootThunk => async (dispatch, getState) => {
       pageCount,
     })
 
-    console.log(resp.data)
-
     dispatch(packsGetAC(resp.data))
     dispatch(
       setPaginationDataAC({
