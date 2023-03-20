@@ -16,6 +16,7 @@ import { SearchSlider } from '../../common/components/SearchSlider/SearchSlider'
 import { SuperButton } from '../../common/components/SuperButton/SuperButton'
 import { PATH } from '../../common/constants/path'
 import { setPackIdAC } from '../Cards/cardsReducer'
+import * as paginationSelectors from '../PagePagination/page-pagination-selectors'
 import { PagePagination } from '../PagePagination/PagePagination'
 import {
   resetPaginationAC,
@@ -26,6 +27,7 @@ import { PanelButton } from '../PanelButton/PanelButton'
 import { TableBodyPacks } from '../Table/TableBodyPacks'
 import { TableHead } from '../Table/TableHead'
 
+import * as packsSelectors from './packs-selectors'
 import s from './Packs.module.css'
 import {
   getPacksTC,
@@ -39,13 +41,13 @@ export const Packs = () => {
 
   const navigate = useNavigate()
 
-  const packName = useAppSelector(state => state.packs.packName)
-  const isMyPack = useAppSelector(state => state.packs.isMyPack)
-  const min = useAppSelector(state => state.packs.min)
-  const max = useAppSelector(state => state.packs.max)
-  const page = useAppSelector(state => state.pagination.page)
-  const pageCount = useAppSelector(state => state.pagination.pageCount)
-  const cardPacksTotalCount = useAppSelector(state => state.pagination.totalPages)
+  const packName = useAppSelector(packsSelectors.packName)
+  const isMyPack = useAppSelector(packsSelectors.isMyPack)
+  const min = useAppSelector(packsSelectors.min)
+  const max = useAppSelector(packsSelectors.max)
+  const page = useAppSelector(paginationSelectors.page)
+  const pageCount = useAppSelector(paginationSelectors.pageCount)
+  const cardPacksTotalCount = useAppSelector(paginationSelectors.totalPages)
 
   useEffect(() => {
     dispatch(getPacksTC())

@@ -11,6 +11,7 @@ import TableContainer from '@mui/material/TableContainer'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
+import * as paginationSelectors from '../PagePagination/page-pagination-selectors'
 import { PagePagination } from '../PagePagination/PagePagination'
 import {
   resetPaginationAC,
@@ -20,18 +21,19 @@ import {
 import { TableBodyCards } from '../Table/TableBodyCards'
 import { TableHeadCards } from '../Table/TableHeadCards'
 
+import * as cardsSelectors from './cards-selectors'
 import s from './Cards.module.css'
 import { getCardsTC, resetCardsSortingParamsAC, searchCardsByQuestionAC } from './cardsReducer'
 
 export const Cards: FC = () => {
   const dispatch = useAppDispatch()
 
-  const cardQuestion = useAppSelector(state => state.cards.cardQuestion)
-  const packId = useAppSelector(state => state.cards.cardsPack_id)
+  const cardQuestion = useAppSelector(cardsSelectors.cardQuestion)
+  const packId = useAppSelector(cardsSelectors.packId)
 
-  const page = useAppSelector(state => state.pagination.page)
-  const pageCount = useAppSelector(state => state.pagination.pageCount)
-  const cardsTotalCount = useAppSelector(state => state.pagination.totalPages)
+  const page = useAppSelector(paginationSelectors.page)
+  const pageCount = useAppSelector(paginationSelectors.pageCount)
+  const cardsTotalCount = useAppSelector(paginationSelectors.totalPages)
 
   useEffect(() => {
     dispatch(getCardsTC())
