@@ -8,8 +8,6 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
-import { DeleteModal } from '../../common/components/Modals/DeleteModal'
-import { deletePackTC, editePackTC } from '../Packs/packsReducer'
 import { deletePackTC, updatePackTC } from '../Packs/packsReducer'
 
 type TableBodyPacksProps = {
@@ -41,7 +39,6 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
             },
           }}
         >
-          <TableCell component="th" scope="row" onClick={() => onClickHandler(el._id)}>
           <TableCell
             component="th"
             scope="row"
@@ -69,24 +66,24 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
   )
 }
 
-type ActionsPropsType = {
-  packId: string
-}
-const Actions = (props: ActionsPropsType) => {
-  const dispatch = useAppDispatch()
+// type ActionsPropsType = {
+//   packId: string
+// }
+// const Actions = (props: ActionsPropsType) => {
+//   const dispatch = useAppDispatch()
+//
+//   const delPackHandler = () => {
+//     dispatch(deletePackTC(props.packId))
+//   }
+//   const editePackHandler = () => {
+//     dispatch(updatePackTC(props.packId))
+//   }
 
-  const delPackHandler = () => {
-    dispatch(deletePackTC(props.packId))
-  }
-  const editePackHandler = () => {
-    dispatch(editePackTC(props.packId))
-  }
-
-  return (
-    <div>
-      <SchoolIcon />
-      <EditIcon onClick={editePackHandler} />
-      <DeleteForeverOutlinedIcon onClick={delPackHandler} />
-    </div>
-  )
-}
+//   return (
+//     <div>
+//       <SchoolIcon />
+//       <EditIcon onClick={editePackHandler} />
+//       <DeleteForeverOutlinedIcon onClick={delPackHandler} />
+//     </div>
+//   )
+// }

@@ -29,7 +29,7 @@ export const AddModal = () => {
 
   return (
     <>
-      <PanelButton name={'Packs list'} button={'Add new pack'} onClick={handleOpen} />
+      <PanelButton name={'Packs list'} button={'Add new pack'} callBack={handleOpen} />
       <BasicModal open={open} setOpen={setOpen}>
         <div className={s.modalContainer}>
           <div className={s.headerModal}>

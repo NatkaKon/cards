@@ -28,7 +28,7 @@ export const AddNewCard = () => {
 
   return (
     <>
-      <PanelButton name={'Packs name'} button={'Add new card'} onClick={handleOpen} />
+      <PanelButton name={'Packs name'} button={'Add new card'} callBack={handleOpen} />
       <BasicModal open={open} setOpen={setOpen}>
         <div className={s.modalContainer}>
           <div className={s.headerModal}>

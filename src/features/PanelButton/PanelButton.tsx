@@ -17,7 +17,7 @@ const buttonStyle = {
 type PanelButtonType = {
   name: string
   button: string
-  onClick?: MouseEventHandler<HTMLButtonElement>
+  callBack?: MouseEventHandler<HTMLButtonElement>
   callBack: () => void
 }
 export const PanelButton = (props: PanelButtonType) => {
@@ -33,7 +33,6 @@ export const PanelButton = (props: PanelButtonType) => {
       <h3 className={s.listTitle}>{props.name}</h3>
       <Button
         onClick={props.callBack}
-        onClick={props.onClick}
         type="submit"
         color="primary"
         variant="contained"

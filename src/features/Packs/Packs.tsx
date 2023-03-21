@@ -15,11 +15,9 @@ import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceS
 import { AddModal } from '../../common/components/Modals/AddModal'
 import { DeleteModal } from '../../common/components/Modals/DeleteModal'
 import { EditPack } from '../../common/components/Modals/EditPack'
-import { FormPropsTextFields } from '../../common/components/Modals/FormPropsTextFields'
 import { SearchSlider } from '../../common/components/SearchSlider/SearchSlider'
 import { SuperButton } from '../../common/components/SuperButton/SuperButton'
 import { PATH } from '../../common/constants/path'
-import { setPackIdAC } from '../Cards/cardsReducer'
 import { setIsMyPackAC, setPackIdAC, setPackNameForTitleAC } from '../Cards/cardsReducer'
 import { PagePagination } from '../PagePagination/PagePagination'
 import {
@@ -114,8 +112,7 @@ export const Packs = () => {
       </Box>
       <EditPack />
       <AddModal />
-      <TableContainer component={Paper} className={s.tableContainer}>
-        <DeleteModal />
+      <DeleteModal />
       <TableContainer component={Paper} elevation={4} className={s.tableContainer}>
         <Table sx={{ minWidth: 500 }} aria-label="simple table">
           <TableHead />

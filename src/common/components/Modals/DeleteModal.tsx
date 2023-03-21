@@ -28,7 +28,7 @@ export const DeleteModal = (props: PropsType) => {
 
   return (
     <>
-      <PanelButton name={'Packs list'} button={'Delete pack'} onClick={handleOpen} />
+      <PanelButton name={'Packs list'} button={'Delete pack'} callBack={handleOpen} />
       <BasicModal open={open} setOpen={setOpen}>
         <div className={s.modalContainer}>
           <div className={s.headerModal}>
