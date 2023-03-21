@@ -25,7 +25,7 @@ import {
 } from '../PagePagination/pagination-reducer'
 import { PanelButton } from '../PanelButton/PanelButton'
 import { TableBodyPacks } from '../Table/TableBodyPacks'
-import { TableHead } from '../Table/TableHead'
+import { HeadCellType, TableHeadWithSorting } from '../Table/TableHeadWithSorting'
 
 import * as packsSelectors from './packs-selectors'
 import s from './Packs.module.css'
@@ -34,7 +34,16 @@ import {
   resetAllSortingParamsAC,
   searchMyPacksAC,
   searchPacksByNameAC,
+  setSortPacksAC,
 } from './packsReducer'
+
+const SORT_VALUES: HeadCellType[] = [
+  { id: 'name', label: 'Name' },
+  { id: 'cardsCount', label: 'Cards' },
+  { id: 'updated', label: 'Last Updated' },
+  { id: 'user_name', label: 'Created by' },
+  { id: 'actions', label: 'Actions' },
+]
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
@@ -45,13 +54,15 @@ export const Packs = () => {
   const isMyPack = useAppSelector(packsSelectors.isMyPack)
   const min = useAppSelector(packsSelectors.min)
   const max = useAppSelector(packsSelectors.max)
+  const sortPacks = useAppSelector(packsSelectors.sortPacks)
+
   const page = useAppSelector(paginationSelectors.page)
   const pageCount = useAppSelector(paginationSelectors.pageCount)
   const cardPacksTotalCount = useAppSelector(paginationSelectors.totalPages)
 
   useEffect(() => {
     dispatch(getPacksTC())
-  }, [packName, isMyPack, min, max, page, pageCount, cardPacksTotalCount])
+  }, [packName, isMyPack, min, max, page, pageCount, cardPacksTotalCount, sortPacks])
 
   const handleClickMyButton = useCallback(() => {
     dispatch(searchMyPacksAC(true))
@@ -87,6 +98,11 @@ export const Packs = () => {
     [navigate]
   )
 
+  const handleRequestSort = useCallback((event: React.MouseEvent<unknown>, newSort: string) => {
+    dispatch(setSortPacksAC(newSort))
+    dispatch(setCurrentPageAC(1))
+  }, [])
+
   return (
     <Container sx={{ padding: '50px' }}>
       <PanelButton name={'Packs list'} button={'Add new pack'} />
@@ -112,7 +128,11 @@ export const Packs = () => {
       />
       <TableContainer component={Paper} elevation={4} className={s.tableContainer}>
         <Table sx={{ minWidth: 500 }} aria-label="simple table">
-          <TableHead />
+          <TableHeadWithSorting
+            orderBy={sortPacks}
+            headCells={SORT_VALUES}
+            onRequestSort={handleRequestSort}
+          />
           <TableBodyPacks handleClickOnPackName={handleClickOnPackName} />
         </Table>
       </TableContainer>

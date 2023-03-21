@@ -1,5 +1,3 @@
-import { ThunkDispatch } from 'redux-thunk'
-
 import { AppRootThunk } from '../../app/store'
 import { setPaginationDataAC } from '../PagePagination/pagination-reducer'
 
@@ -9,7 +7,7 @@ const initialState = {
   cardPacks: [] as CardPacksType[],
   maxCardsCount: 0,
   minCardsCount: 0,
-  sortPacks: '',
+  sortPacks: '0updated',
   packName: '',
   isMyPack: false,
   min: 0,
@@ -26,6 +24,8 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
       return { ...state, isMyPack: action.isMyPacks }
     case 'PACKS/SEARCH-BY-CARDS-NUMBER':
       return { ...state, min: action.values[0], max: action.values[1] }
+    case 'PACKS/SET-SORT-PACKS':
+      return { ...state, sortPacks: action.newSort }
     case 'PACKS/RESET-ALL-SORTING-PARAMS':
       return {
         ...state,
@@ -33,7 +33,7 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
         max: state.maxCardsCount,
         isMyPack: false,
         packName: '',
-        sortPacks: '',
+        sortPacks: '0updated',
       }
     default:
       return state
@@ -60,6 +60,11 @@ export const searchPacksByCardsNumberAC = (values: number[]) =>
 export const resetAllSortingParamsAC = () =>
   ({
     type: 'PACKS/RESET-ALL-SORTING-PARAMS',
+  } as const)
+export const setSortPacksAC = (newSort: string) =>
+  ({
+    type: 'PACKS/SET-SORT-PACKS',
+    newSort,
   } as const)
 
 //thunk
@@ -104,26 +109,30 @@ export const addNewPackTC =
       name: 'NewCatsPack',
       private: false,
     }
-  ) =>
-  async (dispatch: ThunkDispatch<any, any, any>) => {
+  ): AppRootThunk =>
+  async dispatch => {
     await packsAPI.addNewPack(data)
 
     dispatch(getPacksTC())
   }
 
-export const deletePackTC = (id: string) => async (dispatch: ThunkDispatch<any, any, any>) => {
-  await packsAPI.deleteNewPack(id)
+export const deletePackTC =
+  (id: string): AppRootThunk =>
+  async dispatch => {
+    await packsAPI.deleteNewPack(id)
 
-  dispatch(getPacksTC())
-}
+    dispatch(getPacksTC())
+  }
 
-export const editePackTC = (packId: string) => async (dispatch: ThunkDispatch<any, any, any>) => {
-  const data = { _id: packId, name: '😸 updatedCatsPack' }
+export const editePackTC =
+  (packId: string): AppRootThunk =>
+  async dispatch => {
+    const data = { _id: packId, name: '😸 updatedCatsPack' }
 
-  await packsAPI.updatePack(data)
+    await packsAPI.updatePack(data)
 
-  dispatch(getPacksTC())
-}
+    dispatch(getPacksTC())
+  }
 
 // types
 
@@ -137,7 +146,7 @@ export type PacksType = {
   page: number // выбранная страница
   pageCount: number // количество элементов на странице
 }
-type CardPacksType = {
+export type CardPacksType = {
   _id: string
   user_id: string
   name: string
@@ -154,3 +163,4 @@ export type PacksActionsType =
   | ReturnType<typeof searchMyPacksAC>
   | ReturnType<typeof searchPacksByCardsNumberAC>
   | ReturnType<typeof resetAllSortingParamsAC>
+  | ReturnType<typeof setSortPacksAC>

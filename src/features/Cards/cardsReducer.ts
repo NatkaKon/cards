@@ -10,6 +10,7 @@ const initialState = {
   cardsPack_id: '',
   cardQuestion: '',
   packName: '',
+  sortCards: '0updated',
 }
 
 export const cardsReducer = (state: InitialStateType = initialState, action: CardsActionsType) => {
@@ -20,8 +21,10 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
       return { ...state, cardsPack_id: action.packId }
     case 'CARDS/SEARCH-CARDS-BY-QUESTION':
       return { ...state, cardQuestion: action.cardQuestion }
+    case 'CARDS/SET-SORT-CARDS':
+      return { ...state, sortCards: action.newSort }
     case 'CARDS/RESET-ALL-SORTING-PARAMS':
-      return { ...state, cardQuestion: '' }
+      return { ...state, cardQuestion: '', sortCards: '0updated' }
     default:
       return state
   }
@@ -35,6 +38,11 @@ export const searchCardsByQuestionAC = (cardQuestion: string) =>
     type: 'CARDS/SEARCH-CARDS-BY-QUESTION',
     cardQuestion,
   } as const)
+export const setSortCardsAC = (newSort: string) =>
+  ({
+    type: 'CARDS/SET-SORT-CARDS',
+    newSort,
+  } as const)
 export const resetCardsSortingParamsAC = () =>
   ({
     type: 'CARDS/RESET-ALL-SORTING-PARAMS',
@@ -42,11 +50,11 @@ export const resetCardsSortingParamsAC = () =>
 
 //thunk
 export const getCardsTC = (): AppRootThunk => async (dispatch, getState) => {
-  const { cardsPack_id, cardQuestion } = getState().cards
+  const { cardsPack_id, cardQuestion, sortCards } = getState().cards
   const { page, pageCount } = getState().pagination
 
   try {
-    const resp = await cardsAPI.getCards({ cardsPack_id, page, pageCount, cardQuestion })
+    const resp = await cardsAPI.getCards({ cardsPack_id, page, pageCount, cardQuestion, sortCards })
 
     console.log(resp.data)
     dispatch(cardsGetAC(resp.data))
@@ -75,7 +83,7 @@ export type CardsType = {
   packName: string
 }
 
-type CardType = {
+export type CardType = {
   answer: string
   question: string
   cardsPack_id: string
@@ -96,3 +104,4 @@ export type CardsActionsType =
   | ReturnType<typeof setPackIdAC>
   | ReturnType<typeof searchCardsByQuestionAC>
   | ReturnType<typeof resetCardsSortingParamsAC>
+  | ReturnType<typeof setSortCardsAC>

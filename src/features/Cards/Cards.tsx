@@ -19,17 +19,30 @@ import {
   setPageCountAC,
 } from '../PagePagination/pagination-reducer'
 import { TableBodyCards } from '../Table/TableBodyCards'
-import { TableHeadCards } from '../Table/TableHeadCards'
+import { HeadCellType, TableHeadWithSorting } from '../Table/TableHeadWithSorting'
 
 import * as cardsSelectors from './cards-selectors'
 import s from './Cards.module.css'
-import { getCardsTC, resetCardsSortingParamsAC, searchCardsByQuestionAC } from './cardsReducer'
+import {
+  getCardsTC,
+  resetCardsSortingParamsAC,
+  searchCardsByQuestionAC,
+  setSortCardsAC,
+} from './cardsReducer'
+
+const CARDS_SORT_VALUES: HeadCellType[] = [
+  { id: 'question', label: 'Question' },
+  { id: 'answer', label: 'Answer' },
+  { id: 'updated', label: 'Last Updated' },
+  { id: 'grade', label: 'Grade' },
+]
 
 export const Cards: FC = () => {
   const dispatch = useAppDispatch()
 
   const cardQuestion = useAppSelector(cardsSelectors.cardQuestion)
   const packId = useAppSelector(cardsSelectors.packId)
+  const sortCards = useAppSelector(cardsSelectors.sortCards)
 
   const page = useAppSelector(paginationSelectors.page)
   const pageCount = useAppSelector(paginationSelectors.pageCount)
@@ -37,7 +50,7 @@ export const Cards: FC = () => {
 
   useEffect(() => {
     dispatch(getCardsTC())
-  }, [cardQuestion, packId, page, pageCount, cardsTotalCount])
+  }, [cardQuestion, packId, page, pageCount, cardsTotalCount, sortCards])
 
   const handleChangePage = useCallback((newPage: number) => {
     dispatch(setCurrentPageAC(newPage))
@@ -54,6 +67,11 @@ export const Cards: FC = () => {
 
   const handleSearchCardsByQuestion = useCallback((cardQuestion: string) => {
     dispatch(searchCardsByQuestionAC(cardQuestion))
+  }, [])
+
+  const handleRequestSort = useCallback((event: React.MouseEvent<unknown>, newSort: string) => {
+    dispatch(setSortCardsAC(newSort))
+    dispatch(setCurrentPageAC(1))
   }, [])
 
   return (
@@ -74,9 +92,13 @@ export const Cards: FC = () => {
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <TableContainer component={Paper} className={s.tableContainer}>
+      <TableContainer component={Paper} elevation={4} className={s.tableContainer}>
         <Table sx={{ minWidth: 500 }} aria-label="simple table">
-          <TableHeadCards />
+          <TableHeadWithSorting
+            orderBy={sortCards}
+            headCells={CARDS_SORT_VALUES}
+            onRequestSort={handleRequestSort}
+          />
           <TableBodyCards />
         </Table>
       </TableContainer>
