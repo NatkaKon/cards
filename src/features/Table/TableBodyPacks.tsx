@@ -1,22 +1,23 @@
 import React, { FC } from 'react'
 
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined'
-import EditIcon from '@mui/icons-material/Edit'
 import SchoolIcon from '@mui/icons-material/School'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
-import { useAppDispatch, useAppSelector } from '../../app/store'
-import { deletePackTC, editePackTC } from '../Packs/packsReducer'
+import { useAppSelector } from '../../app/store'
+import * as packsSelectors from '../Packs/packs-selectors'
+import * as profileSelectors from '../Profile/profile-selector'
+
+import { Actions } from './Actions'
 
 type TableBodyPacksProps = {
   handleClickOnPackName: (packId: string) => void
 }
 
 export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
-  const packs = useAppSelector(state => state.packs)
-  const userId = useAppSelector(state => state.profile._id)
+  const packs = useAppSelector(packsSelectors.packs)
+  const userId = useAppSelector(profileSelectors.userId)
 
   const onClickHandler = (packId: string) => {
     props.handleClickOnPackName(packId)
@@ -24,7 +25,7 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
 
   return (
     <TableBody>
-      {packs.cardPacks.map(el => (
+      {packs.map(el => (
         <TableRow
           key={el._id}
           sx={{
@@ -57,26 +58,5 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
         </TableRow>
       ))}
     </TableBody>
-  )
-}
-
-type ActionsPropsType = {
-  packId: string
-}
-const Actions = (props: ActionsPropsType) => {
-  const dispatch = useAppDispatch()
-  const delPackHandler = () => {
-    dispatch(deletePackTC(props.packId))
-  }
-  const editePackHandler = () => {
-    dispatch(editePackTC(props.packId))
-  }
-
-  return (
-    <div>
-      <SchoolIcon />
-      <EditIcon onClick={editePackHandler} />
-      <DeleteForeverOutlinedIcon onClick={delPackHandler} />
-    </div>
   )
 }
