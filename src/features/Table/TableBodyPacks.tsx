@@ -1,16 +1,16 @@
 import React, { FC } from 'react'
 
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined'
+import EditIcon from '@mui/icons-material/Edit'
 import SchoolIcon from '@mui/icons-material/School'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
-import { useAppSelector } from '../../app/store'
-import * as packsSelectors from '../Packs/packs-selectors'
-import * as profileSelectors from '../Profile/profile-selector'
-
 import { useAppDispatch, useAppSelector } from '../../app/store'
+import * as packsSelectors from '../Packs/packs-selectors'
 import { deletePackTC, updatePackTC } from '../Packs/packsReducer'
+import * as profileSelectors from '../Profile/profile-selector'
 
 type TableBodyPacksProps = {
   handleClickOnPackName: (packId: string, isMyPack: boolean, packNameForTitle: string) => void
@@ -67,4 +67,3 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
     </TableBody>
   )
 }
-

@@ -17,7 +17,7 @@ const buttonStyle = {
 type PanelButtonType = {
   name: string
   button: string
-  callBack?: MouseEventHandler<HTMLButtonElement>
+  // callBack?: MouseEventHandler<HTMLButtonElement>
   callBack: () => void
 }
 export const PanelButton = (props: PanelButtonType) => {

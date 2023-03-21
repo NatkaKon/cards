@@ -79,26 +79,31 @@ export const getCardsTC = (): AppRootThunk => async (dispatch, getState) => {
     console.log(e)
   }
 }
-export const addNewCardTC = (PackId: string) => async (dispatch: ThunkDispatch<any, any, any>) => {
-  const newCard = {
-    cardsPack_id: PackId,
-    question: 'no question',
-    answer: 'no answer',
+export const addNewCardTC =
+  (PackId: string): AppRootThunk =>
+  async dispatch => {
+    const newCard = {
+      cardsPack_id: PackId,
+      question: 'no question',
+      answer: 'no answer',
+    }
+
+    await cardsAPI.addNewCard(newCard)
+
+    dispatch(getCardsTC())
   }
 
-  await cardsAPI.addNewCard(newCard)
+export const deleteCardTC =
+  (id: string): AppRootThunk =>
+  async dispatch => {
+    await cardsAPI.deleteCard(id)
 
-  dispatch(getCardsTC())
-}
-
-export const deleteCardTC = (id: string) => async (dispatch: ThunkDispatch<any, any, any>) => {
-  await cardsAPI.deleteCard(id)
-
-  dispatch(getCardsTC())
-}
+    dispatch(getCardsTC())
+  }
 
 export const updateCardTC =
-  (data: UpdateCardType) => async (dispatch: ThunkDispatch<any, any, any>) => {
+  (data: UpdateCardType): AppRootThunk =>
+  async dispatch => {
     await cardsAPI.updateCard(data)
 
     dispatch(getCardsTC())

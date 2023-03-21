@@ -2,6 +2,7 @@ import * as React from 'react'
 import { FC, useCallback, useEffect } from 'react'
 
 import FilterAltOffSharpIcon from '@mui/icons-material/FilterAltOffSharp'
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
@@ -12,9 +13,9 @@ import { NavLink } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
-import * as paginationSelectors from '../PagePagination/page-pagination-selectors'
 import { AddNewCard } from '../../common/components/Modals/AddNewCard'
 import { PATH } from '../../common/constants/path'
+import * as paginationSelectors from '../PagePagination/page-pagination-selectors'
 import { PagePagination } from '../PagePagination/PagePagination'
 import {
   resetPaginationAC,

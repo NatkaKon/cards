@@ -18,9 +18,8 @@ import { EditPack } from '../../common/components/Modals/EditPack'
 import { SearchSlider } from '../../common/components/SearchSlider/SearchSlider'
 import { SuperButton } from '../../common/components/SuperButton/SuperButton'
 import { PATH } from '../../common/constants/path'
-import { setPackIdAC } from '../Cards/cardsReducer'
-import * as paginationSelectors from '../PagePagination/page-pagination-selectors'
 import { setIsMyPackAC, setPackIdAC, setPackNameForTitleAC } from '../Cards/cardsReducer'
+import * as paginationSelectors from '../PagePagination/page-pagination-selectors'
 import { PagePagination } from '../PagePagination/PagePagination'
 import {
   resetPaginationAC,

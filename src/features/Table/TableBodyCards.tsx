@@ -2,23 +2,19 @@ import React, { FC } from 'react'
 
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined'
 import EditIcon from '@mui/icons-material/Edit'
-import SchoolIcon from '@mui/icons-material/School'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
-import { useAppSelector } from '../../app/store'
-import * as cardsSelectors from '../Cards/cards-selectors'
-import * as profileSelectors from '../Profile/profile-selector'
 import { useAppDispatch, useAppSelector } from '../../app/store'
+import * as cardsSelectors from '../Cards/cards-selectors'
 import { UpdateCardType } from '../Cards/cardsAPI'
 import { deleteCardTC, updateCardTC } from '../Cards/cardsReducer'
-
+import * as profileSelectors from '../Profile/profile-selector'
 
 export const TableBodyCards: FC = () => {
   const cards = useAppSelector(cardsSelectors.cards)
   const userId = useAppSelector(profileSelectors.userId)
-  const cards = useAppSelector(state => state.cards)
   const isMyPack = useAppSelector(state => state.cards.isMyPack)
   const dispatch = useAppDispatch()
   const deleteCardHandler = (cardId: string) => dispatch(deleteCardTC(cardId))

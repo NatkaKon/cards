@@ -117,7 +117,7 @@ export const addNewPackTC =
 export const deletePackTC =
   (id: string): AppRootThunk =>
   async dispatch => {
-    await packsAPI.deleteNewPack(id)
+    await packsAPI.deletePack(id)
 
     dispatch(getPacksTC())
   }
@@ -126,8 +126,10 @@ export const editePackTC =
   (packId: string): AppRootThunk =>
   async dispatch => {
     const data = { _id: packId, name: '😸 updatedCatsPack' }
+  }
 export const updatePackTC =
-  (data: UpdatePackType) => async (dispatch: ThunkDispatch<any, any, any>) => {
+  (data: UpdatePackType): AppRootThunk =>
+  async dispatch => {
     //const data = { _id: packId, name: '😸 updatedCatsPack' }
 
     await packsAPI.updatePack(data)
