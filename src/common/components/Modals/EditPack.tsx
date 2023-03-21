@@ -35,7 +35,7 @@ export const EditPack = () => {
               ✖️
             </Button>
           </div>
-          <FormPropsTextFields />
+          <FormPropsTextFields label={'Name pack'} defaultValue={'Hello World'} />
           <CheckboxLabels />
           <div className={s.bottomModal}>
             <Button

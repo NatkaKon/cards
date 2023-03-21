@@ -38,8 +38,8 @@ export const AddNewCard = () => {
             </Button>
           </div>
           <ComboBox />
-          <FormPropsTextFields />
-          <FormPropsTextFields />
+          <FormPropsTextFields label={'Question'} defaultValue={'Hello World'} />
+          <FormPropsTextFields label={'Answer'} defaultValue={'Hello World'} />
           <div className={s.bottomModal}>
             <Button
               type="submit"

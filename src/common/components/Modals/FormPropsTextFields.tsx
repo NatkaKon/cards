@@ -2,8 +2,11 @@ import * as React from 'react'
 
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
-
-export const FormPropsTextFields = () => {
+type PropsType = {
+  label: string
+  defaultValue: string
+}
+export const FormPropsTextFields = (props: PropsType) => {
   return (
     <Box
       component="form"
@@ -16,8 +19,8 @@ export const FormPropsTextFields = () => {
       <div>
         <TextField
           id="filled-required"
-          label="Pack name"
-          defaultValue="Hello World"
+          label={props.label}
+          defaultValue={props.defaultValue}
           variant="filled"
         />
       </div>
