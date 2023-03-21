@@ -9,7 +9,7 @@ export const packsAPI = {
   addNewPack(cardsPack: AddNewPackType) {
     return instance.post('/cards/pack', { cardsPack })
   },
-  deleteNewPack(id: string) {
+  deletePack(id: string) {
     return instance.delete('/cards/pack', { params: { id } })
   },
   updatePack(data: UpdatePackType) {
@@ -38,4 +38,6 @@ export type AddNewPackType = {
 export type UpdatePackType = {
   _id: string
   name?: string
+  deckCover?: string
+  private?: boolean
 }

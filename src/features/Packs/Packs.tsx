@@ -20,12 +20,25 @@ import { SearchSlider } from '../../common/components/SearchSlider/SearchSlider'
 import { SuperButton } from '../../common/components/SuperButton/SuperButton'
 import { PATH } from '../../common/constants/path'
 import { setPackIdAC } from '../Cards/cardsReducer'
+import { setIsMyPackAC, setPackIdAC, setPackNameForTitleAC } from '../Cards/cardsReducer'
+import { PagePagination } from '../PagePagination/PagePagination'
+import {
+  resetPaginationAC,
+  setCurrentPageAC,
+  setPageCountAC,
+} from '../PagePagination/pagination-reducer'
+import { PanelButton } from '../PanelButton/PanelButton'
 import { TableBodyPacks } from '../Table/TableBodyPacks'
 import { TableHead } from '../Table/TableHead'
-import { CommonTablePagination } from '../Table/TablePagination'
 
 import s from './Packs.module.css'
-import { getPacksTC, resetAllSortingParamsAC, searchMyPacksAC } from './packsReducer'
+import {
+  addNewPackTC,
+  getPacksTC,
+  resetAllSortingParamsAC,
+  searchMyPacksAC,
+  searchPacksByNameAC,
+} from './packsReducer'
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
@@ -36,13 +49,13 @@ export const Packs = () => {
   const isMyPack = useAppSelector(state => state.packs.isMyPack)
   const min = useAppSelector(state => state.packs.min)
   const max = useAppSelector(state => state.packs.max)
-  const page = useAppSelector(state => state.packs.page)
-  const pageCount = useAppSelector(state => state.packs.pageCount)
-  const cardPacksTotalCount = useAppSelector(state => state.packs.cardPacksTotalCount)
+  const page = useAppSelector(state => state.pagination.page)
+  const pageCount = useAppSelector(state => state.pagination.pageCount)
+  const cardPacksTotalCount = useAppSelector(state => state.pagination.totalPages)
 
   useEffect(() => {
     dispatch(getPacksTC())
-  }, [packName, isMyPack, min, max, page, pageCount])
+  }, [packName, isMyPack, min, max, page, pageCount, cardPacksTotalCount])
 
   const handleClickMyButton = useCallback(() => {
     dispatch(searchMyPacksAC(true))
@@ -54,21 +67,40 @@ export const Packs = () => {
 
   const handleResetAllSortingParams = useCallback(() => {
     dispatch(resetAllSortingParamsAC())
+    dispatch(resetPaginationAC())
+  }, [])
+
+  const handleChangePage = useCallback((newPage: number) => {
+    dispatch(setCurrentPageAC(newPage))
+  }, [])
+
+  const handleChangeRowsPerPage = useCallback((pageCount: number) => {
+    dispatch(setPageCountAC(pageCount))
+  }, [])
+
+  const handleSearchPacksByName = useCallback((packName: string) => {
+    dispatch(searchPacksByNameAC(packName))
   }, [])
 
   const handleClickOnPackName = useCallback(
-    (packId: string) => {
+    (packId: string, isMyPack: boolean, packNameForTitle: string) => {
       dispatch(setPackIdAC(packId))
+      dispatch(setIsMyPackAC(isMyPack))
+      dispatch(setPackNameForTitleAC(packNameForTitle))
 
       navigate(PATH.CARDS)
     },
     [navigate]
   )
+  const addNewPackHandler = () => {
+    dispatch(addNewPackTC())
+  }
 
   return (
     <Container sx={{ padding: '50px' }}>
+      <PanelButton name={'Packs list'} button={'Add new pack'} callBack={addNewPackHandler} />
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <DebounceSearch searchQuery={packName} />
+        <DebounceSearch searchQuery={packName} searchDebouncedValue={handleSearchPacksByName} />
         <SuperButton xType={isMyPack ? '' : 'secondary'} onClick={handleClickMyButton}>
           My
         </SuperButton>
@@ -84,16 +116,19 @@ export const Packs = () => {
       <AddModal />
       <TableContainer component={Paper} className={s.tableContainer}>
         <DeleteModal />
+      <TableContainer component={Paper} elevation={4} className={s.tableContainer}>
         <Table sx={{ minWidth: 500 }} aria-label="simple table">
           <TableHead />
           <TableBodyPacks handleClickOnPackName={handleClickOnPackName} />
-          <CommonTablePagination
-            page={page}
-            cardPacksTotalCount={cardPacksTotalCount}
-            pageCount={pageCount}
-          />
         </Table>
       </TableContainer>
+      <PagePagination
+        page={page}
+        pageCount={pageCount}
+        cardPacksTotalCount={cardPacksTotalCount}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </Container>
   )
 }

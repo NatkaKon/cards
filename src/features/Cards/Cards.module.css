@@ -1,3 +1,7 @@
 .tableContainer{
 
 }
+.linkToPacks{
+    display: flex;
+    align-items: center;
+}

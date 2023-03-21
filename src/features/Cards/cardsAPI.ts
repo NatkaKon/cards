@@ -8,9 +8,29 @@ export const cardsAPI = {
       params: data,
     })
   },
+  addNewCard(card: AddNewCardType) {
+    return instance.post('/cards/card', { card })
+  },
+  deleteCard(id: string) {
+    return instance.delete('/cards/card', { params: { id } })
+  },
+  updateCard(data: UpdateCardType) {
+    return instance.put('/cards/card', { card: data })
+  },
 }
 
 //types
+export type AddNewCardType = {
+  cardsPack_id: string
+  question: string
+  answer: string
+  grade?: number
+  shots?: number
+  answerImg?: string
+  questionImg?: string
+  questionVideo?: string
+  answerVideo?: string
+}
 export type GetCardsPayloadType = {
   cardAnswer?: string
   cardQuestion?: string
@@ -18,4 +38,15 @@ export type GetCardsPayloadType = {
   sortCards?: number
   page?: number
   pageCount?: number
+}
+export type UpdateCardType = {
+  _id: string
+  question?: string
+  answer?: string
+  grade?: number
+  shots?: number
+  answerImg?: string
+  questionImg?: string
+  questionVideo?: string
+  answerVideo?: string
 }

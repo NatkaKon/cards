@@ -1,13 +1,21 @@
 import React from 'react'
 
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined'
+import EditIcon from '@mui/icons-material/Edit'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
-import { useAppSelector } from '../../app/store'
+import { useAppDispatch, useAppSelector } from '../../app/store'
+import { UpdateCardType } from '../Cards/cardsAPI'
+import { deleteCardTC, updateCardTC } from '../Cards/cardsReducer'
 
 export const TableBodyCards = () => {
   const cards = useAppSelector(state => state.cards)
+  const isMyPack = useAppSelector(state => state.cards.isMyPack)
+  const dispatch = useAppDispatch()
+  const deleteCardHandler = (cardId: string) => dispatch(deleteCardTC(cardId))
+  const editeCardHandler = (data: UpdateCardType) => dispatch(updateCardTC(data))
 
   return (
     <TableBody>
@@ -28,7 +36,20 @@ export const TableBodyCards = () => {
           <TableCell align="right">{el.answer}</TableCell>
           <TableCell align="right">{el.updated.split('T')[0]}</TableCell>
           <TableCell align="right">{el.grade}</TableCell>
-          <TableCell align="right"></TableCell>
+          {isMyPack && (
+            <TableCell align="right">
+              {
+                <>
+                  <EditIcon
+                    onClick={() => {
+                      editeCardHandler({ _id: el._id, question: '🐭question', answer: '🐹answer' })
+                    }}
+                  />
+                  <DeleteForeverOutlinedIcon onClick={() => deleteCardHandler(el._id)} />
+                </>
+              }
+            </TableCell>
+          )}
         </TableRow>
       ))}
     </TableBody>
