@@ -3,7 +3,7 @@ import { ThunkDispatch } from 'redux-thunk'
 import { AppRootThunk } from '../../app/store'
 import { setPaginationDataAC } from '../PagePagination/pagination-reducer'
 
-import { cardsAPI } from './cardsAPI'
+import { cardsAPI, UpdateCardType } from './cardsAPI'
 
 const initialState = {
   cards: [] as CardType[],
@@ -84,6 +84,19 @@ export const addNewCardTC = (PackId: string) => async (dispatch: ThunkDispatch<a
 
   dispatch(getCardsTC())
 }
+
+export const deleteCardTC = (id: string) => async (dispatch: ThunkDispatch<any, any, any>) => {
+  await cardsAPI.deleteCard(id)
+
+  dispatch(getCardsTC())
+}
+
+export const updateCardTC =
+  (data: UpdateCardType) => async (dispatch: ThunkDispatch<any, any, any>) => {
+    await cardsAPI.updateCard(data)
+
+    dispatch(getCardsTC())
+  }
 
 // types
 type InitialStateType = typeof initialState

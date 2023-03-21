@@ -3,7 +3,7 @@ import { ThunkDispatch } from 'redux-thunk'
 import { AppRootThunk } from '../../app/store'
 import { setPaginationDataAC } from '../PagePagination/pagination-reducer'
 
-import { AddNewPackType, packsAPI } from './packsAPI'
+import { AddNewPackType, packsAPI, UpdatePackType } from './packsAPI'
 
 const initialState = {
   cardPacks: [] as CardPacksType[],
@@ -110,18 +110,19 @@ export const addNewPackTC =
   }
 
 export const deletePackTC = (id: string) => async (dispatch: ThunkDispatch<any, any, any>) => {
-  await packsAPI.deleteNewPack(id)
+  await packsAPI.deletePack(id)
 
   dispatch(getPacksTC())
 }
 
-export const editePackTC = (packId: string) => async (dispatch: ThunkDispatch<any, any, any>) => {
-  const data = { _id: packId, name: '😸 updatedCatsPack' }
+export const updatePackTC =
+  (data: UpdatePackType) => async (dispatch: ThunkDispatch<any, any, any>) => {
+    //const data = { _id: packId, name: '😸 updatedCatsPack' }
 
-  await packsAPI.updatePack(data)
+    await packsAPI.updatePack(data)
 
-  dispatch(getPacksTC())
-}
+    dispatch(getPacksTC())
+  }
 
 // types
 

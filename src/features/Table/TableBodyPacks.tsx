@@ -8,7 +8,7 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
-import { deletePackTC, editePackTC } from '../Packs/packsReducer'
+import { deletePackTC, updatePackTC } from '../Packs/packsReducer'
 
 type TableBodyPacksProps = {
   handleClickOnPackName: (packId: string, isMyPack: boolean, packNameForTitle: string) => void
@@ -21,6 +21,10 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
   const onClickHandler = (packId: string, packUserId: string, packNameForTitle: string) => {
     props.handleClickOnPackName(packId, userId === packUserId, packNameForTitle)
   }
+  const dispatch = useAppDispatch()
+  const delPackHandler = (packId: string) => dispatch(deletePackTC(packId))
+  const editePackHandler = (packId: string) =>
+    dispatch(updatePackTC({ _id: packId, name: '😸updatedCatsPack' }))
 
   return (
     <TableBody>
@@ -36,12 +40,6 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
           }}
         >
           <TableCell
-            // sx={{
-            //   '&:hover': {
-            //     backgroundColor: '#A0A0A0',
-            //     opacity: [0.9, 0.9, 0.7],
-            //   },
-            // }}
             component="th"
             scope="row"
             onClick={() => onClickHandler(el._id, el.user_id, el.name)}
@@ -52,31 +50,18 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
           <TableCell align="right">{el.updated.split('T')[0]}</TableCell>
           <TableCell align="right">{el.user_name}</TableCell>
           <TableCell align="right">
-            {el.user_id === userId ? <Actions packId={el._id} /> : <SchoolIcon />}
+            {el.user_id === userId ? (
+              <>
+                <SchoolIcon />
+                <EditIcon onClick={() => editePackHandler(el._id)} />
+                <DeleteForeverOutlinedIcon onClick={() => delPackHandler(el._id)} />
+              </>
+            ) : (
+              <SchoolIcon />
+            )}
           </TableCell>
         </TableRow>
       ))}
     </TableBody>
-  )
-}
-
-type ActionsPropsType = {
-  packId: string
-}
-const Actions = (props: ActionsPropsType) => {
-  const dispatch = useAppDispatch()
-  const delPackHandler = () => {
-    dispatch(deletePackTC(props.packId))
-  }
-  const editePackHandler = () => {
-    dispatch(editePackTC(props.packId))
-  }
-
-  return (
-    <div>
-      <SchoolIcon />
-      <EditIcon onClick={editePackHandler} />
-      <DeleteForeverOutlinedIcon onClick={delPackHandler} />
-    </div>
   )
 }
