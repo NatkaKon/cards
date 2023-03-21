@@ -14,8 +14,7 @@ import { useFormik } from 'formik'
 import { useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 
-import { useAppDispatch, useAppSelector } from '../../app/store'
-import { ErrorSnackbar } from '../../common/components/ErrorSnackbar/ErrorSnackbar'
+import { useAppDispatch } from '../../app/store'
 import { buttonStyle } from '../../common/constants/form-button-style'
 import style from '../../common/styles/authForm.module.css'
 
@@ -25,7 +24,6 @@ export const NewPassword: FC = () => {
   const [showPassword, setShowPassword] = useState(false)
   const handleClickShowPassword = () => setShowPassword(show => !show)
 
-  const error = useAppSelector(state => state.appReducer.error)
   const dispatch = useAppDispatch()
 
   const { token } = useParams()
@@ -98,7 +96,6 @@ export const NewPassword: FC = () => {
           </Paper>
         </form>
       </div>
-      {error && <ErrorSnackbar />}
     </div>
   )
 }
