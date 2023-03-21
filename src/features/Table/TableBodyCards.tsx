@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { FC } from 'react'
 
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined'
 import EditIcon from '@mui/icons-material/Edit'
+import SchoolIcon from '@mui/icons-material/School'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
+import { useAppSelector } from '../../app/store'
+import * as cardsSelectors from '../Cards/cards-selectors'
+import * as profileSelectors from '../Profile/profile-selector'
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { UpdateCardType } from '../Cards/cardsAPI'
 import { deleteCardTC, updateCardTC } from '../Cards/cardsReducer'
 
-export const TableBodyCards = () => {
+
+export const TableBodyCards: FC = () => {
+  const cards = useAppSelector(cardsSelectors.cards)
+  const userId = useAppSelector(profileSelectors.userId)
   const cards = useAppSelector(state => state.cards)
   const isMyPack = useAppSelector(state => state.cards.isMyPack)
   const dispatch = useAppDispatch()
@@ -19,7 +26,7 @@ export const TableBodyCards = () => {
 
   return (
     <TableBody>
-      {cards.cards.map(el => (
+      {cards.map(el => (
         <TableRow
           key={el._id}
           sx={{

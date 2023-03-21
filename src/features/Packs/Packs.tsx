@@ -18,6 +18,8 @@ import { EditPack } from '../../common/components/Modals/EditPack'
 import { SearchSlider } from '../../common/components/SearchSlider/SearchSlider'
 import { SuperButton } from '../../common/components/SuperButton/SuperButton'
 import { PATH } from '../../common/constants/path'
+import { setPackIdAC } from '../Cards/cardsReducer'
+import * as paginationSelectors from '../PagePagination/page-pagination-selectors'
 import { setIsMyPackAC, setPackIdAC, setPackNameForTitleAC } from '../Cards/cardsReducer'
 import { PagePagination } from '../PagePagination/PagePagination'
 import {
@@ -27,8 +29,9 @@ import {
 } from '../PagePagination/pagination-reducer'
 import { PanelButton } from '../PanelButton/PanelButton'
 import { TableBodyPacks } from '../Table/TableBodyPacks'
-import { TableHead } from '../Table/TableHead'
+import { HeadCellType, TableHeadWithSorting } from '../Table/TableHeadWithSorting'
 
+import * as packsSelectors from './packs-selectors'
 import s from './Packs.module.css'
 import {
   addNewPackTC,
@@ -36,24 +39,35 @@ import {
   resetAllSortingParamsAC,
   searchMyPacksAC,
   searchPacksByNameAC,
+  setSortPacksAC,
 } from './packsReducer'
+
+const SORT_VALUES: HeadCellType[] = [
+  { id: 'name', label: 'Name' },
+  { id: 'cardsCount', label: 'Cards' },
+  { id: 'updated', label: 'Last Updated' },
+  { id: 'user_name', label: 'Created by' },
+  { id: 'actions', label: 'Actions' },
+]
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
 
-  const packName = useAppSelector(state => state.packs.packName)
-  const isMyPack = useAppSelector(state => state.packs.isMyPack)
-  const min = useAppSelector(state => state.packs.min)
-  const max = useAppSelector(state => state.packs.max)
-  const page = useAppSelector(state => state.pagination.page)
-  const pageCount = useAppSelector(state => state.pagination.pageCount)
-  const cardPacksTotalCount = useAppSelector(state => state.pagination.totalPages)
+  const packName = useAppSelector(packsSelectors.packName)
+  const isMyPack = useAppSelector(packsSelectors.isMyPack)
+  const min = useAppSelector(packsSelectors.min)
+  const max = useAppSelector(packsSelectors.max)
+  const sortPacks = useAppSelector(packsSelectors.sortPacks)
+
+  const page = useAppSelector(paginationSelectors.page)
+  const pageCount = useAppSelector(paginationSelectors.pageCount)
+  const cardPacksTotalCount = useAppSelector(paginationSelectors.totalPages)
 
   useEffect(() => {
     dispatch(getPacksTC())
-  }, [packName, isMyPack, min, max, page, pageCount, cardPacksTotalCount])
+  }, [packName, isMyPack, min, max, page, pageCount, cardPacksTotalCount, sortPacks])
 
   const handleClickMyButton = useCallback(() => {
     dispatch(searchMyPacksAC(true))
@@ -94,6 +108,11 @@ export const Packs = () => {
     dispatch(addNewPackTC())
   }
 
+  const handleRequestSort = useCallback((event: React.MouseEvent<unknown>, newSort: string) => {
+    dispatch(setSortPacksAC(newSort))
+    dispatch(setCurrentPageAC(1))
+  }, [])
+
   return (
     <Container sx={{ padding: '50px' }}>
       <PanelButton name={'Packs list'} button={'Add new pack'} callBack={addNewPackHandler} />
@@ -113,12 +132,6 @@ export const Packs = () => {
       <EditPack />
       <AddModal />
       <DeleteModal />
-      <TableContainer component={Paper} elevation={4} className={s.tableContainer}>
-        <Table sx={{ minWidth: 500 }} aria-label="simple table">
-          <TableHead />
-          <TableBodyPacks handleClickOnPackName={handleClickOnPackName} />
-        </Table>
-      </TableContainer>
       <PagePagination
         page={page}
         pageCount={pageCount}
@@ -126,6 +139,16 @@ export const Packs = () => {
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       />
+      <TableContainer component={Paper} elevation={4} className={s.tableContainer}>
+        <Table sx={{ minWidth: 500 }} aria-label="simple table">
+          <TableHeadWithSorting
+            orderBy={sortPacks}
+            headCells={SORT_VALUES}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBodyPacks handleClickOnPackName={handleClickOnPackName} />
+        </Table>
+      </TableContainer>
     </Container>
   )
 }

@@ -5,14 +5,17 @@ import '../App.css'
 import { Grid } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 
+import { ErrorSnackbar } from '../common/components/ErrorSnackbar/ErrorSnackbar'
 import { Header } from '../features/Header/Header'
 import { Pages } from '../routes/Pages'
 
 import { initializeAppTC } from './app-reducer'
+import * as appSelectors from './app-selectors'
 import { useAppDispatch, useAppSelector } from './store'
 
 function App() {
-  const isInitialized = useAppSelector(state => state.appReducer.isInitialized)
+  const isInitialized = useAppSelector(appSelectors.isInitialized)
+  const error = useAppSelector(appSelectors.error)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -38,6 +41,7 @@ function App() {
     <div className="App">
       <Header />
       <Pages />
+      <ErrorSnackbar errMessage={error} />
     </div>
   )
 }

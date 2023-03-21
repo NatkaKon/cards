@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react'
+import React, { FC, memo, useMemo } from 'react'
 
 import Box from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
@@ -25,6 +25,10 @@ export const PagePagination: FC<PropsType> = memo(props => {
     props.handleChangePage(1)
   }
 
+  const count = useMemo(() => {
+    return Math.ceil(props.cardPacksTotalCount / props.pageCount)
+  }, [props.cardPacksTotalCount, props.pageCount])
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', my: '10px' }}>
       <Pagination
@@ -32,7 +36,7 @@ export const PagePagination: FC<PropsType> = memo(props => {
         showLastButton
         size="large"
         color="primary"
-        count={Math.trunc(props.cardPacksTotalCount / props.pageCount)}
+        count={count}
         page={props.page}
         siblingCount={1}
         boundaryCount={2}

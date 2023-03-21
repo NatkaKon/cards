@@ -10,8 +10,7 @@ import { useFormik } from 'formik'
 import { NavLink, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 
-import { useAppDispatch, useAppSelector } from '../../app/store'
-import { ErrorSnackbar } from '../../common/components/ErrorSnackbar/ErrorSnackbar'
+import { useAppDispatch } from '../../app/store'
 import { buttonStyle } from '../../common/constants/form-button-style'
 import { PATH } from '../../common/constants/path'
 import style from '../../common/styles/authForm.module.css'
@@ -101,7 +100,6 @@ export const PasswordRecovery: FC = memo(() => {
 
 export const CheckEmail: FC<{ email: string }> = memo(({ email }) => {
   const navigate = useNavigate()
-  const error = useAppSelector(state => state.appReducer.error)
 
   const handleClick = () => {
     navigate(PATH.LOGIN)
@@ -131,7 +129,6 @@ export const CheckEmail: FC<{ email: string }> = memo(({ email }) => {
           </Button>
         </Paper>
       </div>
-      {error && <ErrorSnackbar />}
     </div>
   )
 })

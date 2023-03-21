@@ -14,7 +14,6 @@ import { Navigate, NavLink } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
-import { ErrorSnackbar } from '../../common/components/ErrorSnackbar/ErrorSnackbar'
 import { PATH } from '../../common/constants/path'
 
 import { registerUser, SignupFormType } from './sign-up-reducer'
@@ -23,7 +22,6 @@ import style from './Signup.module.css'
 export const Signup: FC = () => {
   const isRegistered = useAppSelector(state => state.signup.isRegistered)
   const dispatch = useAppDispatch()
-  const error = useAppSelector(state => state.appReducer.error)
 
   const paperFormStyle = { py: '20px', px: '30px', minWidth: '413px' }
 
@@ -152,7 +150,6 @@ export const Signup: FC = () => {
           </Paper>
         </form>
       </div>
-      {error && <ErrorSnackbar />}
     </div>
   )
 }

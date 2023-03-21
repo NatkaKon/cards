@@ -1,17 +1,16 @@
-import React, { forwardRef, memo } from 'react'
+import React, { FC, forwardRef, memo } from 'react'
 
 import MuiAlert, { AlertProps } from '@mui/material/Alert'
 import Snackbar from '@mui/material/Snackbar'
 
 import { setAppError } from '../../../app/app-reducer'
-import { useAppDispatch, useAppSelector } from '../../../app/store'
+import { useAppDispatch } from '../../../app/store'
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 })
 
-export const ErrorSnackbar = memo(() => {
-  const error = useAppSelector(state => state.appReducer.error)
+export const ErrorSnackbar: FC<{ errMessage: string | null }> = memo(({ errMessage }) => {
   const dispatch = useAppDispatch()
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -22,9 +21,9 @@ export const ErrorSnackbar = memo(() => {
   }
 
   return (
-    <Snackbar open={!!error} autoHideDuration={6000} onClose={handleClose}>
+    <Snackbar open={!!errMessage} autoHideDuration={3000} onClose={handleClose}>
       <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-        {error}
+        {errMessage}
       </Alert>
     </Snackbar>
   )
