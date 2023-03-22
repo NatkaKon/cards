@@ -65,20 +65,20 @@ export const Packs = () => {
   const cardPacksTotalCount = useAppSelector(paginationSelectors.totalPages)
 
   const [openModal, setOpenModal] = useState(false)
-  const [editPackName, setEditPackName] = useState('')
+  const [modalPackName, setModalPackName] = useState('')
   const [packId, setPackId] = useState('')
 
   useEffect(() => {
     dispatch(getPacksTC())
   }, [packName, isMyPack, min, max, page, pageCount, cardPacksTotalCount, sortPacks])
 
-  const handleClickOnOpenEditPack = useCallback(
+  const handleOpenEditPack = useCallback(
     (packId: string, packName: string) => {
       setOpenModal(true)
-      setEditPackName(packName)
+      setModalPackName(packName)
       setPackId(packId)
     },
-    [editPackName, packId]
+    [modalPackName, packId]
   )
 
   const handleClickMyButton = useCallback(() => {
@@ -145,8 +145,8 @@ export const Packs = () => {
         open={openModal}
         setOpen={setOpenModal}
         packId={packId}
-        packName={editPackName}
-        setPackName={setEditPackName}
+        packName={modalPackName}
+        setPackName={setModalPackName}
       />
       <AddModal />
       <DeleteModal />
@@ -166,7 +166,7 @@ export const Packs = () => {
           />
           <TableBodyPacks
             handleClickOnPackName={handleClickOnPackName}
-            handleClickOnOpenEditPack={handleClickOnOpenEditPack}
+            handleClickOnOpenEditPack={handleOpenEditPack}
           />
         </Table>
       </TableContainer>

@@ -26,6 +26,8 @@ export const AddNewCard: FC<PropsType> = memo(props => {
 
   const onClickHandlerClose = () => {
     props.setOpen(false)
+    props.setCardQuestion('')
+    props.setCardAnswer('')
   }
 
   const onChangeCardQuestionHandler = (newValue: string) => {

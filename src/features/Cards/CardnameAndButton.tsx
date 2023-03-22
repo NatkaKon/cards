@@ -1,22 +1,24 @@
-import * as React from 'react'
+import React, { FC } from 'react'
 
-import { useAppDispatch, useAppSelector } from '../../app/store'
+import { useAppSelector } from '../../app/store'
+import { selectIsMyPack } from '../Cards/cards-selectors'
 import { PanelButton } from '../PanelButton/PanelButton'
 
-import { addNewCardTC } from './cardsReducer'
+type PropsType = {
+  onAddNewCardClick: () => void
+}
 
-export const CardNameAndButton = () => {
-  const isMyPack = useAppSelector(state => state.cards.isMyPack)
-  const packId = useAppSelector(state => state.cards.cardsPack_id)
-  const dispatch = useAppDispatch()
+export const CardNameAndButton: FC<PropsType> = props => {
+  const isMyPack = useAppSelector(selectIsMyPack)
 
   const packNameForTitle = useAppSelector(state => state.cards.packNameForTitle)
-  //const addNewCardHandler = () => onAddCard
+
+  const handleAddNewCard = () => props.onAddNewCardClick()
 
   return (
     <>
       {isMyPack ? (
-        <PanelButton button={'Add new card'} name={packNameForTitle} callBack={() => {}} />
+        <PanelButton button={'Add new card'} name={packNameForTitle} callBack={handleAddNewCard} />
       ) : (
         <PanelButton button={'Learn to pack'} name={packNameForTitle} callBack={() => {}} />
       )}
