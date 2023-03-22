@@ -1,4 +1,4 @@
-import React, { Dispatch, FC } from 'react'
+import React, { Dispatch, FC, memo } from 'react'
 
 import Button from '@mui/material/Button'
 
@@ -19,7 +19,7 @@ type PropsType = {
   setPackName: Dispatch<React.SetStateAction<string>>
 }
 
-export const EditPack: FC<PropsType> = props => {
+export const EditPack: FC<PropsType> = memo(props => {
   const dispatch = useAppDispatch()
 
   const onClickHandlerClose = () => {
@@ -79,4 +79,4 @@ export const EditPack: FC<PropsType> = props => {
       </BasicModal>
     </>
   )
-}
+})
