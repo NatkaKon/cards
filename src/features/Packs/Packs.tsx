@@ -126,7 +126,7 @@ export const Packs = () => {
   }, [])
 
   return (
-    <Container sx={{ padding: '50px' }}>
+    <Container sx={{ padding: '30px' }}>
       <PanelButton name={'Packs list'} button={'Add new pack'} callBack={addNewPackHandler} />
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <DebounceSearch searchQuery={packName} searchDebouncedValue={handleSearchPacksByName} />

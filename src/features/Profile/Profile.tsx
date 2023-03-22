@@ -1,18 +1,15 @@
 import * as React from 'react'
 import { useCallback } from 'react'
 
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
-import { Container } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
-import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper'
-import { NavLink } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import cameraIcon from '../../assets/cameraIcon.svg'
 import logOutIcon from '../../assets/logout.svg'
 import userPhoto from '../../assets/user.jpg'
-import { PATH } from '../../common/constants/path'
+import { ToPackListLink } from '../../common/components/ToPackListLink/ToPackListLink'
 import { logoutTC } from '../Login/authReducer'
 
 import { EditableSpan } from './EditableSpan'
@@ -43,14 +40,10 @@ export function Profile(): JSX.Element {
         flexWrap: 'wrap',
         justifyContent: 'center',
         flexDirection: 'column',
+        p: '30px',
       }}
     >
-      <NavLink to={PATH.PACKS}>
-        <Box sx={{ width: '100%', height: '100px', display: 'flex', alignItems: 'center' }}>
-          <KeyboardBackspaceIcon sx={{ paddingRight: '10px' }} />
-          <p>To Pack List</p>
-        </Box>
-      </NavLink>
+      <ToPackListLink />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Paper
           elevation={3}
