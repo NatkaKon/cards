@@ -122,16 +122,9 @@ export const deletePackTC =
     dispatch(getPacksTC())
   }
 
-export const editePackTC =
-  (packId: string): AppRootThunk =>
-  async dispatch => {
-    const data = { _id: packId, name: '😸 updatedCatsPack' }
-  }
 export const updatePackTC =
   (data: UpdatePackType): AppRootThunk =>
   async dispatch => {
-    //const data = { _id: packId, name: '😸 updatedCatsPack' }
-
     await packsAPI.updatePack(data)
 
     dispatch(getPacksTC())

@@ -1,10 +1,9 @@
-import * as React from 'react'
-import { useState } from 'react'
+import React, { Dispatch, FC } from 'react'
 
 import Button from '@mui/material/Button'
 
-import { addNewPackTC } from '../../../features/Packs/packsReducer'
-import { PanelButton } from '../../../features/PanelButton/PanelButton'
+import { useAppDispatch } from '../../../app/store'
+import { updatePackTC } from '../../../features/Packs/packsReducer'
 import { buttonStyle } from '../../constants/form-button-style'
 
 import { BasicModal } from './BasicModal'
@@ -12,22 +11,33 @@ import { CheckboxLabels } from './CheckboxLabels'
 import { FormPropsTextFields } from './FormPropsTextFields'
 import s from './Modal.module.css'
 
-export const EditPack = () => {
-  const [open, setOpen] = React.useState(false)
-  const handleOpen = () => {
-    setOpen(true)
-  }
+type PropsType = {
+  open: boolean
+  setOpen: Dispatch<React.SetStateAction<boolean>>
+  packId: string
+  packName: string
+  setPackName: Dispatch<React.SetStateAction<string>>
+}
+
+export const EditPack: FC<PropsType> = props => {
+  const dispatch = useAppDispatch()
+
   const onClickHandlerClose = () => {
-    setOpen(false)
+    props.setOpen(false)
   }
+
+  const handleOnTextFieldChange = (newValue: string) => {
+    props.setPackName(newValue)
+  }
+
   const onClickHandlerSave = () => {
-    // dispatch(addNewPackTC())
+    dispatch(updatePackTC({ _id: props.packId, name: props.packName }))
+    props.setOpen(false)
   }
 
   return (
     <>
-      <PanelButton name={'Packs list'} button={'Edit pack'} callBack={handleOpen} />
-      <BasicModal open={open} setOpen={setOpen}>
+      <BasicModal open={props.open} setOpen={props.setOpen}>
         <div className={s.modalContainer}>
           <div className={s.headerModal}>
             <div>Edit pack</div>
@@ -35,7 +45,11 @@ export const EditPack = () => {
               ✖️
             </Button>
           </div>
-          <FormPropsTextFields label={'Name pack'} defaultValue={'Hello World'} />
+          <FormPropsTextFields
+            label={'Name pack'}
+            value={props.packName}
+            onChange={handleOnTextFieldChange}
+          />
           <CheckboxLabels />
           <div className={s.bottomModal}>
             <Button

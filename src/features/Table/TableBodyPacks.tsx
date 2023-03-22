@@ -3,20 +3,22 @@ import React, { FC } from 'react'
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined'
 import EditIcon from '@mui/icons-material/Edit'
 import SchoolIcon from '@mui/icons-material/School'
+import IconButton from '@mui/material/IconButton'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import * as packsSelectors from '../Packs/packs-selectors'
-import { deletePackTC, updatePackTC } from '../Packs/packsReducer'
+import { deletePackTC } from '../Packs/packsReducer'
 import * as profileSelectors from '../Profile/profile-selector'
 
-type TableBodyPacksProps = {
+type PropsType = {
   handleClickOnPackName: (packId: string, isMyPack: boolean, packNameForTitle: string) => void
+  handleClickOnOpenEditPack: (packId: string, packName: string) => void
 }
 
-export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
+export const TableBodyPacks: FC<PropsType> = props => {
   const packs = useAppSelector(packsSelectors.packs)
   const userId = useAppSelector(profileSelectors.userId)
 
@@ -25,8 +27,10 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
   }
   const dispatch = useAppDispatch()
   const delPackHandler = (packId: string) => dispatch(deletePackTC(packId))
-  const editePackHandler = (packId: string) =>
-    dispatch(updatePackTC({ _id: packId, name: '😸updatedCatsPack' }))
+
+  const handleClickOnOpenEditPack = (packId: string, packName: string) => {
+    props.handleClickOnOpenEditPack(packId, packName)
+  }
 
   return (
     <TableBody>
@@ -54,12 +58,20 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
           <TableCell align="right">
             {el.user_id === userId ? (
               <>
-                <SchoolIcon />
-                <EditIcon onClick={() => editePackHandler(el._id)} />
-                <DeleteForeverOutlinedIcon onClick={() => delPackHandler(el._id)} />
+                <IconButton onClick={() => {}}>
+                  <SchoolIcon />
+                </IconButton>
+                <IconButton onClick={() => handleClickOnOpenEditPack(el._id, el.name)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton onClick={() => delPackHandler(el._id)}>
+                  <DeleteForeverOutlinedIcon />
+                </IconButton>
               </>
             ) : (
-              <SchoolIcon />
+              <IconButton onClick={() => {}}>
+                <SchoolIcon />
+              </IconButton>
             )}
           </TableCell>
         </TableRow>

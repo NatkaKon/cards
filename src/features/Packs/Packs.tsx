@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import FilterAltOffSharpIcon from '@mui/icons-material/FilterAltOffSharp'
 import { Container } from '@mui/material'
@@ -63,6 +63,19 @@ export const Packs = () => {
   const page = useAppSelector(paginationSelectors.page)
   const pageCount = useAppSelector(paginationSelectors.pageCount)
   const cardPacksTotalCount = useAppSelector(paginationSelectors.totalPages)
+
+  const [openModal, setOpenModal] = useState(false)
+  const [editPackName, setEditPackName] = useState('')
+  const [packId, setPackId] = useState('')
+
+  const handleClickOnOpenEditPack = useCallback(
+    (packId: string, packName: string) => {
+      setOpenModal(true)
+      setEditPackName(packName)
+      setPackId(packId)
+    },
+    [editPackName, packId]
+  )
 
   useEffect(() => {
     dispatch(getPacksTC())
@@ -128,7 +141,13 @@ export const Packs = () => {
           <FilterAltOffSharpIcon fontSize="medium" />
         </IconButton>
       </Box>
-      <EditPack />
+      <EditPack
+        open={openModal}
+        setOpen={setOpenModal}
+        packId={packId}
+        packName={editPackName}
+        setPackName={setEditPackName}
+      />
       <AddModal />
       <DeleteModal />
       <PagePagination
@@ -145,7 +164,10 @@ export const Packs = () => {
             headCells={SORT_VALUES}
             onRequestSort={handleRequestSort}
           />
-          <TableBodyPacks handleClickOnPackName={handleClickOnPackName} />
+          <TableBodyPacks
+            handleClickOnPackName={handleClickOnPackName}
+            handleClickOnOpenEditPack={handleClickOnOpenEditPack}
+          />
         </Table>
       </TableContainer>
     </Container>
