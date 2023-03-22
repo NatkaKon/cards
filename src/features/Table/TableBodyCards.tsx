@@ -10,7 +10,6 @@ import TableRow from '@mui/material/TableRow'
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import * as cardsSelectors from '../Cards/cards-selectors'
 import { deleteCardTC } from '../Cards/cardsReducer'
-import * as profileSelectors from '../Profile/profile-selector'
 
 type PropsType = {
   handleClickOnOpenEditCard: (cardId: string, cardQuestion: string, cardAnswer: string) => void
@@ -18,13 +17,11 @@ type PropsType = {
 
 export const TableBodyCards: FC<PropsType> = props => {
   const cards = useAppSelector(cardsSelectors.cards)
-  const userId = useAppSelector(profileSelectors.userId)
   const isMyPack = useAppSelector(state => state.cards.isMyPack)
 
   const dispatch = useAppDispatch()
 
   const deleteCardHandler = (cardId: string) => dispatch(deleteCardTC(cardId))
-  //const editeCardHandler = (data: UpdateCardType) => dispatch(updateCardTC(data))
 
   const handleClickOnOpenEditPack = (cardId: string, cardQuestion: string, cardAnswer: string) => {
     props.handleClickOnOpenEditCard(cardId, cardQuestion, cardAnswer)
@@ -43,7 +40,7 @@ export const TableBodyCards: FC<PropsType> = props => {
             },
           }}
         >
-          <TableCell component="th" scope="row">
+          <TableCell component="td" scope="row">
             {el.question}
           </TableCell>
           <TableCell align="right">{el.answer}</TableCell>

@@ -54,6 +54,7 @@ export const TableHeadWithSorting: FC<PropsType> = memo(({ headCells, orderBy, o
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'desc'}
+              hideSortIcon={headCell.id === 'actions'}
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
