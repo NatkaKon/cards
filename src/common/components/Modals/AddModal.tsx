@@ -38,7 +38,7 @@ export const AddModal = () => {
               ✖️
             </Button>
           </div>
-          <FormPropsTextFields label={'Pack name'} defaultValue={'Hello World'} />
+          <FormPropsTextFields label={'Pack name'} value={''} onChange={() => {}} />
           <CheckboxLabels />
           <div className={s.bottomModal}>
             <Button

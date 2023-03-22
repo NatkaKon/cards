@@ -6,14 +6,13 @@ import TextField from '@mui/material/TextField'
 
 type PropsType = {
   label: string
-  defaultValue?: string
-  value?: string
-  onChange?: (value: string) => void
+  value: string
+  onChange: (value: string) => void
 }
 
 export const FormPropsTextFields = (props: PropsType) => {
   const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    props.onChange && props.onChange(e.currentTarget.value)
+    props.onChange(e.currentTarget.value)
 
   return (
     <Box
@@ -29,7 +28,7 @@ export const FormPropsTextFields = (props: PropsType) => {
           id="filled-required"
           label={props.label}
           variant="filled"
-          value={props.value && props.value}
+          value={props.value}
           onChange={handleOnChange}
         />
       </div>

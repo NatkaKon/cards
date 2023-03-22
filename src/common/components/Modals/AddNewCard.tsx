@@ -1,10 +1,7 @@
-import * as React from 'react'
+import React, { Dispatch, FC, memo } from 'react'
 
 import Button from '@mui/material/Button'
 
-import { useAppDispatch } from '../../../app/store'
-import { addNewPackTC } from '../../../features/Packs/packsReducer'
-import { PanelButton } from '../../../features/PanelButton/PanelButton'
 import { buttonStyle } from '../../constants/form-button-style'
 
 import { BasicModal } from './BasicModal'
@@ -12,60 +9,83 @@ import { ComboBox } from './ComboBox'
 import { FormPropsTextFields } from './FormPropsTextFields'
 import s from './Modal.module.css'
 
-export const AddNewCard = () => {
-  const [open, setOpen] = React.useState(false)
-  const dispatch = useAppDispatch()
+type PropsType = {
+  open: boolean
+  setOpen: Dispatch<React.SetStateAction<boolean>>
+  cardId?: string
+  cardQuestion: string
+  cardAnswer: string
+  setCardQuestion: Dispatch<React.SetStateAction<string>>
+  setCardAnswer: Dispatch<React.SetStateAction<string>>
+  onSave: () => void
+  modalName?: string
+}
+
+export const AddNewCard: FC<PropsType> = memo(props => {
+  //const dispatch = useAppDispatch()
 
   const onClickHandlerClose = () => {
-    setOpen(false)
+    props.setOpen(false)
   }
+
+  const onChangeCardQuestionHandler = (newValue: string) => {
+    props.setCardQuestion(newValue)
+  }
+
+  const onChangeCardAnswerHandler = (newValue: string) => {
+    props.setCardAnswer(newValue)
+  }
+
   const onClickHandlerSave = () => {
-    dispatch(addNewPackTC())
-  }
-  const handleOpen = () => {
-    setOpen(true)
+    //dispatch(addNewPackTC())
+    props.onSave()
   }
 
   return (
-    <>
-      <PanelButton name={'Packs name'} button={'Add new card'} callBack={handleOpen} />
-      <BasicModal open={open} setOpen={setOpen}>
-        <div className={s.modalContainer}>
-          <div className={s.headerModal}>
-            <div>Add new pack</div>
-            <Button className={s.closeButton} onClick={onClickHandlerClose}>
-              ✖️
-            </Button>
-          </div>
-          <ComboBox />
-          <FormPropsTextFields label={'Question'} defaultValue={'Hello World'} />
-          <FormPropsTextFields label={'Answer'} defaultValue={'Hello World'} />
-          <div className={s.bottomModal}>
-            <Button
-              type="submit"
-              color="primary"
-              variant="text"
-              size="medium"
-              sx={buttonStyle}
-              className={s.buttonBottom}
-              onClick={onClickHandlerClose}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-              size="medium"
-              sx={buttonStyle}
-              className={s.buttonBottom}
-              onClick={onClickHandlerSave}
-            >
-              Save
-            </Button>
-          </div>
+    <BasicModal open={props.open} setOpen={props.setOpen}>
+      <div className={s.modalContainer}>
+        <div className={s.headerModal}>
+          {props.modalName ? <div>{props.modalName}</div> : <div>Add new pack</div>}
+          <Button className={s.closeButton} onClick={onClickHandlerClose}>
+            ✖️
+          </Button>
         </div>
-      </BasicModal>
-    </>
+        <ComboBox />
+        <FormPropsTextFields
+          label={'Question'}
+          value={props.cardQuestion}
+          onChange={onChangeCardQuestionHandler}
+        />
+        <FormPropsTextFields
+          label={'Answer'}
+          value={props.cardAnswer}
+          onChange={onChangeCardAnswerHandler}
+        />
+        <div className={s.bottomModal}>
+          <Button
+            type="submit"
+            color="primary"
+            variant="text"
+            size="medium"
+            sx={buttonStyle}
+            className={s.buttonBottom}
+            onClick={onClickHandlerClose}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            size="medium"
+            sx={buttonStyle}
+            className={s.buttonBottom}
+            onClick={onClickHandlerSave}
+          >
+            Save
+          </Button>
+        </div>
+      </div>
+    </BasicModal>
   )
-}
+})

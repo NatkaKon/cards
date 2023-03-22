@@ -11,12 +11,12 @@ export const CardNameAndButton = () => {
   const dispatch = useAppDispatch()
 
   const packNameForTitle = useAppSelector(state => state.cards.packNameForTitle)
-  const addNewCardHandler = () => dispatch(addNewCardTC(packId))
+  //const addNewCardHandler = () => onAddCard
 
   return (
     <>
       {isMyPack ? (
-        <PanelButton button={'Add new card'} name={packNameForTitle} callBack={addNewCardHandler} />
+        <PanelButton button={'Add new card'} name={packNameForTitle} callBack={() => {}} />
       ) : (
         <PanelButton button={'Learn to pack'} name={packNameForTitle} callBack={() => {}} />
       )}

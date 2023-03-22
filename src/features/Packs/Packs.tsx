@@ -68,6 +68,10 @@ export const Packs = () => {
   const [editPackName, setEditPackName] = useState('')
   const [packId, setPackId] = useState('')
 
+  useEffect(() => {
+    dispatch(getPacksTC())
+  }, [packName, isMyPack, min, max, page, pageCount, cardPacksTotalCount, sortPacks])
+
   const handleClickOnOpenEditPack = useCallback(
     (packId: string, packName: string) => {
       setOpenModal(true)
@@ -76,10 +80,6 @@ export const Packs = () => {
     },
     [editPackName, packId]
   )
-
-  useEffect(() => {
-    dispatch(getPacksTC())
-  }, [packName, isMyPack, min, max, page, pageCount, cardPacksTotalCount, sortPacks])
 
   const handleClickMyButton = useCallback(() => {
     dispatch(searchMyPacksAC(true))

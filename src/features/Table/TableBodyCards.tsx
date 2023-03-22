@@ -2,23 +2,33 @@ import React, { FC } from 'react'
 
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined'
 import EditIcon from '@mui/icons-material/Edit'
+import IconButton from '@mui/material/IconButton'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import * as cardsSelectors from '../Cards/cards-selectors'
-import { UpdateCardType } from '../Cards/cardsAPI'
-import { deleteCardTC, updateCardTC } from '../Cards/cardsReducer'
+import { deleteCardTC } from '../Cards/cardsReducer'
 import * as profileSelectors from '../Profile/profile-selector'
 
-export const TableBodyCards: FC = () => {
+type PropsType = {
+  handleClickOnOpenEditCard: (cardId: string, cardQuestion: string, cardAnswer: string) => void
+}
+
+export const TableBodyCards: FC<PropsType> = props => {
   const cards = useAppSelector(cardsSelectors.cards)
   const userId = useAppSelector(profileSelectors.userId)
   const isMyPack = useAppSelector(state => state.cards.isMyPack)
+
   const dispatch = useAppDispatch()
+
   const deleteCardHandler = (cardId: string) => dispatch(deleteCardTC(cardId))
-  const editeCardHandler = (data: UpdateCardType) => dispatch(updateCardTC(data))
+  //const editeCardHandler = (data: UpdateCardType) => dispatch(updateCardTC(data))
+
+  const handleClickOnOpenEditPack = (cardId: string, cardQuestion: string, cardAnswer: string) => {
+    props.handleClickOnOpenEditCard(cardId, cardQuestion, cardAnswer)
+  }
 
   return (
     <TableBody>
@@ -43,12 +53,14 @@ export const TableBodyCards: FC = () => {
             <TableCell align="right">
               {
                 <>
-                  <EditIcon
-                    onClick={() => {
-                      editeCardHandler({ _id: el._id, question: '🐭question', answer: '🐹answer' })
-                    }}
-                  />
-                  <DeleteForeverOutlinedIcon onClick={() => deleteCardHandler(el._id)} />
+                  <IconButton
+                    onClick={() => handleClickOnOpenEditPack(el._id, el.question, el.answer)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => deleteCardHandler(el._id)}>
+                    <DeleteForeverOutlinedIcon />
+                  </IconButton>
                 </>
               }
             </TableCell>

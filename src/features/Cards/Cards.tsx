@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FC, useCallback, useEffect } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 
 import FilterAltOffSharpIcon from '@mui/icons-material/FilterAltOffSharp'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
@@ -29,10 +29,12 @@ import { CardNameAndButton } from './CardnameAndButton'
 import * as cardsSelectors from './cards-selectors'
 import s from './Cards.module.css'
 import {
+  addNewCardTC,
   getCardsTC,
   resetCardsSortingParamsAC,
   searchCardsByQuestionAC,
   setSortCardsAC,
+  updateCardTC,
 } from './cardsReducer'
 
 const CARDS_SORT_VALUES: HeadCellType[] = [
@@ -53,9 +55,24 @@ export const Cards: FC = () => {
   const pageCount = useAppSelector(paginationSelectors.pageCount)
   const cardsTotalCount = useAppSelector(paginationSelectors.totalPages)
 
+  const [openModal, setOpenModal] = useState(false)
+  const [editCardQuestion, setEditCardQuestion] = useState('')
+  const [editCardAnswer, setEditCardAnswer] = useState('')
+  const [cardId, setCardId] = useState('')
+
   useEffect(() => {
     dispatch(getCardsTC())
   }, [cardQuestion, packId, page, pageCount, cardsTotalCount, sortCards])
+
+  const handleClickOnOpenEditCard = useCallback(
+    (cardId: string, cardQuestion: string, cardAnswer: string) => {
+      setOpenModal(true)
+      setEditCardQuestion(cardQuestion)
+      setEditCardAnswer(cardAnswer)
+      setCardId(cardId)
+    },
+    [cardId, editCardAnswer, editCardQuestion]
+  )
 
   const handleChangePage = useCallback((newPage: number) => {
     dispatch(setCurrentPageAC(newPage))
@@ -77,6 +94,15 @@ export const Cards: FC = () => {
   const handleRequestSort = useCallback((event: React.MouseEvent<unknown>, newSort: string) => {
     dispatch(setSortCardsAC(newSort))
     dispatch(setCurrentPageAC(1))
+  }, [])
+
+  const onSaveUpdateCard = useCallback(() => {
+    dispatch(updateCardTC({ _id: cardId, question: editCardQuestion, answer: editCardAnswer }))
+    setOpenModal(false)
+  }, [cardId, editCardAnswer, editCardQuestion])
+
+  const onSaveAddNewCard = useCallback(() => {
+    dispatch(addNewCardTC(packId, editCardQuestion, editCardAnswer))
   }, [])
 
   return (
@@ -114,7 +140,28 @@ export const Cards: FC = () => {
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <AddNewCard />
+      <AddNewCard
+        modalName="Edit card"
+        open={openModal}
+        setOpen={setOpenModal}
+        cardId={cardId}
+        cardQuestion={editCardQuestion}
+        cardAnswer={editCardAnswer}
+        setCardQuestion={setEditCardQuestion}
+        setCardAnswer={setEditCardAnswer}
+        onSave={onSaveUpdateCard}
+      />
+
+      <AddNewCard
+        open={openModal}
+        setOpen={setOpenModal}
+        cardQuestion={editCardQuestion}
+        cardAnswer={editCardAnswer}
+        setCardQuestion={setEditCardQuestion}
+        setCardAnswer={setEditCardAnswer}
+        onSave={onSaveAddNewCard}
+      />
+
       <TableContainer component={Paper} elevation={4} className={s.tableContainer}>
         <Table sx={{ minWidth: 500 }} aria-label="simple table">
           <TableHeadWithSorting
@@ -122,7 +169,7 @@ export const Cards: FC = () => {
             headCells={CARDS_SORT_VALUES}
             onRequestSort={handleRequestSort}
           />
-          <TableBodyCards />
+          <TableBodyCards handleClickOnOpenEditCard={handleClickOnOpenEditCard} />
         </Table>
       </TableContainer>
     </Container>
