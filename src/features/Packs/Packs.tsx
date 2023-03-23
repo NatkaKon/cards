@@ -12,9 +12,8 @@ import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
-import { AddModal } from '../../common/components/Modals/AddModal'
 import { DeleteModal } from '../../common/components/Modals/DeleteModal'
-import { EditPack } from '../../common/components/Modals/EditPack'
+import { PackModal } from '../../common/components/Modals/PackModal'
 import { SearchSlider } from '../../common/components/SearchSlider/SearchSlider'
 import { SuperButton } from '../../common/components/SuperButton/SuperButton'
 import { PATH } from '../../common/constants/path'
@@ -39,6 +38,7 @@ import {
   searchMyPacksAC,
   searchPacksByNameAC,
   setSortPacksAC,
+  updatePackTC,
 } from './packsReducer'
 
 const SORT_VALUES: HeadCellType[] = [
@@ -64,27 +64,31 @@ export const Packs = () => {
   const pageCount = useAppSelector(paginationSelectors.pageCount)
   const cardPacksTotalCount = useAppSelector(paginationSelectors.totalPages)
 
-  const [openModal, setOpenModal] = useState(false)
-  const [editPackName, setEditPackName] = useState('')
+  // state for modals
+  const [openEdit, setOpenEdit] = useState(false)
+  const [openAdd, setOpenAdd] = useState(false)
+  const [modalPackName, setModalPackName] = useState('')
   const [packId, setPackId] = useState('')
 
   useEffect(() => {
     dispatch(getPacksTC())
   }, [packName, isMyPack, min, max, page, pageCount, cardPacksTotalCount, sortPacks])
 
-  const handleClickOnOpenEditPack = useCallback(
+  const handleOpenEditPack = useCallback(
     (packId: string, packName: string) => {
-      setOpenModal(true)
-      setEditPackName(packName)
+      setOpenEdit(true)
+      setModalPackName(packName)
       setPackId(packId)
     },
-    [editPackName, packId]
+    [modalPackName, packId]
   )
+
   const handleOpenDeletePack = (packId: string, name: string) => {
     setOpenModal(true)
     setPackId(packId)
     setEditPackName(name)
   }
+
   const handleClickMyButton = useCallback(() => {
     dispatch(searchMyPacksAC(true))
   }, [])
@@ -120,9 +124,24 @@ export const Packs = () => {
     },
     [navigate]
   )
-  const addNewPackHandler = () => {
-    dispatch(addNewPackTC())
-  }
+  const handleOpenAddNewPack = useCallback(() => {
+    setOpenAdd(true)
+  }, [openAdd])
+
+  const onSaveAddNewPack = useCallback(() => {
+    dispatch(addNewPackTC({ name: modalPackName }))
+
+    setOpenAdd(false)
+    setModalPackName('')
+  }, [modalPackName, openAdd])
+
+  const onSaveUpdatePack = useCallback(() => {
+    dispatch(updatePackTC({ _id: packId, name: modalPackName }))
+
+    setOpenEdit(false)
+    setModalPackName('')
+    setPackId('')
+  }, [modalPackName, openEdit])
 
   const handleRequestSort = useCallback((event: React.MouseEvent<unknown>, newSort: string) => {
     dispatch(setSortPacksAC(newSort))
@@ -131,7 +150,7 @@ export const Packs = () => {
 
   return (
     <Container sx={{ padding: '50px' }}>
-      <PanelButton name={'Packs list'} button={'Add new pack'} callBack={addNewPackHandler} />
+      <PanelButton name={'Packs list'} button={'Add new pack'} callBack={handleOpenAddNewPack} />
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <DebounceSearch searchQuery={packName} searchDebouncedValue={handleSearchPacksByName} />
         <SuperButton xType={isMyPack ? '' : 'secondary'} onClick={handleClickMyButton}>
@@ -145,14 +164,23 @@ export const Packs = () => {
           <FilterAltOffSharpIcon fontSize="medium" />
         </IconButton>
       </Box>
-      <EditPack
-        open={openModal}
-        setOpen={setOpenModal}
-        packId={packId}
-        packName={editPackName}
-        setPackName={setEditPackName}
+      <PackModal
+        childrenTitle={<div>Edit pack</div>}
+        open={openEdit}
+        setOpen={setOpenEdit}
+        packName={modalPackName}
+        setPackName={setModalPackName}
+        onSave={onSaveUpdatePack}
       />
-      <AddModal />
+      <PackModal
+        childrenTitle={<div>Add pack</div>}
+        open={openAdd}
+        setOpen={setOpenAdd}
+        packName={modalPackName}
+        setPackName={setModalPackName}
+        onSave={onSaveAddNewPack}
+      />
+      <DeleteModal />
       <PagePagination
         page={page}
         pageCount={pageCount}
@@ -169,7 +197,7 @@ export const Packs = () => {
           />
           <TableBodyPacks
             handleClickOnPackName={handleClickOnPackName}
-            handleClickOnOpenEditPack={handleClickOnOpenEditPack}
+            handleOpenEditPack={handleOpenEditPack}
             handleOpenDeletePack={handleOpenDeletePack}
           />
         </Table>

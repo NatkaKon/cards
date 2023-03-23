@@ -8,37 +8,32 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
-import { useAppDispatch, useAppSelector } from '../../app/store'
+import { useAppSelector } from '../../app/store'
 import * as packsSelectors from '../Packs/packs-selectors'
-import { deletePackTC, updatePackTC } from '../Packs/packsReducer'
+
 import * as profileSelectors from '../Profile/profile-selector'
 
-type TableBodyPacksProps = {
+type PropsType = {
   handleClickOnPackName: (packId: string, isMyPack: boolean, packNameForTitle: string) => void
-  handleClickOnOpenEditPack: (packId: string, packName: string) => void
+  handleOpenEditPack: (packId: string, packName: string) => void
   handleOpenDeletePack: (packId: string, name: string) => void
 }
 
-export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
-  const [isOpen, setIsOpen] = React.useState(false)
+export const TableBodyPacks: FC<PropsType> = props => {
   const packs = useAppSelector(packsSelectors.packs)
   const userId = useAppSelector(profileSelectors.userId)
 
   const onClickHandler = (packId: string, packUserId: string, packNameForTitle: string) => {
     props.handleClickOnPackName(packId, userId === packUserId, packNameForTitle)
   }
-  const dispatch = useAppDispatch()
-  // const delPackHandler = (packId: string) => dispatch(deletePackTC(packId))
 
   const handleClickOnOpenEditPack = (packId: string, packName: string) => {
-    props.handleClickOnOpenEditPack(packId, packName)
+    props.handleOpenEditPack(packId, packName)
   }
 
   const showModalDelete = (packId: string, name: string) => {
     props.handleOpenDeletePack(packId, name)
-    // dispatch(deletePackTC({ _id: packId }))
   }
-  const editePackHandler = (packId: string) => dispatch(updatePackTC({ _id: packId }))
 
   return (
     <TableBody>
@@ -66,10 +61,15 @@ export const TableBodyPacks: FC<TableBodyPacksProps> = props => {
           <TableCell align="right">
             {el.user_id === userId ? (
               <>
-                <IconButton onClick={() => handleClickOnOpenEditPack(el._id, el.name)}></IconButton>
-                <SchoolIcon />
-                <EditIcon onClick={() => editePackHandler(el._id)} />
-                <DeleteForeverOutlinedIcon onClick={() => showModalDelete(el._id, el.name)} />
+                <IconButton onClick={() => {}}>
+                  <SchoolIcon />
+                </IconButton>
+                <IconButton onClick={() => handleClickOnOpenEditPack(el._id, el.name)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton onClick={() => showModalDelete(el._id, el.name)} />
+                  <DeleteForeverOutlinedIcon />
+                </IconButton>
               </>
             ) : (
               <IconButton onClick={() => {}}>

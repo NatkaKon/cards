@@ -13,7 +13,7 @@ import { NavLink } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
-import { AddNewCard } from '../../common/components/Modals/AddNewCard'
+import { CardModal } from '../../common/components/Modals/CardModal'
 import { PATH } from '../../common/constants/path'
 import * as paginationSelectors from '../PagePagination/page-pagination-selectors'
 import { PagePagination } from '../PagePagination/PagePagination'
@@ -55,24 +55,29 @@ export const Cards: FC = () => {
   const pageCount = useAppSelector(paginationSelectors.pageCount)
   const cardsTotalCount = useAppSelector(paginationSelectors.totalPages)
 
-  const [openModal, setOpenModal] = useState(false)
-  const [editCardQuestion, setEditCardQuestion] = useState('')
-  const [editCardAnswer, setEditCardAnswer] = useState('')
+  const [openAdd, setOpenAdd] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
+  const [modalCardQuestion, setModalCardQuestion] = useState('')
+  const [modalCardAnswer, setModalCardAnswer] = useState('')
   const [cardId, setCardId] = useState('')
 
   useEffect(() => {
     dispatch(getCardsTC())
   }, [cardQuestion, packId, page, pageCount, cardsTotalCount, sortCards])
 
-  const handleClickOnOpenEditCard = useCallback(
+  const handleOpenEditCard = useCallback(
     (cardId: string, cardQuestion: string, cardAnswer: string) => {
-      setOpenModal(true)
-      setEditCardQuestion(cardQuestion)
-      setEditCardAnswer(cardAnswer)
+      setOpenEdit(true)
+      setModalCardQuestion(cardQuestion)
+      setModalCardAnswer(cardAnswer)
       setCardId(cardId)
     },
-    [cardId, editCardAnswer, editCardQuestion]
+    [cardId, modalCardAnswer, modalCardQuestion]
   )
+
+  const handleOpenAddNewCard = useCallback(() => {
+    setOpenAdd(true)
+  }, [modalCardAnswer, modalCardQuestion])
 
   const handleChangePage = useCallback((newPage: number) => {
     dispatch(setCurrentPageAC(newPage))
@@ -97,13 +102,21 @@ export const Cards: FC = () => {
   }, [])
 
   const onSaveUpdateCard = useCallback(() => {
-    dispatch(updateCardTC({ _id: cardId, question: editCardQuestion, answer: editCardAnswer }))
-    setOpenModal(false)
-  }, [cardId, editCardAnswer, editCardQuestion])
+    dispatch(updateCardTC({ _id: cardId, question: modalCardQuestion, answer: modalCardAnswer }))
+
+    setOpenEdit(false)
+    setModalCardQuestion('')
+    setModalCardAnswer('')
+    setCardId('')
+  }, [cardId, modalCardAnswer, modalCardQuestion])
 
   const onSaveAddNewCard = useCallback(() => {
-    dispatch(addNewCardTC(packId, editCardQuestion, editCardAnswer))
-  }, [])
+    dispatch(addNewCardTC(packId, modalCardQuestion, modalCardAnswer))
+
+    setOpenAdd(false)
+    setModalCardQuestion('')
+    setModalCardAnswer('')
+  }, [packId, modalCardQuestion, modalCardAnswer])
 
   return (
     <Container sx={{ padding: '50px' }}>
@@ -123,7 +136,7 @@ export const Cards: FC = () => {
           </div>
         </NavLink>
       </Box>
-      <CardNameAndButton />
+      <CardNameAndButton onAddNewCardClick={handleOpenAddNewCard} />
       <Box sx={{ display: 'flex' }}>
         <DebounceSearch
           searchQuery={cardQuestion}
@@ -140,25 +153,26 @@ export const Cards: FC = () => {
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <AddNewCard
-        modalName="Edit card"
-        open={openModal}
-        setOpen={setOpenModal}
+      <CardModal
+        childrenTitle={<div>Edit card</div>}
+        open={openEdit}
+        setOpen={setOpenEdit}
         cardId={cardId}
-        cardQuestion={editCardQuestion}
-        cardAnswer={editCardAnswer}
-        setCardQuestion={setEditCardQuestion}
-        setCardAnswer={setEditCardAnswer}
+        cardQuestion={modalCardQuestion}
+        cardAnswer={modalCardAnswer}
+        setCardQuestion={setModalCardQuestion}
+        setCardAnswer={setModalCardAnswer}
         onSave={onSaveUpdateCard}
       />
 
-      <AddNewCard
-        open={openModal}
-        setOpen={setOpenModal}
-        cardQuestion={editCardQuestion}
-        cardAnswer={editCardAnswer}
-        setCardQuestion={setEditCardQuestion}
-        setCardAnswer={setEditCardAnswer}
+      <CardModal
+        childrenTitle={<div>Add new card</div>}
+        open={openAdd}
+        setOpen={setOpenAdd}
+        cardQuestion={modalCardQuestion}
+        cardAnswer={modalCardAnswer}
+        setCardQuestion={setModalCardQuestion}
+        setCardAnswer={setModalCardAnswer}
         onSave={onSaveAddNewCard}
       />
 
@@ -169,7 +183,7 @@ export const Cards: FC = () => {
             headCells={CARDS_SORT_VALUES}
             onRequestSort={handleRequestSort}
           />
-          <TableBodyCards handleClickOnOpenEditCard={handleClickOnOpenEditCard} />
+          <TableBodyCards handleOpenEditCard={handleOpenEditCard} />
         </Table>
       </TableContainer>
     </Container>

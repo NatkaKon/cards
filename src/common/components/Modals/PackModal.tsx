@@ -1,43 +1,34 @@
-import React, { Dispatch, FC, memo } from 'react'
+import React, { Dispatch, FC, ReactNode } from 'react'
 
 import Button from '@mui/material/Button'
 
 import { buttonStyle } from '../../constants/form-button-style'
 
 import { BasicModal } from './BasicModal'
-import { ComboBox } from './ComboBox'
+import { CheckboxLabels } from './CheckboxLabels'
 import { FormPropsTextFields } from './FormPropsTextFields'
 import s from './Modal.module.css'
 
 type PropsType = {
+  childrenTitle: ReactNode
   open: boolean
   setOpen: Dispatch<React.SetStateAction<boolean>>
-  cardId?: string
-  cardQuestion: string
-  cardAnswer: string
-  setCardQuestion: Dispatch<React.SetStateAction<string>>
-  setCardAnswer: Dispatch<React.SetStateAction<string>>
+  packName: string
+  setPackName: Dispatch<React.SetStateAction<string>>
   onSave: () => void
-  modalName?: string
 }
 
-export const AddNewCard: FC<PropsType> = memo(props => {
-  //const dispatch = useAppDispatch()
-
+export const PackModal: FC<PropsType> = props => {
   const onClickHandlerClose = () => {
     props.setOpen(false)
+    props.setPackName('')
   }
 
-  const onChangeCardQuestionHandler = (newValue: string) => {
-    props.setCardQuestion(newValue)
-  }
-
-  const onChangeCardAnswerHandler = (newValue: string) => {
-    props.setCardAnswer(newValue)
+  const handleOnTextFieldChange = (newValue: string) => {
+    props.setPackName(newValue)
   }
 
   const onClickHandlerSave = () => {
-    //dispatch(addNewPackTC())
     props.onSave()
   }
 
@@ -45,22 +36,17 @@ export const AddNewCard: FC<PropsType> = memo(props => {
     <BasicModal open={props.open} setOpen={props.setOpen}>
       <div className={s.modalContainer}>
         <div className={s.headerModal}>
-          {props.modalName ? <div>{props.modalName}</div> : <div>Add new pack</div>}
+          {props.childrenTitle}
           <Button className={s.closeButton} onClick={onClickHandlerClose}>
             ✖️
           </Button>
         </div>
-        <ComboBox />
         <FormPropsTextFields
-          label={'Question'}
-          value={props.cardQuestion}
-          onChange={onChangeCardQuestionHandler}
+          label={'Name pack'}
+          value={props.packName}
+          onChange={handleOnTextFieldChange}
         />
-        <FormPropsTextFields
-          label={'Answer'}
-          value={props.cardAnswer}
-          onChange={onChangeCardAnswerHandler}
-        />
+        <CheckboxLabels />
         <div className={s.bottomModal}>
           <Button
             type="submit"
@@ -88,4 +74,4 @@ export const AddNewCard: FC<PropsType> = memo(props => {
       </div>
     </BasicModal>
   )
-})
+}
