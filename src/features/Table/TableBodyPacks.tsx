@@ -15,7 +15,7 @@ import * as profileSelectors from '../Profile/profile-selector'
 
 type PropsType = {
   handleClickOnPackName: (packId: string, isMyPack: boolean, packNameForTitle: string) => void
-  handleClickOnOpenEditPack: (packId: string, packName: string) => void
+  handleOpenEditPack: (packId: string, packName: string) => void
 }
 
 export const TableBodyPacks: FC<PropsType> = props => {
@@ -29,7 +29,7 @@ export const TableBodyPacks: FC<PropsType> = props => {
   const delPackHandler = (packId: string) => dispatch(deletePackTC(packId))
 
   const handleClickOnOpenEditPack = (packId: string, packName: string) => {
-    props.handleClickOnOpenEditPack(packId, packName)
+    props.handleOpenEditPack(packId, packName)
   }
 
   return (

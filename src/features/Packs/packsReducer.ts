@@ -102,12 +102,7 @@ export const getPacksTC = (): AppRootThunk => async (dispatch, getState) => {
 }
 
 export const addNewPackTC =
-  (
-    data: AddNewPackType = {
-      name: 'NewCatsPack',
-      private: false,
-    }
-  ): AppRootThunk =>
+  (data: AddNewPackType): AppRootThunk =>
   async dispatch => {
     await packsAPI.addNewPack(data)
 
