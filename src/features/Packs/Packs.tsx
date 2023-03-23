@@ -80,7 +80,11 @@ export const Packs = () => {
     },
     [editPackName, packId]
   )
-
+  const handleOpenDeletePack = (packId: string, name: string) => {
+    setOpenModal(true)
+    setPackId(packId)
+    setEditPackName(name)
+  }
   const handleClickMyButton = useCallback(() => {
     dispatch(searchMyPacksAC(true))
   }, [])
@@ -149,7 +153,6 @@ export const Packs = () => {
         setPackName={setEditPackName}
       />
       <AddModal />
-      <DeleteModal />
       <PagePagination
         page={page}
         pageCount={pageCount}
@@ -167,6 +170,7 @@ export const Packs = () => {
           <TableBodyPacks
             handleClickOnPackName={handleClickOnPackName}
             handleClickOnOpenEditPack={handleClickOnOpenEditPack}
+            handleOpenDeletePack={handleOpenDeletePack}
           />
         </Table>
       </TableContainer>

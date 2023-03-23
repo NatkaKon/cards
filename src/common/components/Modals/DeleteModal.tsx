@@ -1,35 +1,36 @@
 import * as React from 'react'
+import { Dispatch, FC, memo } from 'react'
 
 import Button from '@mui/material/Button'
 
 import { useAppDispatch } from '../../../app/store'
 import { deletePackTC } from '../../../features/Packs/packsReducer'
-import { PanelButton } from '../../../features/PanelButton/PanelButton'
 import { buttonStyle } from '../../constants/form-button-style'
 
 import { BasicModal } from './BasicModal'
 import s from './Modal.module.css'
 
 type PropsType = {
-  packId?: string
+  open: boolean
+  setOpen: Dispatch<React.SetStateAction<boolean>>
+  packId: string
+  packName: string
+  setPackName: Dispatch<React.SetStateAction<string>>
 }
-export const DeleteModal = (props: PropsType) => {
-  const [open, setOpen] = React.useState(false)
+export const DeleteModal: FC<PropsType> = memo(props => {
   const dispatch = useAppDispatch()
-  const handleOpen = () => {
-    setOpen(true)
-  }
+
   const onClickHandlerClose = () => {
-    setOpen(false)
+    props.setOpen(false)
   }
-  const delPackHandler = () => {
-    // dispatch(deletePackTC(props.packId))
+  const onClickHandlerDelete = () => {
+    dispatch(deletePackTC({ _id: props.packId }))
+    props.setOpen(false)
   }
 
   return (
     <>
-      <PanelButton name={'Packs list'} button={'Delete pack'} callBack={handleOpen} />
-      <BasicModal open={open} setOpen={setOpen}>
+      <BasicModal open={props.open} setOpen={props.setOpen}>
         <div className={s.modalContainer}>
           <div className={s.headerModal}>
             <div>Delete pack</div>
@@ -38,7 +39,7 @@ export const DeleteModal = (props: PropsType) => {
             </Button>
           </div>
           <div className={s.textAttention}>
-            Do you really want to remove <strong>Pack Name?</strong> {'\n'}All cards will be
+            Do you really want to remove <strong>{props.packName}?</strong> {'\n'}All cards will be
             deleted.
           </div>
           <div className={s.bottomModal}>
@@ -60,7 +61,7 @@ export const DeleteModal = (props: PropsType) => {
               size="medium"
               sx={buttonStyle}
               className={s.buttonBottom}
-              onClick={delPackHandler}
+              onClick={onClickHandlerDelete}
             >
               Delete
             </Button>
@@ -69,4 +70,4 @@ export const DeleteModal = (props: PropsType) => {
       </BasicModal>
     </>
   )
-}
+})

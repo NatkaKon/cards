@@ -1,7 +1,7 @@
 import { AppRootThunk } from '../../app/store'
 import { setPaginationDataAC } from '../PagePagination/pagination-reducer'
 
-import { AddNewPackType, packsAPI, UpdatePackType } from './packsAPI'
+import { AddNewPackType, DeletePackType, packsAPI, UpdatePackType } from './packsAPI'
 
 const initialState = {
   cardPacks: [] as CardPacksType[],
@@ -115,13 +115,18 @@ export const addNewPackTC =
   }
 
 export const deletePackTC =
-  (id: string): AppRootThunk =>
+  (data: DeletePackType): AppRootThunk =>
   async dispatch => {
-    await packsAPI.deletePack(id)
+    await packsAPI.deletePack(data)
 
     dispatch(getPacksTC())
   }
 
+export const editePackTC =
+  (packId: string, name: string): AppRootThunk =>
+  async dispatch => {
+    const data = { _id: packId, name: name }
+  }
 export const updatePackTC =
   (data: UpdatePackType): AppRootThunk =>
   async dispatch => {
