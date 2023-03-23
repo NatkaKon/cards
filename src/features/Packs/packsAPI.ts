@@ -42,5 +42,5 @@ export type UpdatePackType = {
   private?: boolean
 }
 export type DeletePackType = {
-  _id: string
+  id: string
 }

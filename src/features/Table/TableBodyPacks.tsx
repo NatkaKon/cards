@@ -10,7 +10,6 @@ import TableRow from '@mui/material/TableRow'
 
 import { useAppSelector } from '../../app/store'
 import * as packsSelectors from '../Packs/packs-selectors'
-
 import * as profileSelectors from '../Profile/profile-selector'
 
 type PropsType = {
@@ -67,7 +66,7 @@ export const TableBodyPacks: FC<PropsType> = props => {
                 <IconButton onClick={() => handleClickOnOpenEditPack(el._id, el.name)}>
                   <EditIcon />
                 </IconButton>
-                <IconButton onClick={() => showModalDelete(el._id, el.name)} />
+                <IconButton onClick={() => showModalDelete(el._id, el.name)}>
                   <DeleteForeverOutlinedIcon />
                 </IconButton>
               </>

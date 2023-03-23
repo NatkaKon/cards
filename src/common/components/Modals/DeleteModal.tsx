@@ -24,7 +24,7 @@ export const DeleteModal: FC<PropsType> = memo(props => {
     props.setOpen(false)
   }
   const onClickHandlerDelete = () => {
-    dispatch(deletePackTC({ _id: props.packId }))
+    dispatch(deletePackTC({ id: props.packId }))
     props.setOpen(false)
   }
 

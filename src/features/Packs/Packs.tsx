@@ -67,6 +67,7 @@ export const Packs = () => {
   // state for modals
   const [openEdit, setOpenEdit] = useState(false)
   const [openAdd, setOpenAdd] = useState(false)
+  const [openDelete, setOpenDelete] = useState(false)
   const [modalPackName, setModalPackName] = useState('')
   const [packId, setPackId] = useState('')
 
@@ -84,9 +85,9 @@ export const Packs = () => {
   )
 
   const handleOpenDeletePack = (packId: string, name: string) => {
-    setOpenModal(true)
+    setOpenDelete(true)
     setPackId(packId)
-    setEditPackName(name)
+    setModalPackName(name)
   }
 
   const handleClickMyButton = useCallback(() => {
@@ -180,7 +181,13 @@ export const Packs = () => {
         setPackName={setModalPackName}
         onSave={onSaveAddNewPack}
       />
-      <DeleteModal />
+      <DeleteModal
+        open={openDelete}
+        setOpen={setOpenDelete}
+        packId={packId}
+        setPackName={setModalPackName}
+        packName={modalPackName}
+      />
       <PagePagination
         page={page}
         pageCount={pageCount}
