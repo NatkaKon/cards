@@ -1,0 +1,13 @@
+.linkToPacks{
+    display: flex;
+    align-items: center;
+}
+
+.inactiveLink {
+    color: black;
+    text-decoration: none;
+}
+
+.activeLink {
+    color: #366EFF;
+}

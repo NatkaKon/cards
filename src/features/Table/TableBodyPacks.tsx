@@ -48,9 +48,14 @@ export const TableBodyPacks: FC<PropsType> = props => {
           }}
         >
           <TableCell
-            component="th"
+            component="td"
             scope="row"
             onClick={() => onClickHandler(el._id, el.user_id, el.name)}
+            sx={{
+              '&:hover': {
+                cursor: 'pointer',
+              },
+            }}
           >
             {el.name}
           </TableCell>

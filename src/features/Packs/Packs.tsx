@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
@@ -121,7 +121,10 @@ export const Packs = () => {
       dispatch(setIsMyPackAC(isMyPack))
       dispatch(setPackNameForTitleAC(packNameForTitle))
 
-      navigate(PATH.CARDS)
+      navigate({
+        pathname: PATH.CARDS,
+        search: createSearchParams({ cardsPack_id: packId }).toString(),
+      })
     },
     [navigate]
   )
@@ -150,7 +153,7 @@ export const Packs = () => {
   }, [])
 
   return (
-    <Container sx={{ padding: '50px' }}>
+    <Container sx={{ padding: '30px' }}>
       <PanelButton name={'Packs list'} button={'Add new pack'} callBack={handleOpenAddNewPack} />
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <DebounceSearch searchQuery={packName} searchDebouncedValue={handleSearchPacksByName} />

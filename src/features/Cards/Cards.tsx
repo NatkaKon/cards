@@ -2,19 +2,20 @@ import * as React from 'react'
 import { FC, useCallback, useEffect, useState } from 'react'
 
 import FilterAltOffSharpIcon from '@mui/icons-material/FilterAltOffSharp'
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
-import { NavLink } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
 import { CardModal } from '../../common/components/Modals/CardModal'
 import { PATH } from '../../common/constants/path'
+import { AddNewCard } from '../../common/components/Modals/AddNewCard'
+import { ToPackListLink } from '../../common/components/ToPackListLink/ToPackListLink'
 import * as paginationSelectors from '../PagePagination/page-pagination-selectors'
 import { PagePagination } from '../PagePagination/PagePagination'
 import {
@@ -33,6 +34,7 @@ import {
   getCardsTC,
   resetCardsSortingParamsAC,
   searchCardsByQuestionAC,
+  setPackIdAC,
   setSortCardsAC,
   updateCardTC,
 } from './cardsReducer'
@@ -42,6 +44,7 @@ const CARDS_SORT_VALUES: HeadCellType[] = [
   { id: 'answer', label: 'Answer' },
   { id: 'updated', label: 'Last Updated' },
   { id: 'grade', label: 'Grade' },
+  { id: 'actions', label: 'Actions' },
 ]
 
 export const Cards: FC = () => {
@@ -55,6 +58,10 @@ export const Cards: FC = () => {
   const pageCount = useAppSelector(paginationSelectors.pageCount)
   const cardsTotalCount = useAppSelector(paginationSelectors.totalPages)
 
+  const [searchParams] = useSearchParams()
+  const packURLId = searchParams.get('cardsPack_id')
+
+  // states for modals
   const [openAdd, setOpenAdd] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [modalCardQuestion, setModalCardQuestion] = useState('')
@@ -62,8 +69,10 @@ export const Cards: FC = () => {
   const [cardId, setCardId] = useState('')
 
   useEffect(() => {
+    if (packURLId) dispatch(setPackIdAC(packURLId))
+
     dispatch(getCardsTC())
-  }, [cardQuestion, packId, page, pageCount, cardsTotalCount, sortCards])
+  }, [cardQuestion, page, pageCount, cardsTotalCount, sortCards])
 
   const handleOpenEditCard = useCallback(
     (cardId: string, cardQuestion: string, cardAnswer: string) => {
@@ -119,23 +128,8 @@ export const Cards: FC = () => {
   }, [packId, modalCardQuestion, modalCardAnswer])
 
   return (
-    <Container sx={{ padding: '50px' }}>
-      <Box
-        sx={{
-          width: '100%',
-          height: '100px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <NavLink to={PATH.PACKS}>
-          <div className={s.linkToPacks}>
-            <KeyboardBackspaceIcon sx={{ paddingRight: '10px' }} />
-            <p>To Pack List</p>
-          </div>
-        </NavLink>
-      </Box>
+    <Container sx={{ padding: '30px' }}>
+      <ToPackListLink />
       <CardNameAndButton onAddNewCardClick={handleOpenAddNewCard} />
       <Box sx={{ display: 'flex' }}>
         <DebounceSearch
