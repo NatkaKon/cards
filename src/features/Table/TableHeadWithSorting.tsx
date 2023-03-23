@@ -7,6 +7,8 @@ import TableRow from '@mui/material/TableRow'
 import TableSortLabel from '@mui/material/TableSortLabel'
 import visuallyHidden from '@mui/utils/visuallyHidden'
 
+import { useAppSelector } from '../../app/store'
+import { selectIsMyPack } from '../Cards/cards-selectors'
 import s from '../Packs/Packs.module.css'
 
 import { defineSortOrder } from './define-sort-utility'
@@ -25,12 +27,19 @@ type PropsType = {
 }
 
 export const TableHeadWithSorting: FC<PropsType> = memo(({ headCells, orderBy, onRequestSort }) => {
+  // TODO убрать лишний столбец
+  const isMyPack = useAppSelector(selectIsMyPack)
+
   const [order, setOrder] = useState<SortOrderType>('desc')
 
   // delete 0 or 1 from sort name
   orderBy = orderBy.replace(/[0-9]/g, '')
 
+  console.log(orderBy)
+
   const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
+    if (property === 'actions') return
+
     const isAsc = orderBy === property && order === 'asc'
 
     setOrder(isAsc ? 'desc' : 'asc')
@@ -54,7 +63,7 @@ export const TableHeadWithSorting: FC<PropsType> = memo(({ headCells, orderBy, o
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'desc'}
-              hideSortIcon={headCell.id === 'actions'}
+              hideSortIcon
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}

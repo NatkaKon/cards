@@ -9,6 +9,7 @@ import TableRow from '@mui/material/TableRow'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import * as cardsSelectors from '../Cards/cards-selectors'
+import { selectIsMyPack } from '../Cards/cards-selectors'
 import { deleteCardTC } from '../Cards/cardsReducer'
 
 type PropsType = {
@@ -17,7 +18,7 @@ type PropsType = {
 
 export const TableBodyCards: FC<PropsType> = props => {
   const cards = useAppSelector(cardsSelectors.cards)
-  const isMyPack = useAppSelector(state => state.cards.isMyPack)
+  const isMyPack = useAppSelector(selectIsMyPack)
 
   const dispatch = useAppDispatch()
 
