@@ -18,12 +18,10 @@ type PropsType = {
   setCardQuestion: Dispatch<React.SetStateAction<string>>
   setCardAnswer: Dispatch<React.SetStateAction<string>>
   onSave: () => void
-  childreTitle: ReactNode
+  childrenTitle: ReactNode
 }
 
-export const AddNewCard: FC<PropsType> = memo(props => {
-  //const dispatch = useAppDispatch()
-
+export const CardModal: FC<PropsType> = memo(props => {
   const onClickHandlerClose = () => {
     props.setOpen(false)
     props.setCardQuestion('')
@@ -39,7 +37,6 @@ export const AddNewCard: FC<PropsType> = memo(props => {
   }
 
   const onClickHandlerSave = () => {
-    //dispatch(addNewPackTC())
     props.onSave()
   }
 
@@ -47,7 +44,7 @@ export const AddNewCard: FC<PropsType> = memo(props => {
     <BasicModal open={props.open} setOpen={props.setOpen}>
       <div className={s.modalContainer}>
         <div className={s.headerModal}>
-          {props.childreTitle}
+          {props.childrenTitle}
           <Button className={s.closeButton} onClick={onClickHandlerClose}>
             ✖️
           </Button>

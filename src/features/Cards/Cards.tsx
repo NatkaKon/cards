@@ -13,7 +13,7 @@ import { NavLink } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
-import { AddNewCard } from '../../common/components/Modals/AddNewCard'
+import { CardModal } from '../../common/components/Modals/CardModal'
 import { PATH } from '../../common/constants/path'
 import * as paginationSelectors from '../PagePagination/page-pagination-selectors'
 import { PagePagination } from '../PagePagination/PagePagination'
@@ -153,8 +153,8 @@ export const Cards: FC = () => {
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <AddNewCard
-        childreTitle={<div>Edit card</div>}
+      <CardModal
+        childrenTitle={<div>Edit card</div>}
         open={openEdit}
         setOpen={setOpenEdit}
         cardId={cardId}
@@ -165,8 +165,8 @@ export const Cards: FC = () => {
         onSave={onSaveUpdateCard}
       />
 
-      <AddNewCard
-        childreTitle={<div>Add new card</div>}
+      <CardModal
+        childrenTitle={<div>Add new card</div>}
         open={openAdd}
         setOpen={setOpenAdd}
         cardQuestion={modalCardQuestion}
