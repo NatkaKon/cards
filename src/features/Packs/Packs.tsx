@@ -64,6 +64,7 @@ export const Packs = () => {
   const pageCount = useAppSelector(paginationSelectors.pageCount)
   const cardPacksTotalCount = useAppSelector(paginationSelectors.totalPages)
 
+  // state for modals
   const [openEdit, setOpenEdit] = useState(false)
   const [openAdd, setOpenAdd] = useState(false)
   const [modalPackName, setModalPackName] = useState('')
@@ -123,12 +124,17 @@ export const Packs = () => {
 
   const onSaveAddNewPack = useCallback(() => {
     dispatch(addNewPackTC({ name: modalPackName }))
+
     setOpenAdd(false)
+    setModalPackName('')
   }, [modalPackName, openAdd])
 
   const onSaveUpdatePack = useCallback(() => {
     dispatch(updatePackTC({ _id: packId, name: modalPackName }))
+
     setOpenEdit(false)
+    setModalPackName('')
+    setPackId('')
   }, [modalPackName, openEdit])
 
   const handleRequestSort = useCallback((event: React.MouseEvent<unknown>, newSort: string) => {

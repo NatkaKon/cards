@@ -55,7 +55,8 @@ export const Cards: FC = () => {
   const pageCount = useAppSelector(paginationSelectors.pageCount)
   const cardsTotalCount = useAppSelector(paginationSelectors.totalPages)
 
-  const [openModal, setOpenModal] = useState(false)
+  const [openAdd, setOpenAdd] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
   const [modalCardQuestion, setModalCardQuestion] = useState('')
   const [modalCardAnswer, setModalCardAnswer] = useState('')
   const [cardId, setCardId] = useState('')
@@ -66,7 +67,7 @@ export const Cards: FC = () => {
 
   const handleOpenEditCard = useCallback(
     (cardId: string, cardQuestion: string, cardAnswer: string) => {
-      setOpenModal(true)
+      setOpenEdit(true)
       setModalCardQuestion(cardQuestion)
       setModalCardAnswer(cardAnswer)
       setCardId(cardId)
@@ -75,9 +76,7 @@ export const Cards: FC = () => {
   )
 
   const handleOpenAddNewCard = useCallback(() => {
-    setOpenModal(true)
-    // setModalCardQuestion(cardQuestion)
-    // setModalCardAnswer(cardAnswer)
+    setOpenAdd(true)
   }, [modalCardAnswer, modalCardQuestion])
 
   const handleChangePage = useCallback((newPage: number) => {
@@ -104,14 +103,17 @@ export const Cards: FC = () => {
 
   const onSaveUpdateCard = useCallback(() => {
     dispatch(updateCardTC({ _id: cardId, question: modalCardQuestion, answer: modalCardAnswer }))
-    setOpenModal(false)
+
+    setOpenEdit(false)
     setModalCardQuestion('')
     setModalCardAnswer('')
+    setCardId('')
   }, [cardId, modalCardAnswer, modalCardQuestion])
 
   const onSaveAddNewCard = useCallback(() => {
     dispatch(addNewCardTC(packId, modalCardQuestion, modalCardAnswer))
-    setOpenModal(false)
+
+    setOpenAdd(false)
     setModalCardQuestion('')
     setModalCardAnswer('')
   }, [packId, modalCardQuestion, modalCardAnswer])
@@ -152,9 +154,9 @@ export const Cards: FC = () => {
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       />
       <AddNewCard
-        modalName="Edit card"
-        open={openModal}
-        setOpen={setOpenModal}
+        childreTitle={<div>Edit card</div>}
+        open={openEdit}
+        setOpen={setOpenEdit}
         cardId={cardId}
         cardQuestion={modalCardQuestion}
         cardAnswer={modalCardAnswer}
@@ -164,8 +166,9 @@ export const Cards: FC = () => {
       />
 
       <AddNewCard
-        open={openModal}
-        setOpen={setOpenModal}
+        childreTitle={<div>Add new card</div>}
+        open={openAdd}
+        setOpen={setOpenAdd}
         cardQuestion={modalCardQuestion}
         cardAnswer={modalCardAnswer}
         setCardQuestion={setModalCardQuestion}
@@ -180,7 +183,7 @@ export const Cards: FC = () => {
             headCells={CARDS_SORT_VALUES}
             onRequestSort={handleRequestSort}
           />
-          <TableBodyCards handleClickOnOpenEditCard={handleOpenEditCard} />
+          <TableBodyCards handleOpenEditCard={handleOpenEditCard} />
         </Table>
       </TableContainer>
     </Container>

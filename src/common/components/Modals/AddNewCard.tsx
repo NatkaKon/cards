@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, memo } from 'react'
+import React, { Dispatch, FC, memo, ReactNode } from 'react'
 
 import Button from '@mui/material/Button'
 
@@ -18,7 +18,7 @@ type PropsType = {
   setCardQuestion: Dispatch<React.SetStateAction<string>>
   setCardAnswer: Dispatch<React.SetStateAction<string>>
   onSave: () => void
-  modalName?: string
+  childreTitle: ReactNode
 }
 
 export const AddNewCard: FC<PropsType> = memo(props => {
@@ -47,7 +47,7 @@ export const AddNewCard: FC<PropsType> = memo(props => {
     <BasicModal open={props.open} setOpen={props.setOpen}>
       <div className={s.modalContainer}>
         <div className={s.headerModal}>
-          {props.modalName ? <div>{props.modalName}</div> : <div>Add new pack</div>}
+          {props.childreTitle}
           <Button className={s.closeButton} onClick={onClickHandlerClose}>
             ✖️
           </Button>

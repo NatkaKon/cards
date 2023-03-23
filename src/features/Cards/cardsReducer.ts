@@ -80,10 +80,10 @@ export const getCardsTC = (): AppRootThunk => async (dispatch, getState) => {
   }
 }
 export const addNewCardTC =
-  (PackId: string, question: string, answer: string): AppRootThunk =>
+  (cardsPack_id: string, question: string, answer: string): AppRootThunk =>
   async dispatch => {
     const newCard = {
-      cardsPack_id: PackId,
+      cardsPack_id,
       question,
       answer,
     }
