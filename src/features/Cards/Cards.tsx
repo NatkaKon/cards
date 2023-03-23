@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
+import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
@@ -31,6 +32,7 @@ import {
   getCardsTC,
   resetCardsSortingParamsAC,
   searchCardsByQuestionAC,
+  setPackIdAC,
   setSortCardsAC,
   updateCardTC,
 } from './cardsReducer'
@@ -54,14 +56,20 @@ export const Cards: FC = () => {
   const pageCount = useAppSelector(paginationSelectors.pageCount)
   const cardsTotalCount = useAppSelector(paginationSelectors.totalPages)
 
+  const [searchParams] = useSearchParams()
+  const packURLId = searchParams.get('cardsPack_id')
+
+  // states for modals
   const [openModal, setOpenModal] = useState(false)
   const [modalCardQuestion, setModalCardQuestion] = useState('')
   const [modalCardAnswer, setModalCardAnswer] = useState('')
   const [cardId, setCardId] = useState('')
 
   useEffect(() => {
+    if (packURLId) dispatch(setPackIdAC(packURLId))
+
     dispatch(getCardsTC())
-  }, [cardQuestion, packId, page, pageCount, cardsTotalCount, sortCards])
+  }, [cardQuestion, page, pageCount, cardsTotalCount, sortCards])
 
   const handleOpenEditCard = useCallback(
     (cardId: string, cardQuestion: string, cardAnswer: string) => {

@@ -27,15 +27,13 @@ type PropsType = {
 }
 
 export const TableHeadWithSorting: FC<PropsType> = memo(({ headCells, orderBy, onRequestSort }) => {
-  // TODO убрать лишний столбец
+  // TODO убрать лишний столбец в таблице
   const isMyPack = useAppSelector(selectIsMyPack)
 
   const [order, setOrder] = useState<SortOrderType>('desc')
 
   // delete 0 or 1 from sort name
   orderBy = orderBy.replace(/[0-9]/g, '')
-
-  console.log(orderBy)
 
   const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
     if (property === 'actions') return
