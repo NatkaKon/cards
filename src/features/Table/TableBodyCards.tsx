@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, memo } from 'react'
 
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined'
 import EditIcon from '@mui/icons-material/Edit'
@@ -7,30 +7,28 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
-import { useAppDispatch, useAppSelector } from '../../app/store'
-import * as cardsSelectors from '../Cards/cards-selectors'
+import { useAppSelector } from '../../app/store'
 import { selectIsMyPack } from '../Cards/cards-selectors'
-import { deleteCardTC } from '../Cards/cardsReducer'
+import { CardType } from '../Cards/cardsReducer'
 
 type PropsType = {
+  cards: CardType[]
   handleOpenEditCard: (cardId: string, cardQuestion: string, cardAnswer: string) => void
+  handleOpenDeletePack: (cardId: string, question: string) => void
 }
 
-export const TableBodyCards: FC<PropsType> = props => {
-  const cards = useAppSelector(cardsSelectors.cards)
+export const TableBodyCards: FC<PropsType> = memo(props => {
   const isMyPack = useAppSelector(selectIsMyPack)
 
-  const dispatch = useAppDispatch()
+  const deleteCardHandler = (cardId: string, question: string) =>
+    props.handleOpenDeletePack(cardId, question)
 
-  const deleteCardHandler = (cardId: string) => dispatch(deleteCardTC(cardId))
-
-  const handleOpenEditCard = (cardId: string, cardQuestion: string, cardAnswer: string) => {
+  const handleOpenEditCard = (cardId: string, cardQuestion: string, cardAnswer: string) =>
     props.handleOpenEditCard(cardId, cardQuestion, cardAnswer)
-  }
 
   return (
     <TableBody>
-      {cards.map(el => (
+      {props.cards.map(el => (
         <TableRow
           key={el._id}
           sx={{
@@ -54,7 +52,7 @@ export const TableBodyCards: FC<PropsType> = props => {
                   <IconButton onClick={() => handleOpenEditCard(el._id, el.question, el.answer)}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton onClick={() => deleteCardHandler(el._id)}>
+                  <IconButton onClick={() => deleteCardHandler(el._id, el.question)}>
                     <DeleteForeverOutlinedIcon />
                   </IconButton>
                 </>
@@ -65,4 +63,4 @@ export const TableBodyCards: FC<PropsType> = props => {
       ))}
     </TableBody>
   )
-}
+})

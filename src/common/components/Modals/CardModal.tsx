@@ -28,17 +28,11 @@ export const CardModal: FC<PropsType> = memo(props => {
     props.setCardAnswer('')
   }
 
-  const onChangeCardQuestionHandler = (newValue: string) => {
-    props.setCardQuestion(newValue)
-  }
+  const onChangeCardQuestionHandler = (newValue: string) => props.setCardQuestion(newValue)
 
-  const onChangeCardAnswerHandler = (newValue: string) => {
-    props.setCardAnswer(newValue)
-  }
+  const onChangeCardAnswerHandler = (newValue: string) => props.setCardAnswer(newValue)
 
-  const onClickHandlerSave = () => {
-    props.onSave()
-  }
+  const onClickHandlerSave = () => props.onSave()
 
   return (
     <BasicModal open={props.open} setOpen={props.setOpen}>

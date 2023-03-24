@@ -33,6 +33,7 @@ import * as packsSelectors from './packs-selectors'
 import s from './Packs.module.css'
 import {
   addNewPackTC,
+  deletePackTC,
   getPacksTC,
   resetAllSortingParamsAC,
   searchMyPacksAC,
@@ -123,7 +124,11 @@ export const Packs = () => {
 
       navigate({
         pathname: PATH.CARDS,
-        search: createSearchParams({ cardsPack_id: packId }).toString(),
+        search: createSearchParams({
+          cardsPack_id: packId,
+          accessory: `${isMyPack}`,
+          title: packNameForTitle,
+        }).toString(),
       })
     },
     [navigate]
@@ -147,6 +152,14 @@ export const Packs = () => {
     setPackId('')
   }, [modalPackName, openEdit])
 
+  const onDeletePack = useCallback(() => {
+    dispatch(deletePackTC({ id: packId }))
+
+    setOpenDelete(false)
+    setPackId('')
+    setModalPackName('')
+  }, [packId, openDelete, modalPackName])
+
   const handleRequestSort = useCallback((event: React.MouseEvent<unknown>, newSort: string) => {
     dispatch(setSortPacksAC(newSort))
     dispatch(setCurrentPageAC(1))
@@ -168,29 +181,6 @@ export const Packs = () => {
           <FilterAltOffSharpIcon fontSize="medium" />
         </IconButton>
       </Box>
-      <PackModal
-        childrenTitle={<div>Edit pack</div>}
-        open={openEdit}
-        setOpen={setOpenEdit}
-        packName={modalPackName}
-        setPackName={setModalPackName}
-        onSave={onSaveUpdatePack}
-      />
-      <PackModal
-        childrenTitle={<div>Add pack</div>}
-        open={openAdd}
-        setOpen={setOpenAdd}
-        packName={modalPackName}
-        setPackName={setModalPackName}
-        onSave={onSaveAddNewPack}
-      />
-      <DeleteModal
-        open={openDelete}
-        setOpen={setOpenDelete}
-        packId={packId}
-        setPackName={setModalPackName}
-        packName={modalPackName}
-      />
       <PagePagination
         page={page}
         pageCount={pageCount}
@@ -212,6 +202,31 @@ export const Packs = () => {
           />
         </Table>
       </TableContainer>
+
+      <PackModal
+        childrenTitle={<div>Edit pack</div>}
+        open={openEdit}
+        setOpen={setOpenEdit}
+        packName={modalPackName}
+        setPackName={setModalPackName}
+        onSave={onSaveUpdatePack}
+      />
+
+      <PackModal
+        childrenTitle={<div>Add pack</div>}
+        open={openAdd}
+        setOpen={setOpenAdd}
+        packName={modalPackName}
+        setPackName={setModalPackName}
+        onSave={onSaveAddNewPack}
+      />
+
+      <DeleteModal
+        open={openDelete}
+        setOpen={setOpenDelete}
+        name={modalPackName}
+        onDelete={onDeletePack}
+      />
     </Container>
   )
 }

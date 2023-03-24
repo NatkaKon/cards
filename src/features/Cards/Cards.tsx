@@ -12,7 +12,9 @@ import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { DebounceSearch } from '../../common/components/DebounceSearch/DebounceSearch'
+import { EmptyMessage } from '../../common/components/EmptyMessage/EmptyMessage'
 import { CardModal } from '../../common/components/Modals/CardModal'
+import { DeleteModal } from '../../common/components/Modals/DeleteModal'
 import { ToPackListLink } from '../../common/components/ToPackListLink/ToPackListLink'
 import * as paginationSelectors from '../PagePagination/page-pagination-selectors'
 import { PagePagination } from '../PagePagination/PagePagination'
@@ -26,13 +28,17 @@ import { HeadCellType, TableHeadWithSorting } from '../Table/TableHeadWithSortin
 
 import { CardNameAndButton } from './CardnameAndButton'
 import * as cardsSelectors from './cards-selectors'
+import { selectIsMyPack } from './cards-selectors'
 import s from './Cards.module.css'
 import {
   addNewCardTC,
+  deleteCardTC,
   getCardsTC,
   resetCardsSortingParamsAC,
   searchCardsByQuestionAC,
+  setIsMyPackAC,
   setPackIdAC,
+  setPackNameForTitleAC,
   setSortCardsAC,
   updateCardTC,
 } from './cardsReducer'
@@ -48,6 +54,9 @@ const CARDS_SORT_VALUES: HeadCellType[] = [
 export const Cards: FC = () => {
   const dispatch = useAppDispatch()
 
+  const cards = useAppSelector(cardsSelectors.cards)
+  const isMyPack = useAppSelector(selectIsMyPack)
+
   const cardQuestion = useAppSelector(cardsSelectors.cardQuestion)
   const packId = useAppSelector(cardsSelectors.packId)
   const sortCards = useAppSelector(cardsSelectors.sortCards)
@@ -57,17 +66,21 @@ export const Cards: FC = () => {
   const cardsTotalCount = useAppSelector(paginationSelectors.totalPages)
 
   const [searchParams] = useSearchParams()
-  const packURLId = searchParams.get('cardsPack_id')
+  const params = Object.fromEntries(searchParams)
 
   // states for modals
   const [openAdd, setOpenAdd] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
+  const [openDelete, setOpenDelete] = useState(false)
   const [modalCardQuestion, setModalCardQuestion] = useState('')
   const [modalCardAnswer, setModalCardAnswer] = useState('')
   const [cardId, setCardId] = useState('')
 
   useEffect(() => {
-    if (packURLId) dispatch(setPackIdAC(packURLId))
+    params.cardsPack_id && dispatch(setPackIdAC(params.cardsPack_id))
+    // if pack is mine
+    params.accessory === 'true' && dispatch(setIsMyPackAC(true))
+    params.title && dispatch(setPackNameForTitleAC(params.title))
 
     dispatch(getCardsTC())
   }, [cardQuestion, page, pageCount, cardsTotalCount, sortCards])
@@ -84,7 +97,16 @@ export const Cards: FC = () => {
 
   const handleOpenAddNewCard = useCallback(() => {
     setOpenAdd(true)
-  }, [modalCardAnswer, modalCardQuestion])
+  }, [openAdd])
+
+  const handleOpenDeletePack = useCallback(
+    (cardId: string, cardQuestion: string) => {
+      setOpenDelete(true)
+      setCardId(cardId)
+      setModalCardQuestion(cardQuestion)
+    },
+    [openDelete, cardId, cardQuestion]
+  )
 
   const handleChangePage = useCallback((newPage: number) => {
     dispatch(setCurrentPageAC(newPage))
@@ -115,7 +137,7 @@ export const Cards: FC = () => {
     setModalCardQuestion('')
     setModalCardAnswer('')
     setCardId('')
-  }, [cardId, modalCardAnswer, modalCardQuestion])
+  }, [openEdit, modalCardAnswer, modalCardQuestion, cardId])
 
   const onSaveAddNewCard = useCallback(() => {
     dispatch(addNewCardTC(packId, modalCardQuestion, modalCardAnswer))
@@ -123,28 +145,63 @@ export const Cards: FC = () => {
     setOpenAdd(false)
     setModalCardQuestion('')
     setModalCardAnswer('')
-  }, [packId, modalCardQuestion, modalCardAnswer])
+  }, [openAdd, modalCardQuestion, modalCardAnswer, cardId])
+
+  const onDeleteCard = useCallback(() => {
+    dispatch(deleteCardTC(cardId))
+
+    setOpenDelete(false)
+    setModalCardQuestion('')
+    setCardId('')
+  }, [cardId, modalCardQuestion, openDelete])
 
   return (
     <Container sx={{ padding: '30px' }}>
       <ToPackListLink />
       <CardNameAndButton onAddNewCardClick={handleOpenAddNewCard} />
-      <Box sx={{ display: 'flex' }}>
-        <DebounceSearch
-          searchQuery={cardQuestion}
-          searchDebouncedValue={handleSearchCardsByQuestion}
+      {cards.length !== 0 ? (
+        <>
+          <Box sx={{ display: 'flex' }}>
+            <DebounceSearch
+              searchQuery={cardQuestion}
+              searchDebouncedValue={handleSearchCardsByQuestion}
+            />
+            <IconButton color="info" onClick={handleReset}>
+              <FilterAltOffSharpIcon fontSize="medium" />
+            </IconButton>
+          </Box>
+          <PagePagination
+            page={page}
+            pageCount={pageCount}
+            cardPacksTotalCount={cardsTotalCount}
+            handleChangePage={handleChangePage}
+            handleChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+          <TableContainer component={Paper} elevation={4} className={s.tableContainer}>
+            <Table sx={{ minWidth: 500 }} aria-label="simple table">
+              <TableHeadWithSorting
+                orderBy={sortCards}
+                headCells={CARDS_SORT_VALUES}
+                onRequestSort={handleRequestSort}
+              />
+              <TableBodyCards
+                cards={cards}
+                handleOpenEditCard={handleOpenEditCard}
+                handleOpenDeletePack={handleOpenDeletePack}
+              />
+            </Table>
+          </TableContainer>
+        </>
+      ) : (
+        <EmptyMessage
+          message={
+            isMyPack
+              ? 'This pack is empty. Click add new card to fill this pack'
+              : 'This pack is empty.'
+          }
         />
-        <IconButton color="info" onClick={handleReset}>
-          <FilterAltOffSharpIcon fontSize="medium" />
-        </IconButton>
-      </Box>
-      <PagePagination
-        page={page}
-        pageCount={pageCount}
-        cardPacksTotalCount={cardsTotalCount}
-        handleChangePage={handleChangePage}
-        handleChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+      )}
+
       <CardModal
         childrenTitle={<div>Edit card</div>}
         open={openEdit}
@@ -168,16 +225,12 @@ export const Cards: FC = () => {
         onSave={onSaveAddNewCard}
       />
 
-      <TableContainer component={Paper} elevation={4} className={s.tableContainer}>
-        <Table sx={{ minWidth: 500 }} aria-label="simple table">
-          <TableHeadWithSorting
-            orderBy={sortCards}
-            headCells={CARDS_SORT_VALUES}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBodyCards handleOpenEditCard={handleOpenEditCard} />
-        </Table>
-      </TableContainer>
+      <DeleteModal
+        open={openDelete}
+        setOpen={setOpenDelete}
+        name={modalCardQuestion}
+        onDelete={onDeleteCard}
+      />
     </Container>
   )
 }
