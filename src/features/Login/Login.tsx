@@ -67,7 +67,7 @@ export const Login = () => {
 
     onSubmit: async values => {
       await dispatch(loginTC(values))
-      navigate(PATH.PROFILE)
+      navigate(PATH.PACKS)
     },
   })
 

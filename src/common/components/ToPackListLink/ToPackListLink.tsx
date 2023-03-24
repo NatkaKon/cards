@@ -2,13 +2,13 @@ import React, { FC } from 'react'
 
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import Box from '@mui/material/Box'
-import { NavLink } from 'react-router-dom'
-
-import { PATH } from '../../constants/path'
+import { useNavigate } from 'react-router-dom'
 
 import s from './ToPackListLink.module.css'
 
 export const ToPackListLink: FC = () => {
+  const navigate = useNavigate()
+
   return (
     <Box
       sx={{
@@ -19,15 +19,10 @@ export const ToPackListLink: FC = () => {
         justifyContent: 'space-between',
       }}
     >
-      <NavLink
-        to={PATH.PACKS}
-        className={({ isActive }) => (isActive ? s.activeLink : s.inactiveLink)}
-      >
-        <div className={s.linkToPacks}>
-          <KeyboardBackspaceIcon sx={{ paddingRight: '10px' }} />
-          <p>To Pack List</p>
-        </div>
-      </NavLink>
+      <div className={s.linkToPacks} onClick={() => navigate(-1)}>
+        <KeyboardBackspaceIcon sx={{ paddingRight: '10px' }} />
+        <p>To Pack List</p>
+      </div>
     </Box>
   )
 }
