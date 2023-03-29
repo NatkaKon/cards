@@ -5,6 +5,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { PATH } from '../common/constants/path'
 import { Cards } from '../features/Cards/Cards'
 import { Error404 } from '../features/Error404/Error404'
+import { Learning } from '../features/Learning/Learning'
 import { Login } from '../features/Login/Login'
 import { NewPassword } from '../features/NewPassword/NewPassword'
 import { Packs } from '../features/Packs/Packs'
@@ -31,6 +32,7 @@ export const Pages: FC = () => {
       <Route path={PATH.TEST} element={<Test />} />
       <Route path={PATH.NAVIGATE_ERROR} element={<Error404 />} />
       <Route path={PATH.ERROR404} element={<Navigate to={PATH.NAVIGATE_ERROR} />} />
+      <Route path={PATH.LEARNING} element={<Learning />} />
     </Routes>
   )
 }

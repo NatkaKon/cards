@@ -7,8 +7,11 @@ import IconButton from '@mui/material/IconButton'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
+import { useNavigate } from 'react-router-dom'
 
-import { useAppSelector } from '../../app/store'
+import { useAppDispatch, useAppSelector } from '../../app/store'
+import { PATH } from '../../common/constants/path'
+import { setPackNameAC } from '../Learning/learnReducer'
 import * as packsSelectors from '../Packs/packs-selectors'
 import * as profileSelectors from '../Profile/profile-selector'
 
@@ -21,6 +24,8 @@ type PropsType = {
 export const TableBodyPacks: FC<PropsType> = props => {
   const packs = useAppSelector(packsSelectors.packs)
   const userId = useAppSelector(profileSelectors.userId)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const onClickHandler = (packId: string, packUserId: string, packNameForTitle: string) => {
     props.handleClickOnPackName(packId, userId === packUserId, packNameForTitle)
@@ -32,6 +37,10 @@ export const TableBodyPacks: FC<PropsType> = props => {
 
   const showModalDelete = (packId: string, name: string) => {
     props.handleOpenDeletePack(packId, name)
+  }
+  const handleClickLearnBtn = (packName: string) => {
+    dispatch(setPackNameAC(packName))
+    navigate(PATH.LEARNING)
   }
 
   return (
@@ -65,7 +74,7 @@ export const TableBodyPacks: FC<PropsType> = props => {
           <TableCell align="right">
             {el.user_id === userId ? (
               <>
-                <IconButton onClick={() => {}}>
+                <IconButton onClick={() => handleClickLearnBtn(el.name)}>
                   <SchoolIcon />
                 </IconButton>
                 <IconButton onClick={() => handleClickOnOpenEditPack(el._id, el.name)}>
@@ -76,7 +85,7 @@ export const TableBodyPacks: FC<PropsType> = props => {
                 </IconButton>
               </>
             ) : (
-              <IconButton onClick={() => {}}>
+              <IconButton onClick={() => handleClickLearnBtn(el.name)}>
                 <SchoolIcon />
               </IconButton>
             )}
