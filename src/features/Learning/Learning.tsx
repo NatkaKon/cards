@@ -1,15 +1,20 @@
 import * as React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Container, Paper } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import { Navigate } from 'react-router-dom'
 
-import { useAppSelector } from '../../app/store'
+import { useAppDispatch, useAppSelector } from '../../app/store'
 import { ToPackListLink } from '../../common/components/ToPackListLink/ToPackListLink'
+import { PATH } from '../../common/constants/path'
+import { getRandomCard } from '../../utils/utils'
+import { CardType } from '../Cards/cardsReducer'
 import * as learnSelector from '../Learning/learning-selectors'
 
 import { Answer } from './Answer'
+import { getLearnCardsTC, gradeCardTC } from './learnReducer'
 
 const toPackListStyle = {
   width: '100%',
@@ -46,8 +51,28 @@ const questionStyle = { fontWeight: 'bold', paddingRight: '10px' }
 const boxForAnswerCountStyle = { display: 'flex' }
 
 export const Learning = () => {
+  const dispatch = useAppDispatch()
   const packName = useAppSelector(learnSelector.packName)
+  const cardsPack_id = useAppSelector(learnSelector.cardsPack_id)
   const [learningMode, setLearningMode] = useState('question')
+  const learningCards = useAppSelector(learnSelector.learningCards)
+  const [card, setCard] = useState<CardType>(getRandomCard(learningCards))
+
+  useEffect(() => {
+    dispatch(getLearnCardsTC())
+  }, [cardsPack_id])
+
+  const onNext = (newGrade: number) => {
+    setLearningMode('question')
+    setCard(getRandomCard(learningCards))
+    dispatch(gradeCardTC(newGrade, card._id))
+  }
+
+  useEffect(() => {
+    setCard(getRandomCard(learningCards))
+  }, [learningCards])
+
+  if (learningCards.length === 0) return <Navigate to={PATH.PACKS} />
 
   return (
     <Container sx={containerStyle}>
@@ -59,10 +84,10 @@ export const Learning = () => {
         <Paper elevation={3} sx={paperStyle}>
           <Box sx={boxForQuestionStyle}>
             <div style={questionStyle}>Question:</div>
-            <div>question</div>
+            <div>{card.question}</div>
           </Box>
           <Box sx={boxForAnswerCountStyle}>
-            <div style={answersCountStyle}>количество ответов на вопрос: {'10'}</div>
+            <div style={answersCountStyle}>количество ответов на вопрос: {card.shots}</div>
           </Box>
           {learningMode === 'question' && (
             <Button
@@ -78,11 +103,7 @@ export const Learning = () => {
             </Button>
           )}
           {learningMode === 'answer' && (
-            <Answer
-              onClick={() => {
-                setLearningMode('question')
-              }}
-            />
+            <Answer cardGrade={card.grade} onClick={onNext} answer={card.answer} />
           )}
         </Paper>
       </Box>

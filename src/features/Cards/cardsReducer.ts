@@ -39,7 +39,7 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
 //actions
 export const setIsMyPackAC = (isMyPack: boolean) =>
   ({ type: 'CARDS/SET-IS-MY-PACK', isMyPack } as const)
-export const cardsGetAC = (cards: CardsType) => ({ type: 'CARDS/GET-CARDS', cards } as const)
+export const getCardsAC = (cards: CardsType) => ({ type: 'CARDS/GET-CARDS', cards } as const)
 export const setPackIdAC = (packId: string) => ({ type: 'CARDS/SET-PACK-ID', packId } as const)
 export const setPackNameForTitleAC = (packNameForTitle: string) =>
   ({ type: 'CARDS/SET-PACK-NAME-FOR-TITLE', packNameForTitle } as const)
@@ -67,7 +67,7 @@ export const getCardsTC = (): AppRootThunk => async (dispatch, getState) => {
     const resp = await cardsAPI.getCards({ cardsPack_id, page, pageCount, cardQuestion, sortCards })
 
     console.log(resp.data)
-    dispatch(cardsGetAC(resp.data))
+    dispatch(getCardsAC(resp.data))
     dispatch(
       setPaginationDataAC({
         page: resp.data.page,
@@ -139,7 +139,7 @@ export type CardType = {
 }
 
 export type CardsActionsType =
-  | ReturnType<typeof cardsGetAC>
+  | ReturnType<typeof getCardsAC>
   | ReturnType<typeof setPackIdAC>
   | ReturnType<typeof searchCardsByQuestionAC>
   | ReturnType<typeof resetCardsSortingParamsAC>

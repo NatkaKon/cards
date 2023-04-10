@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { PATH } from '../../common/constants/path'
-import { setPackNameAC } from '../Learning/learnReducer'
+import { setLearningPackIdAC, setPackNameAC } from '../Learning/learnReducer'
 import * as packsSelectors from '../Packs/packs-selectors'
 import * as profileSelectors from '../Profile/profile-selector'
 
@@ -38,8 +38,9 @@ export const TableBodyPacks: FC<PropsType> = props => {
   const showModalDelete = (packId: string, name: string) => {
     props.handleOpenDeletePack(packId, name)
   }
-  const handleClickLearnBtn = (packName: string) => {
+  const handleClickLearnBtn = (packName: string, cardsPack_id: string) => {
     dispatch(setPackNameAC(packName))
+    dispatch(setLearningPackIdAC(cardsPack_id))
     navigate(PATH.LEARNING)
   }
 
@@ -74,7 +75,7 @@ export const TableBodyPacks: FC<PropsType> = props => {
           <TableCell align="right">
             {el.user_id === userId ? (
               <>
-                <IconButton onClick={() => handleClickLearnBtn(el.name)}>
+                <IconButton onClick={() => handleClickLearnBtn(el.name, el._id)}>
                   <SchoolIcon />
                 </IconButton>
                 <IconButton onClick={() => handleClickOnOpenEditPack(el._id, el.name)}>
@@ -85,7 +86,7 @@ export const TableBodyPacks: FC<PropsType> = props => {
                 </IconButton>
               </>
             ) : (
-              <IconButton onClick={() => handleClickLearnBtn(el.name)}>
+              <IconButton onClick={() => handleClickLearnBtn(el.name, el._id)}>
                 <SchoolIcon />
               </IconButton>
             )}
